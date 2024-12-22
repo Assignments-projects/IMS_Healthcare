@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    @await Html.PartialAsync("Layout/_HeaderTag")
+</head>
+<body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-layout="default">
+    <div class="wrapper">
+        @await Html.PartialAsync("Layout/_SideBar")
+
+        <div class="main">
+            @await Html.PartialAsync("Layout/_TopBar")
+
+            <main class="content">
+                @RenderBody()
+            </main>
+
+            @await Html.PartialAsync("Layout/_Footer")
+        </div>
+    </div>
+
+    @await Html.PartialAsync("Modal/_Modal")
+    @await Html.PartialAsync("Layout/_MainScripts")
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

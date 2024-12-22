@@ -1,9 +1,31 @@
+using ServiceLayer;
+using DbLayer;
+using AuthLayer;
+using Web.Helper;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpContextAccessor();
+
+// Add the in-memory cache and logging services
+builder.Services.AddMemoryCache();
+builder.Services.AddLogging();
+
+// Add Layers's Services
+builder.Services.AddDataAccessServices(builder.Configuration);
+builder.Services.AddBusinessLogicServices(builder.Configuration);
+builder.Services.AddAuthServices();
+
+// Configure Automapper
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
+
+// Initialize the static UserHelper with IHttpContextAccessor
+var httpContextAccessor = app.Services.GetRequiredService<IHttpContextAccessor>();
+UserHelper.Initialize(httpContextAccessor);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -13,12 +35,17 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "login",
+    pattern: "",
+    defaults: new { controller = "Account", action = "Login" });
 
 app.MapControllerRoute(
     name: "default",

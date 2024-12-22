@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Web.Helper;
 using Web.Models;
 
 namespace Web.Controllers
@@ -15,6 +16,7 @@ namespace Web.Controllers
 
         public IActionResult Index()
         {
+            var currentUser = UserHelper.GetCurrentUser();
             return View();
         }
 
