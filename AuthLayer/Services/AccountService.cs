@@ -3,6 +3,7 @@ using AuthLayer.Interfaces;
 using AuthLayer.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Security.Claims;
 
@@ -56,10 +57,12 @@ namespace AuthLayer.Services
                     new Claim(nameof(LoggedUser.Id), user.Id.ToString()),
                     new Claim(nameof(LoggedUser.FirstName), user.FirstName ?? ""),
                     new Claim(nameof(LoggedUser.LastName), user.LastName ?? ""),
-                    new Claim(nameof(LoggedUser.Email), user.Email ?? ""),
-                };
+	                new Claim(nameof(LoggedUser.FullName), $"{user.FirstName} {user.LastName}" ?? ""),
+					new Claim(nameof(LoggedUser.Email), user.Email ?? ""),
+		            new Claim(nameof(LoggedUser.ProfilePicture), user.ProfilePicPath ?? ""),
+				};
 
-                // Get user roles
+                // Get user roles and add to the claims
                 var roles = await _userManager.GetRolesAsync(user);
 
                 if (roles.Any())
@@ -125,14 +128,208 @@ namespace AuthLayer.Services
             await _signInManager.SignOutAsync();
         }
 
-        #region Helper methods
+		#region Common user methods
 
         /// <summary>
-        /// Create a App User Instance to use AppUser and Identity User properties
+        /// Load application users list
         /// </summary>
         /// <returns></returns>
-        /// <exception cref="InvalidOperationException"></exception>
-        private AppUser CreateUser()
+        public async Task<List<AppUser>> ListAsync()
+        {
+			var result = await _userManager.Users.ToListAsync();
+
+			if (!result.Any())
+				return new List<AppUser>();
+
+			return result;
+		}
+
+		/// <summary>
+        /// Load Pending or approved application users list
+		/// </summary>
+		/// <param name="isApproved"></param>
+		/// <returns></returns>
+		public async Task<List<AppUser>> ListAsync(bool isApproved)
+		{
+			var result = await _userManager.Users.Where(x => x.IsApproved == isApproved).ToListAsync();
+
+			if (!result.Any())
+				return new List<AppUser>();
+
+			return result;
+		}
+
+		/// <summary> as a list
+		/// Get user details by id
+		/// </summary>
+		/// <returns></returns>
+		public async Task<AppUser> DetailsAsync(string id)
+		{
+			var result = await _userManager.FindByIdAsync(id);
+
+			if (result == null)
+				return new AppUser();
+
+			return result;
+		}
+
+		/// <summary>
+		/// Update exisiting user
+		/// </summary>
+		/// <param name="user"></param>
+		/// <returns></returns>
+		public async Task<(bool success, List<string> errors)> UpdateAsync(AppUser user)
+		{
+			var errors = new List<string>();
+
+			try
+			{
+				// Reload the users from the data source to ensure there are no conflicts
+				var existingUser = await _userManager.FindByIdAsync(user.Id);
+
+				if (existingUser == null)
+				{
+					errors.Add("User not found.");
+					return (false, errors);
+				}
+
+                // Bind model values
+				existingUser.FirstName  = user.FirstName;
+                existingUser.LastName   = user.LastName;
+                existingUser.Email      = user.Email;
+                existingUser.Address    = user.Address;
+                existingUser.PhoneNo    = user.PhoneNo;
+                existingUser.IsApproved = user.IsApproved;
+                existingUser.UserName   = user.UserName;
+
+				// Update exisiting users details
+				var result = await _userManager.UpdateAsync(existingUser);
+
+				if (!result.Succeeded)
+				{
+					foreach (var e in result.Errors)
+					{
+						errors.Add(e.Description);
+					}
+
+					return (false, errors);
+				}
+
+				return (true, errors);
+
+			}
+			catch (Exception ex)
+			{
+				errors.Add(ex.Message);
+				return (false, errors);
+			}
+		}
+
+		/// <summary>
+		/// Approve pending user by user id
+		/// </summary>
+		/// <param name="role"></param>
+		/// <returns></returns>
+		public async Task<(bool success, List<string> errors)> ApproveUserAsync(string id, bool isApprove)
+		{
+			var errors = new List<string>();
+
+			try
+			{
+				// Reload the users from the data source to ensure there are no conflicts
+				var existingUser = await _userManager.FindByIdAsync(id);
+
+				if (existingUser == null)
+				{
+					errors.Add("User not found.");
+					return (false, errors);
+				}
+
+				// Bind model values
+				existingUser.IsApproved = isApprove;
+
+				// Update exisiting users details
+				var result = await _userManager.UpdateAsync(existingUser);
+
+				if (!result.Succeeded)
+				{
+					foreach (var e in result.Errors)
+					{
+						errors.Add(e.Description);
+					}
+
+					return (false, errors);
+				}
+
+				return (true, errors);
+
+			}
+			catch (Exception ex)
+			{
+				errors.Add(ex.Message);
+				return (false, errors);
+			}
+		}
+
+		/// <summary>
+		/// Update profile picture by user id
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="picturePath"></param>
+		/// <returns></returns>
+		public async Task<(bool success, List<string> messages)> UpdateProfilePic(string id, string picturePath)
+		{
+			var errors = new List<string>();
+
+			try
+			{
+				// Reload the users from the data source to ensure there are no conflicts
+				var existingUser = await _userManager.FindByIdAsync(id);
+
+				if (existingUser == null)
+				{
+					errors.Add("User not found.");
+					return (false, errors);
+				}
+
+				// Bind model values
+				existingUser.ProfilePicPath = picturePath;
+
+				// Update exisiting users details
+				var result = await _userManager.UpdateAsync(existingUser);
+
+				if (!result.Succeeded)
+				{
+					foreach (var e in result.Errors)
+					{
+						errors.Add(e.Description);
+					}
+
+					errors.Add(existingUser.ProfilePicPath);
+					return (false, errors);
+				}
+
+				return (true, errors);
+
+			}
+			catch (Exception ex)
+			{
+				errors.Add(ex.Message);
+				return (false, errors);
+			}
+		}
+
+		#endregion
+
+
+		#region Helper methods
+
+		/// <summary>
+		/// Create a App User Instance to use AppUser and Identity User properties
+		/// </summary>
+		/// <returns></returns>
+		/// <exception cref="InvalidOperationException"></exception>
+		private AppUser CreateUser()
         {
             try
             {

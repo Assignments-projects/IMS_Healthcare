@@ -1,0 +1,12 @@
+﻿@using Web.Models.Role
+
+@model RoleVM
+
+<form asp-controller="Role" asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="Name" />
+
+    <div>
+        <h6>Are you sure you want to delete this role ?</h6>
+    </div>
+</form>

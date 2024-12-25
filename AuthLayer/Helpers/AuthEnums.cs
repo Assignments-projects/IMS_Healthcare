@@ -7,6 +7,7 @@ namespace AuthLayer.Helpers
         FirstName,
         LastName,
         FullName,
-        Email
+        Email,
+        ProfilePicture
     }
 }

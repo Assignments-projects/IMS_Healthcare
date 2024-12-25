@@ -12,12 +12,12 @@ namespace AuthLayer.Models
         /// <summary>
         /// First name of the user
         /// </summary>
-        public required string FirstName { get; set; }
+        public string FirstName          { get; set; } = string.Empty;
 
         /// <summary>
         /// Last name of the user
         /// </summary>
-        public required string LastName  { get; set; }
+        public string LastName           { get; set; } = string.Empty;
 
         /// <summary>
         /// User street address
@@ -29,9 +29,14 @@ namespace AuthLayer.Models
         /// </summary>
         public string? PhoneNo           { get; set; }
 
-        /// <summary>
-        /// Is user account approved
-        /// </summary>
-        public bool IsApproved           { get; set; } = false;
+		/// <summary>
+		/// User profile picture path
+		/// </summary>
+		public string? ProfilePicPath    { get; set; }
+
+		/// <summary>
+		/// Is user account approved
+		/// </summary>
+		public bool IsApproved           { get; set; } = false;
     }
 }

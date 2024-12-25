@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Web.Models
+namespace Web.Models.Account
 {
     public class LoginVM
     {
@@ -8,7 +8,7 @@ namespace Web.Models
         /// User email address
         /// </summary>
         [Required]
-        public required string Email    { get; set; }
+        public required string Email { get; set; }
 
         /// <summary>
         /// Account password
@@ -20,6 +20,6 @@ namespace Web.Models
         /// <summary>
         /// Want to remember the login details
         /// </summary>
-        public bool RememberMe          { get; set; }
+        public bool RememberMe { get; set; }
     }
 }

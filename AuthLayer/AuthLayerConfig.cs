@@ -15,6 +15,7 @@ namespace AuthLayer
         public static IServiceCollection AddAuthServices(this IServiceCollection services)
         {
 			services.AddTransient<IAccountService, AccountService>();
+			services.AddTransient<IRoleService, RoleService>();
 
 			return services;
         }

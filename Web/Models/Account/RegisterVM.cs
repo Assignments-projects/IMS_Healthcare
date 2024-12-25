@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Web.Models
+namespace Web.Models.Account
 {
     public class RegisterVM
     {
@@ -9,27 +9,27 @@ namespace Web.Models
         /// </summary>
         [Required]
         [EmailAddress]
-        public required string Email           { get; set; }
+        public required string Email { get; set; }
 
         /// <summary>
         /// First name of the user
         /// </summary>
         [Required]
         [Display(Name = "First Name")]
-        public required string FirstName       { get; set; }
+        public required string FirstName { get; set; }
 
         /// <summary>
         /// Last name of the user
         /// </summary>
         [Required]
         [Display(Name = "Last Name")]
-        public required string LastName        { get; set; }
+        public required string LastName { get; set; }
 
         /// <summary>
         /// Username to login to the system once registered successfully
         /// </summary>
         [Display(Name = "Username")]
-        public string? UserName                { get; set; }
+        public string? UserName { get; set; }
 
         /// <summary>
         /// User street address
@@ -48,7 +48,7 @@ namespace Web.Models
         /// </summary>
         [Required]
         [DataType(DataType.Password)]
-        public required string Password        { get; set; }
+        public required string Password { get; set; }
 
         /// <summary>
         /// Password confirmation

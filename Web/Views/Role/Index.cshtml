@@ -1,0 +1,86 @@
+﻿@using Web.Helper
+
+@{
+	ViewBag.Title = "Roles";
+}
+
+<div class="container-fluid p-0">
+
+	<div class="mb-3">
+		<h1 class="h3 d-inline align-middle">User Roles</h1>
+	</div>
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card main-frame-card">
+				<div class="card-header d-flex justify-content-between align-content-between align-items-center flex-wrap">
+					<div>
+						<h5 class="card-title">Roles DataTables</h5>
+						<h6 class="card-subtitle text-muted">
+							Here you can manage your application roles.
+						</h6>
+					</div>
+					<div>
+						<button class="btn btn-primary" id="@ButtonId.RoleAddNew">Add Role</button>
+					</div>
+				</div>
+				<div class="card-body" id="@ContainerId.RolesList">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section scripts {
+	<script>
+		(function () {
+
+			// Load roles list
+			var LoadRoles = function () {
+				Controls.RelaodContainer('@Url.Action("List", "Role")', '@ContainerId.RolesList');
+			}
+
+			// Load roles list to card body container
+			LoadRoles();
+
+			// Open popup modal for add new role
+			$('#@ButtonId.RoleAddNew').click(function () {
+				var url = '@Url.Action("AddEdit", "Role")';
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Add New Role");
+			});
+
+			/**
+			 * Open edit role pop-up when click edit button
+			 * Take the Url action to load partial and Open the bootstrap modal
+			 */
+			$(document).on('click', '.@ButtonClass.RoleEdit', function () {
+				var id = $(this).attr("data-id");
+				var url = `@Url.Action("AddEdit", "Role")?id=${id}`;
+
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Update Role Details");
+			});
+
+			/**
+			 * Open delete role confirmation pop-up when click delete button
+			 * Take the Url action to load partial and Open the bootstrap modal
+			 */
+			$(document).on('click', '.@ButtonClass.RoleDelete', function () {
+				var id = $(this).attr("data-id");
+				var url = `@Url.Action("Delete", "Role")?id=${id}`;
+
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Delete Role", "Delete", "btn-danger");
+			});
+
+			/**
+			 * Submit the form via ajax and close the modal
+			 */
+			$('.@ButtonClass.MainModalSubmit').click(function () {
+				var form = $(this).closest('.modal').find('.modal-body form');
+
+				Controls.RelaodContainerOnModalPost("@UniqueIdentifier.MainModelId", form, '@ContainerId.RolesList', LoadRoles);
+			});
+			
+		})();
+	</script>
+}

@@ -3,7 +3,7 @@ var Controls = (function () {
 
     return {
 
-        RelaodContainer: function (url, reloadContainerId) {
+        RelaodContainer: function (url, reloadContainerId, parameter) {
 
             var loading = `<div class="d-flex align-items-center justify-content-center gap-2">
                                 <div class="spinner-border text-primary my-3" role="status"></div>
@@ -13,11 +13,15 @@ var Controls = (function () {
             $.ajax({
                 url: url,
                 type: "GET",
+                data: parameter,
                 beforeSend: function () {
                     $(`#${reloadContainerId}`).html(loading);
                 },
                 success: function (response) {
-                    $(`#${reloadContainerId}`).html(response);                       
+                    $(`#${reloadContainerId}`).html(response);
+
+                    // Intitialize feather icons
+                    feather.replace();
                 },
                 error: function () {
                     toastr.error("Something went wrong!");
@@ -49,7 +53,10 @@ var Controls = (function () {
                             else
                                 location.reload();
 
-                        }, 1000)
+                        }, 200)
+
+                        // Intitialize feather icons
+                        feather.replace();
                     }
                     else
                         toastr.error(response.message);
@@ -62,12 +69,25 @@ var Controls = (function () {
 
         OpenPopUpModal: function (url, popUpId, title, btnText, btnClass) {
 
+            var btnClassDefult = "jq-main-modal-submit-button-class";
+            
             $.get(url, function (data) {
                 $(`#${popUpId} .modal-body`).html(data);
                 $(`#${popUpId} .modal-title`).text(title);
-                $(`#${popUpId} .btn-modal-submit`).text(btnText);
-                $(`#${popUpId} .btn-modal-submit`).removeClass().addClass("btn " + btnClass);
+                $(`#${popUpId} .${btnClassDefult}`).text("Submit");
+                $(`#${popUpId} .${btnClassDefult}`).removeClass().addClass(`btn btn-success ${btnClassDefult}`);
+
+                if (btnText) {
+                    $(`#${popUpId} .${btnClassDefult}`).text(btnText);
+                }
+                if (btnClass) {
+                    $(`#${popUpId} .${btnClassDefult}`).removeClass().addClass(`btn ${btnClass} ${btnClassDefult}`);
+                }
+
                 $(`#${popUpId}`).modal("show");
+
+                // Intitialize feather icons
+                feather.replace();
             });
         },
 

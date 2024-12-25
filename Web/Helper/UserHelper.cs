@@ -25,11 +25,13 @@ namespace Web.Helper
 
             return new CurrentUser
             {
-                UserId    = _httpContextAcc.HttpContext.User.FindFirstValue(nameof(LoggedUser.Id)),
-                FirstName = _httpContextAcc.HttpContext.User.FindFirstValue(nameof(LoggedUser.FirstName)),
-                LastName  = _httpContextAcc.HttpContext.User.FindFirstValue(nameof(LoggedUser.LastName)),
-                Email     = _httpContextAcc.HttpContext.User.FindFirstValue(nameof(LoggedUser.Email)),
-                Roles     = _httpContextAcc.HttpContext.User.FindAll(ClaimTypes.Role).Select(roleClaim => roleClaim.Value).ToList()
+                UserId         = _httpContextAcc.HttpContext.User.FindFirstValue(nameof(LoggedUser.Id)),
+                FirstName      = _httpContextAcc.HttpContext.User.FindFirstValue(nameof(LoggedUser.FirstName)),
+                LastName       = _httpContextAcc.HttpContext.User.FindFirstValue(nameof(LoggedUser.LastName)),
+				FullName       = _httpContextAcc.HttpContext.User.FindFirstValue(nameof(LoggedUser.FullName)),
+				Email          = _httpContextAcc.HttpContext.User.FindFirstValue(nameof(LoggedUser.Email)),
+				ProfilePicPath = _httpContextAcc.HttpContext.User.FindFirstValue(nameof(LoggedUser.ProfilePicture)),
+				Roles          = _httpContextAcc.HttpContext.User.FindAll(ClaimTypes.Role).Select(roleClaim => roleClaim.Value).ToList()
             };
         }
     }

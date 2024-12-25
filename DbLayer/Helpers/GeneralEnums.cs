@@ -1,5 +1,8 @@
-﻿
-namespace DbLayer.Helpers
+﻿namespace DbLayer.Helpers
 {
-    
+    public enum UserStatus
+    {
+        Approve,
+        Pending
+    }
 }

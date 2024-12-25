@@ -8,7 +8,7 @@ sidebarToggle.addEventListener("click", function () {
     document.querySelector("#sidebar").classList.toggle("collapsed");
 });
 
-// Use feather icons
+// Intitialize feather icons
 feather.replace();
 
 // expand to full screen mode

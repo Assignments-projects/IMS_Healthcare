@@ -1,0 +1,90 @@
+﻿@using Web.Helper
+
+@{
+	ViewBag.Title = "Users";
+}
+
+<div class="container-fluid p-0">
+
+	<div class="mb-3">
+		<h1 class="h3 d-inline align-middle">Application Users</h1>
+	</div>
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card main-frame-card">
+				<div class="card-header d-flex justify-content-between align-content-between align-items-center flex-wrap">
+					<div>
+						<h5 class="card-title">Users DataTables</h5>
+						<h6 class="card-subtitle text-muted">
+							Here you can manage your application users.
+						</h6>
+					</div>
+					<div>
+						<button class="btn btn-primary" id="@ButtonId.UserAddNew">Add User</button>
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="btn-group mb-3">
+						<input type="radio" class="btn-check" name="status-options" id="@ButtonId.UserApproved" autocomplete="off" checked>
+						<label class="btn btn-outline-secondary" for="@ButtonId.UserApproved">Approved</label>
+
+						<input type="radio" class="btn-check" name="status-options" id="@ButtonId.UserPending" autocomplete="off">
+						<label class="btn btn-outline-secondary" for="@ButtonId.UserPending">Pending</label>
+					</div>
+					<div id="@ContainerId.UsersList">
+
+					</div>
+				</div>			
+			</div>
+		</div>
+	</div>
+</div>
+
+@section scripts {
+	<script>
+		(function () {
+
+			// Load users list
+			var LoadUsers = function (isApproved) {
+				Controls.RelaodContainer('@Url.Action("List", "User")', '@ContainerId.UsersList', { isApproved: isApproved });
+
+				$('.btn-check[name="status-options"]').prop('cheked', false);
+
+				if (isApproved)
+					$('#@ButtonId.UserApproved').prop('checked', true);
+				else
+					$('#@ButtonId.UserPending').prop('checked', true);
+			}
+
+			// Load approved users list to card body container
+			LoadUsers(true);
+
+			// Open popup modal for add new role
+			$('#@ButtonId.UserAddNew').click(function () {
+				var url = '@Url.Action("AddEdit", "User")';
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Add New User");
+			});
+
+			// Load approved users when click
+			$(document).on('change', '#@ButtonId.UserApproved', function () {
+				LoadUsers(true);
+			});
+
+			// Load pending users when click
+			$(document).on('change', '#@ButtonId.UserPending', function () {
+				LoadUsers(false);
+			});
+
+			/**
+			 * Submit the form via ajax and close the modal
+			 */
+			$('.@ButtonClass.MainModalSubmit').click(function () {
+				var form = $(this).closest('.modal').find('.modal-body form');
+
+				Controls.RelaodContainerOnModalPost("@UniqueIdentifier.MainModelId", form, '@ContainerId.UsersList', LoadUsers(true));
+			});
+
+		})();
+	</script>
+}

@@ -3,7 +3,7 @@ using AuthLayer.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
-using Web.Models;
+using Web.Models.Account;
 
 namespace Web.Controllers
 {
@@ -25,7 +25,10 @@ namespace Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Login()
         {
-            return View();
+			if (User.Identity != null && User.Identity.IsAuthenticated)
+				return LocalRedirect("/Home/Index");
+			else
+				return View();
 		}
 
 		/// <summary>
