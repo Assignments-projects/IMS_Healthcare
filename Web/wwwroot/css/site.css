@@ -15,3 +15,20 @@
 .main-frame-card{
     min-height: 65vh;
 }
+
+
+/*----- Over written theme css starts ------*/
+
+.tab-light .nav-tabs .nav-link.active {
+    color: #343a40 !important;
+}
+
+.tab-light .nav-tabs .nav-link {
+    color: rgba(0,0,0,.5) !important;
+}
+
+.tab-pane {
+    min-height: 50vh;
+}
+
+/*----- Over written theme css ends ------*/

@@ -25,7 +25,7 @@
 					</div>
 				</div>
 				<div class="card-body">
-					<div class="btn-group mb-3">
+					<div class="btn-group mb-5">
 						<input type="radio" class="btn-check" name="status-options" id="@ButtonId.UserApproved" autocomplete="off" checked>
 						<label class="btn btn-outline-secondary" for="@ButtonId.UserApproved">Approved</label>
 
@@ -64,6 +64,16 @@
 			$('#@ButtonId.UserAddNew').click(function () {
 				var url = '@Url.Action("AddEdit", "User")';
 				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Add New User");
+			});
+
+			// Open popup modal for approve or un-approve a user
+			$(document).on('click', '.@ButtonClass.UserApprove',  function () {
+				var id          = $(this).data("id");
+				var isApprove   = $(this).data("approve");
+				var url         = `@Url.Action("ApproveUnApprove", "user")?id=${id}&isApprove=${isApprove}`;
+				var submitColor = isApprove ? "btn-success" : "btn-danger";
+
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "User Approval", "Yes", submitColor);
 			});
 
 			// Load approved users when click

@@ -1,0 +1,20 @@
+﻿@using Web.Models.User
+
+@model UserRolesDetailsVM
+
+<form asp-controller="User" asp-action="AssignRole" method="post">
+    <input type="hidden" asp-for="Details.UserId" />
+
+    <div>
+        <h6>Please select the role you want to assign.</h6>
+    </div>
+
+    <div>
+        <select asp-for="Details.RoleId" id="RoleId" name="Details.RoleId" class="form-select">
+            @foreach (var role in Model.RolesList)
+            {
+                <option value="@role.Value">@role.Text</option>
+            }
+        </select>
+    </div>
+</form>

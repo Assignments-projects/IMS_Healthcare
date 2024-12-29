@@ -1,0 +1,12 @@
+﻿@using Web.Models.User
+
+@model UserRolesDetailsVM
+
+<form asp-controller="User" asp-action="UnAssignRole" method="post">
+    <input type="hidden" asp-for="Details.UserId" />
+    <input type="hidden" asp-for="Details.RoleId" />
+
+    <div>
+        <h6>Are you sure you want to un-assign this role ?</h6>
+    </div>
+</form>

@@ -1,1 +1,72 @@
-﻿
+﻿@using Web.Models.Account
+
+@model UserVM
+
+<form asp-controller="User" asp-action="AddEdit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="row mb-3">
+        <div asp-validation-summary="ModelOnly"></div>
+    </div>
+	<div class="row mb-3">
+		<div class="col-12 col-sm-6">
+			<div>
+				<label asp-for="Email">Email</label>
+				<input asp-for="Email" class="form-control" autocomplete="email" aria-required="true" placeholder="Enter your name" />
+				<span asp-validation-for="Email" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="col-12 col-sm-6">
+			<div>
+				<label asp-for="UserName">Username</label>
+				<input asp-for="UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="Enter your username" />
+				<span asp-validation-for="UserName" class="text-danger"></span>
+			</div>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-12 col-sm-6">
+			<div>
+				<label asp-for="FirstName">First Name</label>
+				<input asp-for="FirstName" class="form-control" autocomplete="firstname" aria-required="true" placeholder="Enter your first name" />
+				<span asp-validation-for="FirstName" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="col-12 col-sm-6">
+			<div>
+				<label asp-for="LastName">Last Name</label>
+				<input asp-for="LastName" class="form-control" autocomplete="lastname" aria-required="true" placeholder="Enter your last name" />
+				<span asp-validation-for="LastName" class="text-danger"></span>
+			</div>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-12 col-sm-6">
+			<div>
+				<label asp-for="ProfilePic">Profile picture</label>
+				<input asp-for="ProfilePic" class="form-control" autocomplete="username" aria-required="true" />
+				<span asp-validation-for="ProfilePic" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="col-12 col-sm-6">
+			<div>
+				<label asp-for="PhoneNo">Phone No</label>
+				<input asp-for="PhoneNo" class="form-control" autocomplete="username" aria-required="true" placeholder="Enter your phone no" />
+				<span asp-validation-for="PhoneNo" class="text-danger"></span>
+			</div>
+		</div>
+	</div>
+	<div class="mb-3">
+		<label asp-for="Address">Address</label>
+		<textarea asp-for="Address" class="form-control" rows="3" autocomplete="email" aria-required="true" placeholder="Enter your address"></textarea>
+		<span asp-validation-for="Address" class="text-danger"></span>
+	</div>
+	<div class="mb-3">
+		<label class="form-check">
+			<input class="form-check-input" asp-for="IsApproved" />
+			<span class="form-check-label">
+				Approve
+			</span>
+		</label>
+	</div>
+</form>

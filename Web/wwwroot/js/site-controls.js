@@ -67,28 +67,46 @@ var Controls = (function () {
             });
         },
 
+        // Open Bootstrap modal with ajax get call
         OpenPopUpModal: function (url, popUpId, title, btnText, btnClass) {
 
             var btnClassDefult = "jq-main-modal-submit-button-class";
+            console.log(url)
             
-            $.get(url, function (data) {
-                $(`#${popUpId} .modal-body`).html(data);
-                $(`#${popUpId} .modal-title`).text(title);
-                $(`#${popUpId} .${btnClassDefult}`).text("Submit");
-                $(`#${popUpId} .${btnClassDefult}`).removeClass().addClass(`btn btn-success ${btnClassDefult}`);
+            $.get(url)
+                .done(function (data) {
+                    // Check if the response is JSON and indicates an error
+                    try {
 
-                if (btnText) {
-                    $(`#${popUpId} .${btnClassDefult}`).text(btnText);
-                }
-                if (btnClass) {
-                    $(`#${popUpId} .${btnClassDefult}`).removeClass().addClass(`btn ${btnClass} ${btnClassDefult}`);
-                }
+                        var jsonResponse = JSON.parse(data);
 
-                $(`#${popUpId}`).modal("show");
+                        if (jsonResponse.success === false) {
+                            toastr.error(data.message);
+                            return;
+                        }
+                    } catch (e) {}
 
-                // Intitialize feather icons
-                feather.replace();
-            });
+                    // Populate the modal with HTML content
+                    $(`#${popUpId} .modal-body`).html(data);
+                    $(`#${popUpId} .modal-title`).text(title);
+                    $(`#${popUpId} .${btnClassDefult}`).text("Submit");
+                    $(`#${popUpId} .${btnClassDefult}`).removeClass().addClass(`btn btn-success ${btnClassDefult}`);
+
+                    if (btnText) {
+                        $(`#${popUpId} .${btnClassDefult}`).text(btnText);
+                    }
+                    if (btnClass) {
+                        $(`#${popUpId} .${btnClassDefult}`).removeClass().addClass(`btn ${btnClass} ${btnClassDefult}`);
+                    }
+
+                    $(`#${popUpId}`).modal("show");
+
+                    // Initialize Feather icons
+                    feather.replace();
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    toastr.error(`Failed to load content: ${textStatus} - ${errorThrown}`);
+                });
         },
 
     };

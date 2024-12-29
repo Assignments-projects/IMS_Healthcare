@@ -50,10 +50,14 @@ namespace Web.Models.Account
 		public string? PhoneNo { get; set; }
 
 		/// <summary>
-		/// User profile picture path
+		/// User profile picture
 		/// </summary>
-		[Display(Name = "Profile picture")]
-		public string? ProfilePicPath { get; set; }
+        public IFormFile ProfilePic { get; set; }
+
+        /// <summary>
+        /// User profile picture path
+        /// </summary>
+        public string? ProfilePicPath { get; set; }
 
 		/// <summary>
 		/// Is User approved ?

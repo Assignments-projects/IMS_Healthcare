@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Security.Claims;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AuthLayer.Services
 {
@@ -98,7 +99,7 @@ namespace AuthLayer.Services
             user.FirstName   = model.FirstName;
             user.LastName    = model.LastName;
             user.Address     = model.Address;
-            user.PhoneNumber = model.PhoneNo;
+            user.PhoneNo     = model.PhoneNo;
 
             await _userStore.SetUserNameAsync(user, username, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, model.Email, CancellationToken.None);
@@ -171,6 +172,51 @@ namespace AuthLayer.Services
 				return new AppUser();
 
 			return result;
+		}
+
+		/// <summary>
+		/// Register User account to the system
+		/// </summary>
+		/// <returns></returns>
+		public async Task<(bool, List<string>)> AddAsync(AppUser model)
+		{
+			List<string> errors = new();
+
+			try
+			{
+				var user = CreateUser();
+				var username = model.UserName ?? model.Email;
+
+				// Bind custom data to identity user
+				user.FirstName  = model.FirstName;
+				user.LastName   = model.LastName;
+				user.Address    = model.Address;
+				user.PhoneNo    = model.PhoneNo;
+				user.IsApproved = model.IsApproved;
+
+				await _userStore.SetUserNameAsync(user, username, CancellationToken.None);
+				await _emailStore.SetEmailAsync(user, model.Email, CancellationToken.None);
+
+				var result = await _userManager.CreateAsync(user, Constants.DEFAULT_PASSWORD);
+
+				if (!result.Succeeded)
+				{
+
+					foreach (var e in result.Errors)
+					{
+						errors.Add(e.Description);
+					}
+
+					return (false, errors);
+				}
+
+				return (true, new List<string>());
+			}
+			catch (Exception ex)
+			{
+				errors.Add(ex.Message);
+				return (false, errors);
+			}
 		}
 
 		/// <summary>

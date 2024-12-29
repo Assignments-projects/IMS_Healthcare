@@ -1,16 +1,24 @@
 ﻿using AuthLayer.Interfaces;
+using AuthLayer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Web.Mvc;
 
 namespace AuthLayer.Services
 {
 	public class RoleService : IRoleService
 	{
 		private readonly RoleManager<IdentityRole> _roleManager;
+		private readonly UserManager<AppUser> _userManager;
 
-        public RoleService(RoleManager<IdentityRole> roleManager)
+
+		public RoleService(
+			RoleManager<IdentityRole> roleManager,
+			UserManager<AppUser> userManager
+		)
         {
             _roleManager = roleManager;
+			_userManager = userManager;
         }
 
         /// <summary>
@@ -27,7 +35,7 @@ namespace AuthLayer.Services
             return result;
         }
 
-		/// <summary> as a list
+		/// <summary>
 		/// Get Role details by id
 		/// </summary>
 		/// <returns></returns>
@@ -171,5 +179,104 @@ namespace AuthLayer.Services
 				return (false, errors);
 			}
 		}
+
+		/// <summary>
+		/// Get roles as select list
+		/// </summary>
+		/// <returns></returns>
+		public async Task<List<SelectListItem>> RolesSelectList()
+		{
+			// Fetch all roles
+			var roles = _roleManager.Roles
+				.Select(x => new SelectListItem
+				{
+					Value = x.Id,
+					Text  = x.Name 
+				}).ToList();
+
+			return roles;
+		}
+
+		#region Users vs Roles
+
+		/// <summary>
+		/// Assign or Un assign user role  
+		/// </summary>
+		/// <param name="userRole"></param>
+		/// <param name="removeRole"></param>
+		/// <returns></returns>
+		public async Task<(bool success, List<string> errors)> AssignRoleAsync(ViewUsersVsRoles userRole, bool removeRole = false)
+		{
+			var errors = new List<string>();
+
+			try
+			{
+				// Fetch the user by id
+				var user = await _userManager.FindByIdAsync(userRole.UserId);
+
+				if (user == null)
+				{
+					errors.Add("User not found.");
+					return (false, errors);
+				}
+
+				// Fetch the roles by id
+				var role = await _roleManager.FindByIdAsync(userRole.RoleId);
+
+				if (role == null)
+				{
+					errors.Add("Role not found.");
+					return (false, errors);
+				}
+
+				// Check if the user is already in the specified role
+				var isInRole = await _userManager.IsInRoleAsync(user, role.Name);
+
+				var result = new IdentityResult();
+
+				if (removeRole)
+				{
+					if (!isInRole)
+					{
+						errors.Add("The role isn't assigned to un assign.");
+						return (false, errors);
+					}
+
+					// Assign the role to the user
+					result = await _userManager.RemoveFromRoleAsync(user, role.Name);
+				}
+				else
+				{
+					if (isInRole)
+					{
+						errors.Add("The role is already assigned.");
+						return (false, errors);
+					}
+
+					// Assign the role to the user
+					result = await _userManager.AddToRoleAsync(user, role.Name);
+				}
+				
+				if (!result.Succeeded)
+				{
+					foreach (var e in result.Errors)
+					{
+						errors.Add(e.Description);
+					}
+
+					return (false, errors);
+				}
+
+				return (true, errors);
+
+			}
+			catch (Exception ex)
+			{
+				errors.Add(ex.Message);
+				return (false, errors);
+			}
+		}
+
+		#endregion
 	}
 }

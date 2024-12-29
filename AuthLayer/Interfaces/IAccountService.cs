@@ -43,12 +43,19 @@ namespace AuthLayer.Interfaces
         /// <returns></returns>
         Task<AppUser> DetailsAsync(string id);
 
+
         /// <summary>
-        /// Update exisiting user
+        /// Register User account to the system
         /// </summary>
-        /// <param name="user"></param>
         /// <returns></returns>
-        Task<(bool success, List<string> errors)> UpdateAsync(AppUser user);
+        Task<(bool, List<string>)> AddAsync(AppUser model);
+
+		/// <summary>
+		/// Update exisiting user
+		/// </summary>
+		/// <param name="user"></param>
+		/// <returns></returns>
+		Task<(bool success, List<string> errors)> UpdateAsync(AppUser user);
 
         /// <summary>
         /// Approve pending user by user id

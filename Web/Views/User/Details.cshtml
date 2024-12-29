@@ -1,1 +1,108 @@
-﻿
+﻿@using Web.Helper
+@using Web.Models.User
+
+@model UserDetailsVM
+
+@{
+	ViewBag.Title = "Users";
+}
+
+<div class="container-fluid p-0">
+
+	<div class="mb-3">
+		<h1 class="h3 d-inline align-middle">User details</h1>
+	</div>
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card main-frame-card">
+				<div class="card-header d-flex justify-content-between align-content-between align-items-center flex-wrap">
+					<div>
+						<h5 class="card-title">User details tabs</h5>
+						<h6 class="card-subtitle text-muted">
+							Here you can manage your application user details and roles.
+						</h6>
+					</div>
+					<div>
+						<a asp-action="Index" class="btn btn-default">Back</a>
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="tab tab-vertical tab-light text-secondary">
+						<ul class="nav nav-tabs" role="tablist">
+							<li class="nav-item">
+								<a class="nav-link active" 
+								   href="#@Model.UserInformationTabId" 
+								   data-reload-id="@Model.UserInformationTabId"
+								   data-url="@Url.Action("UserDetails", "User", new{ id = Model.UserId})"
+								   data-bs-toggle="tab" 
+								   role="tab">
+									<i class="align-middle" data-feather="home"></i>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link"
+								   href="#@Model.UserRolesTabId"
+								   data-reload-id="@Model.UserRolesTabId"
+								   data-url="@Url.Action("UserRoleList", "User", new { id = Model.UserId })"
+								   data-bs-toggle="tab"
+								   role="tab">
+									<i class="align-middle" data-feather="settings"></i>
+								</a>
+							</li>
+						</ul>
+						<div class="tab-content text-secondary">
+							<div class="tab-pane active" id="@Model.UserInformationTabId" role="tabpanel">
+								
+							</div>
+							<div class="tab-pane" id="@Model.UserRolesTabId" role="tabpanel">
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section scripts {
+	<script>
+		(function () {
+
+			// Open popup modal for edit a user details
+			$(document).on('click', '#@ButtonId.UserEdit', function () {
+				var id  = $(this).data("id");
+				var url = `@Url.Action("AddEdit", "user")?id=${id}`;
+
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "User Approval");
+			});
+
+			// Open popup modal for assign user role
+			$(document).on('click', '#@ButtonId.AssignRole', function () {
+				var id  = $(this).data("id");
+				var url = `@Url.Action("AssignRole", "user")?id=${id}`;
+
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Assign Role");
+			});
+
+			// Open popup modal for unassign user role
+			$(document).on('click', '.@ButtonClass.UnAssignRole', function () {
+				var id     = $(this).data("id");
+				var userId = $(this).data("user-id");
+				var url    = `@Url.Action("UnAssignRole", "user")?id=${id}&userId=${userId}`;
+
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Unassign Role", "Confirm");
+			});
+
+			/**
+			 * Submit the form via ajax and close the modal
+			 */
+			$('.@ButtonClass.MainModalSubmit').click(function () {
+				var form = $(this).closest('.modal').find('.modal-body form');
+
+				Controls.RelaodContainerOnModalPost("@UniqueIdentifier.MainModelId", form, '@ContainerId.UsersList', LoadTabActive);
+			});
+		})();
+	</script>
+}

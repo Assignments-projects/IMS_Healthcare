@@ -11,10 +11,47 @@ sidebarToggle.addEventListener("click", function () {
 // Intitialize feather icons
 feather.replace();
 
-// expand to full screen mode
+// Expand to full screen mode
 $('.js-fullscreen').click(function () {
     if (!document.fullscreenElement)
         document.documentElement.requestFullscreen();
     else
         document.exitFullscreen();
+});
+
+// Function for load Tab active tab-pane
+var LoadTabActive = function (navLink) {
+
+    if (navLink) {
+        var reloadId = navLink.data("reload-id");
+        var url      = navLink.data("url");
+
+        Controls.RelaodContainer(url, reloadId);
+    }
+    else {
+        var activeTab = $('.nav-link.active');
+
+        if (activeTab.length > 0) {
+            activeTab.each(function (index, element) {
+                var reloadId = $(this).data("reload-id");
+                var url      = $(this).data("url");
+
+                Controls.RelaodContainer(url, reloadId);
+            });
+        }
+    }
+}
+
+// Activate closest tab
+var ActiveClosestTab = function (element) {
+    var targetId = element.closest('.tab-pane').attr('id');
+    $(`.nav-link[data-realod-id="${target}"]`).click();
+}
+
+// Load all active tabs
+LoadTabActive();
+
+// Load tab which clicked
+$('.nav-link').click(function () {
+    LoadTabActive($(this));
 });

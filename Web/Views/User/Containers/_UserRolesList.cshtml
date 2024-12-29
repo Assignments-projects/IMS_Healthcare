@@ -1,0 +1,51 @@
+﻿@using Web.Helper
+@using Web.Models.User
+
+@model UserRolesDetailsVM
+
+<div>
+	<div class="mb-3 d-flex align-items-center justify-content-between flex-wrap">
+		<h4 class="tab-title text-black">User Roles</h4>
+		<button data-id="@Model.Details.UserId" class="btn btn-sm btn-primary" id="@ButtonId.AssignRole">Assign Role</button>
+	</div>
+	<div>
+		<table id="@TableId.RolesList" class="table table-striped w-100">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Normalized</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				@if (Model.List.Any())
+				{
+					@foreach (var role in Model.List)
+					{
+						<tr>
+							<td>@role.RoleName</td>
+							<td>@role.RoleNormalizedName</td>
+							<td>
+								<a data-id="@role.RoleId" data-user-id="@role.UserId" class="p-1 @ButtonClass.UnAssignRole text-danger">Unassign</a>
+							</td>
+						</tr>
+					}
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<script>
+	(function () {
+		$("#@TableId.RolesList").DataTable().destroy();
+
+		$("#@TableId.RolesList").DataTable({
+			layout: {
+				topStart: {
+					buttons: ['excelHtml5', 'pdfHtml5']
+				}
+			}
+		});
+	})();
+</script>

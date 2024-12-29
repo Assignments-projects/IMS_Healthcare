@@ -1,14 +1,11 @@
 ﻿using AuthLayer.Models;
 using DbLayer.Data;
+using DbLayer.Interfaces;
+using DbLayer.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DbLayer
 {
@@ -23,6 +20,9 @@ namespace DbLayer
 			services.AddIdentity<AppUser, IdentityRole>()
 					.AddEntityFrameworkStores<IMSDbContext>()
 					.AddDefaultTokenProviders();
+
+			services.AddTransient<IUsersRepository, UserRepository>();
+
 
 			return services;
         }

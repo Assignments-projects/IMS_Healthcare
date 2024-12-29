@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,9 +16,16 @@ namespace DbLayer.Data
         {           
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+		public DbSet<ViewUsersVsRoles> ViewUsersVsRoles { get; set; }
+
+
+		protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);
-        }
+
+			// Map the view to the model
+			builder.Entity<ViewUsersVsRoles>().ToView("ViewUsersVsRoles").HasNoKey();
+
+			base.OnModelCreating(builder);
+		}
     }
 }

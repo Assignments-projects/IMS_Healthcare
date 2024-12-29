@@ -1,10 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ServiceLayer.Interfaces;
+using ServiceLayer.Services;
 
 namespace ServiceLayer
 {
@@ -12,7 +9,9 @@ namespace ServiceLayer
     {
         public static IServiceCollection AddBusinessLogicServices(this IServiceCollection services, IConfiguration configuration)
         {
-            return services;
+			services.AddTransient<IUserService, UserService>();
+
+			return services;
         }
     }
 }

@@ -1,0 +1,12 @@
+﻿@using Web.Models.User
+
+@model UserDetailsVM
+
+<form asp-controller="User" asp-action="ApproveUnApprove" method="post">
+    <input type="hidden" asp-for="UserId" />
+    <input type="hidden" asp-for="IsApprove" />
+
+    <div>
+        <h6>Are you sure you want to @(Model.IsApprove ? "approve" : "un-approve") this user ?</h6>
+    </div>
+</form>

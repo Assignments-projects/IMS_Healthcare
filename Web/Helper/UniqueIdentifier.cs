@@ -24,9 +24,12 @@
 	{
 		public const string RoleAddNew = "jq-add-new-role-button-id";
 		public const string UserAddNew = "jq-add-new-user-button-id";
+		public const string UserEdit   = "jq-edit-exisitng-user-button-id";
 
 		public const string UserApproved = "jq-approved-user-button-id";
 		public const string UserPending = "jq-pending-user-button-id";
+		public const string AssignRole = "jq-assign-new-role-button-id";
+
 	}
 
 	/// <summary>
@@ -43,12 +46,13 @@
 		public const string UserView             = "jq-view-user-button-class";
 		public const string UserApprove          = "jq-approve-user-button-class";
 		public const string UserProfilePicUpdate = "jq-user--profile-pic-update-button-class";
-	}
+        public const string UnAssignRole         = "jq-un-assign-role-button-class";
+    }
 
-	/// <summary>
-	/// Unique table id's static class
-	/// </summary>
-	public static class TableId
+    /// <summary>
+    /// Unique table id's static class
+    /// </summary>
+    public static class TableId
 	{
 		public const string RolesList = "jq-roles-list-table-id";
 		public const string UsersList = "jq-users-list-table-id";

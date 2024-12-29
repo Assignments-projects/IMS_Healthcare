@@ -28,9 +28,13 @@
 					<div class="sidebar-user-subtitle">
 						@if (currentUser.Roles.Any())
 						{
-							@foreach (var role in currentUser.Roles)
+							@for (var i= 0; i < currentUser.Roles.Count; i++)
 							{
-								<span>@role &nbsp;</span>
+								<span>@currentUser.Roles[i]</span>
+								@if(currentUser.Roles.Count > 1 && i != currentUser.Roles.Count-1)
+								{
+									<span>,</span>
+								}
 							}
 						}
 						else
