@@ -24,8 +24,4 @@
     <ProjectReference Include="..\AuthLayer\AuthLayer.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>

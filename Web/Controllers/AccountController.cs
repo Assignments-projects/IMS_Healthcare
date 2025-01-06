@@ -3,18 +3,19 @@ using AuthLayer.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using ServiceLayer.Interfaces;
 using Web.Models.Account;
 
 namespace Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IAccountService _account;
+        private readonly IUserService _user;
         private readonly IMapper _mapper;
 
-        public AccountController(IAccountService account, IMapper mapper)
+        public AccountController(IUserService account, IMapper mapper)
         {
-            _account = account;
+            _user = account;
             _mapper  = mapper;
         }
 
@@ -43,7 +44,7 @@ namespace Web.Controllers
 			if (ModelState.IsValid)
 			{
 				var data   = _mapper.Map<Login>(model);
-				var result = await _account.Login(data);
+				var result = await _user.Login(data);
 
 				if (string.IsNullOrEmpty(result))
 				{
@@ -80,14 +81,14 @@ namespace Web.Controllers
 			if (ModelState.IsValid)
 			{
 				var data   = _mapper.Map<Register>(model);
-				var result = await _account.Register(data);
+				var result = await _user.Register(data);
 
-				if (result.Item1)
+				if (result.Success)
 					return RedirectToAction(nameof(Login));
 
-				if (result.Item2.Any())
+				if (result.Errors.Any())
 				{
-					foreach (var error in result.Item2)
+					foreach (var error in result.Errors)
 					{
 						ModelState.AddModelError(string.Empty, error);
 					}
@@ -109,7 +110,7 @@ namespace Web.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Logout()
 		{
-			_account.Logout();
+			_user.Logout();
 			return RedirectToAction(nameof(Login));
 		}
 	}

@@ -3,6 +3,7 @@ using AuthLayer.Interfaces;
 using AuthLayer.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Security.Claims;
@@ -90,8 +91,10 @@ namespace AuthLayer.Services
         /// Register User account to the system
         /// </summary>
         /// <returns></returns>
-        public async Task<(bool, List<string>)> Register(Register model)
+        public async Task<AuthResults> Register(Register model)
         {
+			var results = new AuthResults();
+
             var user = CreateUser();
             var username = model.UserName ?? model.Email;
 
@@ -108,17 +111,17 @@ namespace AuthLayer.Services
 
             if (!result.Succeeded)
             {
-                List<string> errors = new();
-
                 foreach (var e in result.Errors)
                 {
-                    errors.Add(e.Description);
+                    results.Errors.Add(e.Description);
                 }
 
-                return (false, errors);
+				results.Success = false;
+                return results;
             }
 
-            return (true, new List<string>());
+			results.Out = user.Id;
+            return results;
         }
 
         /// <summary>
@@ -178,9 +181,9 @@ namespace AuthLayer.Services
 		/// Register User account to the system
 		/// </summary>
 		/// <returns></returns>
-		public async Task<(bool, List<string>)> AddAsync(AppUser model)
+		public async Task<AuthResults> AddAsync(AppUser model)
 		{
-			List<string> errors = new();
+			var results = new AuthResults();
 
 			try
 			{
@@ -204,18 +207,21 @@ namespace AuthLayer.Services
 
 					foreach (var e in result.Errors)
 					{
-						errors.Add(e.Description);
+						results.Errors.Add(e.Description);
 					}
 
-					return (false, errors);
+					results.Success = false;
+					return results;
 				}
 
-				return (true, new List<string>());
+				results.Out = user.Id;
+				return results;
 			}
 			catch (Exception ex)
 			{
-				errors.Add(ex.Message);
-				return (false, errors);
+				results.Success = false;
+				results.Errors.Add(ex.Message);
+				return results;
 			}
 		}
 
@@ -224,9 +230,9 @@ namespace AuthLayer.Services
 		/// </summary>
 		/// <param name="user"></param>
 		/// <returns></returns>
-		public async Task<(bool success, List<string> errors)> UpdateAsync(AppUser user)
+		public async Task<AuthResults> UpdateAsync(AppUser user)
 		{
-			var errors = new List<string>();
+			var results = new AuthResults();
 
 			try
 			{
@@ -235,8 +241,10 @@ namespace AuthLayer.Services
 
 				if (existingUser == null)
 				{
-					errors.Add("User not found.");
-					return (false, errors);
+					results.Errors.Add("User not found.");
+
+					results.Success = false;
+					return results;
 				}
 
                 // Bind model values
@@ -255,19 +263,22 @@ namespace AuthLayer.Services
 				{
 					foreach (var e in result.Errors)
 					{
-						errors.Add(e.Description);
+						results.Errors.Add(e.Description);
 					}
 
-					return (false, errors);
+					results.Success = false;
+					return results;
 				}
 
-				return (true, errors);
+				results.Out = existingUser.Id;
+				return results;
 
 			}
 			catch (Exception ex)
 			{
-				errors.Add(ex.Message);
-				return (false, errors);
+				results.Success = false;
+				results.Errors.Add(ex.Message);
+				return results;
 			}
 		}
 
@@ -276,9 +287,9 @@ namespace AuthLayer.Services
 		/// </summary>
 		/// <param name="role"></param>
 		/// <returns></returns>
-		public async Task<(bool success, List<string> errors)> ApproveUserAsync(string id, bool isApprove)
+		public async Task<AuthResults> ApproveUserAsync(string id, bool isApprove)
 		{
-			var errors = new List<string>();
+			var results = new AuthResults();
 
 			try
 			{
@@ -287,8 +298,10 @@ namespace AuthLayer.Services
 
 				if (existingUser == null)
 				{
-					errors.Add("User not found.");
-					return (false, errors);
+					results.Errors.Add("User not found.");
+
+					results.Success = false;
+					return results;
 				}
 
 				// Bind model values
@@ -301,19 +314,22 @@ namespace AuthLayer.Services
 				{
 					foreach (var e in result.Errors)
 					{
-						errors.Add(e.Description);
+						results.Errors.Add(e.Description);
 					}
 
-					return (false, errors);
+					results.Success = false;
+					return results;
 				}
 
-				return (true, errors);
+				results.Out = existingUser.Id;
+				return results;
 
 			}
 			catch (Exception ex)
 			{
-				errors.Add(ex.Message);
-				return (false, errors);
+				results.Success = false;
+				results.Errors.Add(ex.Message);
+				return results;
 			}
 		}
 
@@ -323,9 +339,9 @@ namespace AuthLayer.Services
 		/// <param name="id"></param>
 		/// <param name="picturePath"></param>
 		/// <returns></returns>
-		public async Task<(bool success, List<string> messages)> UpdateProfilePic(string id, string picturePath)
+		public async Task<AuthResults> UpdateProfilePic(string id, string picturePath)
 		{
-			var errors = new List<string>();
+			var results = new AuthResults();
 
 			try
 			{
@@ -334,8 +350,10 @@ namespace AuthLayer.Services
 
 				if (existingUser == null)
 				{
-					errors.Add("User not found.");
-					return (false, errors);
+					results.Errors.Add("User not found.");
+
+					results.Success = false;
+					return results;
 				}
 
 				// Bind model values
@@ -348,20 +366,24 @@ namespace AuthLayer.Services
 				{
 					foreach (var e in result.Errors)
 					{
-						errors.Add(e.Description);
+						results.Errors.Add(e.Description);
 					}
 
-					errors.Add(existingUser.ProfilePicPath);
-					return (false, errors);
+					results.Success = false;
+					return results;
 				}
 
-				return (true, errors);
+				results.Out     = existingUser.Id;
+				results.Message = existingUser.ProfilePicPath;
+
+				return results;
 
 			}
 			catch (Exception ex)
 			{
-				errors.Add(ex.Message);
-				return (false, errors);
+				results.Success = false;
+				results.Errors.Add(ex.Message);
+				return results;
 			}
 		}
 
@@ -402,6 +424,6 @@ namespace AuthLayer.Services
             return (IUserEmailStore<AppUser>)_userStore;
         }
 
-        #endregion
-    }
+		#endregion
+	}
 }

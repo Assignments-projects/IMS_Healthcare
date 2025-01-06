@@ -43,5 +43,15 @@ namespace AuthLayer.Models
         /// Password belongs to the email
         /// </summary>
         public required string Password  { get; set; }
-    }
+
+		// ------ System props ----------
+
+		public string? AddedById         { get; set; }
+
+		public string? UpdatedById       { get; set; }
+
+		public DateTime? AddedDate       { get; set; }
+
+		public DateTime? UpdatedDate     { get; set; }
+	}
 }

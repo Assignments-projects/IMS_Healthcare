@@ -53,8 +53,9 @@
 			</div>
 		</div>
 
-		@*----- Home Menu items -----*@
 		<ul class="sidebar-nav">
+
+			@*----- Home Menu items -----*@
 			<li class="sidebar-header">
 				Home
 			</li>
@@ -68,31 +69,55 @@
 					<i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
 				</a>
 			</li>
-
+			
+			@*----- Home Menu items -----*@
+			<li class="sidebar-header">
+				Pages
+			</li>
 			<li class="sidebar-item">
-				<a data-bs-target="#pages" data-bs-toggle="collapse" class="sidebar-link collapsed">
-					<i class="align-middle" data-feather="layout"></i> <span class="align-middle">Pages</span>
+				<a data-bs-target="#patients" data-bs-toggle="collapse" class="sidebar-link collapsed">
+					<i class="align-middle" data-feather="heart"></i> <span class="align-middle">Patients</span>
 				</a>
-				<ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-					<li class="sidebar-item"><a class="sidebar-link" href="pages-settings.html">Settings</a></li>
-					<li class="sidebar-item"><a class="sidebar-link" href="pages-chat.html">Chat <span class="sidebar-badge badge bg-primary">Pro</span></a></li>
+				<ul id="patients" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+					<li class="sidebar-item"><a class="sidebar-link" asp-controller="Patient" asp-action="Index">Home</a></li>
+					<li class="sidebar-item"><a class="sidebar-link" asp-controller="Patient" asp-action="Conditions">Diseases</a></li>
 				</ul>
+			</li>
+			<li class="sidebar-item">
+				<a class="sidebar-link" asp-controller="Images" asp-action="Index">
+					<i class="align-middle" data-feather="image"></i> <span class="align-middle">Images</span>
+				</a>
+			</li>
+			<li class="sidebar-item">
+				<a class="sidebar-link" asp-controller="Finaincial" asp-action="Index">
+					<i class="align-middle" data-feather="dollar-sign"></i> <span class="align-middle">Financials</span>
+				</a>
 			</li>
 
 			@*----- Addvanced Menu items -----*@
 			<li class="sidebar-header">
 				Advanced
+			</li>			
+			<li class="sidebar-item">
+				<a data-bs-target="#system" data-bs-toggle="collapse" class="sidebar-link collapsed">
+					<i class="align-middle" data-feather="database"></i>
+					<span class="align-middle">System</span>
+				</a>
+				<ul id="system" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+					<li class="sidebar-item"><a class="sidebar-link" asp-controller="Role" asp-action="Index">Roles</a></li>
+					<li class="sidebar-item"><a class="sidebar-link" asp-controller="User" asp-action="Index">Users</a></li>
+				</ul>
 			</li>
 			<li class="sidebar-item">
-				<a data-bs-target="#setting" data-bs-toggle="collapse" class="sidebar-link collapsed">
+				<a data-bs-target="#settings" data-bs-toggle="collapse" class="sidebar-link collapsed">
 					<i class="align-middle" data-feather="settings"></i>
-					<span class="align-middle">Setting</span>
+					<span class="align-middle">Settings</span>
 				</a>
-				<ul id="setting" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-					<li class="sidebar-item"><a class="sidebar-link" asp-controller="User" asp-action="Index">Users</a></li>
-					<li class="sidebar-item"><a class="sidebar-link" asp-controller="Role" asp-action="Index">Roles</a></li>
+				<ul id="settings" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+					<li class="sidebar-item"><a class="sidebar-link" asp-controller="Setting" asp-action="Index">Image Types</a></li>
+					<li class="sidebar-item"><a class="sidebar-link" asp-controller="Setting" asp-action="Index">Diseases Types</a></li>
 				</ul>
-			</li>			
+			</li>
 		</ul>
 	</div>
 </nav>		

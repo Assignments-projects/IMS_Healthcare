@@ -1,6 +1,8 @@
 ﻿using AuthLayer.Models;
 using DbLayer.Data;
 using DbLayer.Interfaces;
+using DbLayer.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace DbLayer.Repositories
@@ -27,6 +29,39 @@ namespace DbLayer.Repositories
 				return new List<ViewUsersVsRoles>();
 
 			return result;
+		}
+
+		/// <summary>
+		/// Add or Update user record to users table from asp net users 
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <param name="isUpdate"></param>
+		/// <returns></returns>
+		public async Task<string> UpdateUserFromIdentity(string userId, bool isUpdate = false)
+		{
+			try
+			{
+				if (isUpdate)
+				{
+					await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[SP_UPDATE_USERS_FROM_ASPNETUSER] @UserId",
+															new SqlParameter("UserId", userId));
+				}
+				else
+				{
+					await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[SP_INSERT_USERS_FROM_ASPNETUSER] @UserId",
+															new SqlParameter("UserId", userId));
+				}
+
+				return null;
+			}
+			catch (SqlException sqlEx)
+			{
+				return sqlEx.Message;
+			}
+			catch (Exception ex)
+			{
+				return ex.Message;
+			}
 		}
 	}
 }

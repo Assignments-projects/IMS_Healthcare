@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,5 +39,6 @@ namespace AuthLayer.Models
 		/// Is user account approved
 		/// </summary>
 		public bool IsApproved           { get; set; } = false;
-    }
+
+	}
 }

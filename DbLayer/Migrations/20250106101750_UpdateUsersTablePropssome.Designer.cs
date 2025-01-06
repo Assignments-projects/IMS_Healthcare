@@ -4,6 +4,7 @@ using DbLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbLayer.Migrations
 {
     [DbContext(typeof(IMSDbContext))]
-    partial class IMSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250106101750_UpdateUsersTablePropssome")]
+    partial class UpdateUsersTablePropssome
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -149,271 +152,6 @@ namespace DbLayer.Migrations
                     b.ToView("ViewUsersVsRoles", (string)null);
                 });
 
-            modelBuilder.Entity("DbLayer.Models.Patient.Disease", b =>
-                {
-                    b.Property<int>("DiseaseId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DiseaseId"));
-
-                    b.Property<string>("AddedById")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("AddedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Comments")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DiseaseSpec")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("DiseaseTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("DoctorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("PatientUuid")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UpdatedById")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("DiseaseId");
-
-                    b.HasIndex("DiseaseTypeId");
-
-                    b.HasIndex("DoctorId");
-
-                    b.ToTable("Diseases");
-                });
-
-            modelBuilder.Entity("DbLayer.Models.Patient.Patients", b =>
-                {
-                    b.Property<int>("PateintId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PateintId"));
-
-                    b.Property<string>("AddedById")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("AddedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Comments")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DateOfBirth")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Gender")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IdentityNo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InChargeuUud")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDischarged")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("TotalCost")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UpdatedById")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserUuid")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("PateintId");
-
-                    b.HasIndex("InChargeuUud");
-
-                    b.HasIndex("UserUuid")
-                        .IsUnique()
-                        .HasFilter("[UserUuid] IS NOT NULL");
-
-                    b.ToTable("Patients");
-                });
-
-            modelBuilder.Entity("DbLayer.Models.Patient.Prescription", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AddedById")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("AddedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Comments")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("DiseaseId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Mediciense")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UpdatedById")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DiseaseId");
-
-                    b.ToTable("Prescriptions");
-                });
-
-            modelBuilder.Entity("DbLayer.Models.Settings.DiseaseType", b =>
-                {
-                    b.Property<int>("DiseaseTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DiseaseTypeId"));
-
-                    b.Property<string>("AddedById")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("AddedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Comments")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("TypeName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UpdatedById")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("DiseaseTypeId");
-
-                    b.ToTable("DiseaseType");
-                });
-
-            modelBuilder.Entity("DbLayer.Models.Staff", b =>
-                {
-                    b.Property<int>("StaffId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StaffId"));
-
-                    b.Property<string>("AddedById")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("AddedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Comments")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DateOfBirth")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Educations")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Gender")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IdentityNo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("Salary")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UpdatedById")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserUuid")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("StaffId");
-
-                    b.ToTable("Staffs");
-                });
-
             modelBuilder.Entity("DbLayer.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -474,7 +212,7 @@ namespace DbLayer.Migrations
 
                     b.Property<string>("UserUuid")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -614,73 +352,6 @@ namespace DbLayer.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("DbLayer.Models.Patient.Disease", b =>
-                {
-                    b.HasOne("DbLayer.Models.Settings.DiseaseType", "DiseaseType")
-                        .WithMany("Diseases")
-                        .HasForeignKey("DiseaseTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DbLayer.Models.Staff", "Doctor")
-                        .WithMany("Diseases")
-                        .HasForeignKey("DoctorId")
-                        .HasPrincipalKey("UserUuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DiseaseType");
-
-                    b.Navigation("Doctor");
-                });
-
-            modelBuilder.Entity("DbLayer.Models.Patient.Patients", b =>
-                {
-                    b.HasOne("DbLayer.Models.Staff", "Staff")
-                        .WithMany("Patient")
-                        .HasForeignKey("InChargeuUud")
-                        .HasPrincipalKey("UserUuid");
-
-                    b.HasOne("DbLayer.Models.Patient.Disease", "Disease")
-                        .WithOne("Patient")
-                        .HasForeignKey("DbLayer.Models.Patient.Patients", "UserUuid")
-                        .HasPrincipalKey("DbLayer.Models.Patient.Disease", "PatientUuid");
-
-                    b.HasOne("DbLayer.Models.User", "User")
-                        .WithOne()
-                        .HasForeignKey("DbLayer.Models.Patient.Patients", "UserUuid")
-                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
-
-                    b.Navigation("Disease");
-
-                    b.Navigation("Staff");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("DbLayer.Models.Patient.Prescription", b =>
-                {
-                    b.HasOne("DbLayer.Models.Patient.Disease", "Disease")
-                        .WithMany("Prescriptions")
-                        .HasForeignKey("DiseaseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Disease");
-                });
-
-            modelBuilder.Entity("DbLayer.Models.Staff", b =>
-                {
-                    b.HasOne("DbLayer.Models.User", "User")
-                        .WithOne()
-                        .HasForeignKey("DbLayer.Models.Staff", "UserUuid")
-                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -730,26 +401,6 @@ namespace DbLayer.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("DbLayer.Models.Patient.Disease", b =>
-                {
-                    b.Navigation("Patient")
-                        .IsRequired();
-
-                    b.Navigation("Prescriptions");
-                });
-
-            modelBuilder.Entity("DbLayer.Models.Settings.DiseaseType", b =>
-                {
-                    b.Navigation("Diseases");
-                });
-
-            modelBuilder.Entity("DbLayer.Models.Staff", b =>
-                {
-                    b.Navigation("Diseases");
-
-                    b.Navigation("Patient");
                 });
 #pragma warning restore 612, 618
         }

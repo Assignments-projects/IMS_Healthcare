@@ -13,18 +13,15 @@ namespace Web.Controllers
 {
     public class UserController : BaseController
 	{
-		private readonly IAccountService _account;
 		private readonly IUserService _user;
 		private readonly IRoleService _role;
 		private readonly IMapper _mapper;
 
 		public UserController(
-			IAccountService account,
 			IUserService user,
 			IRoleService role,
 			IMapper mapper)
         {
-            _account = account;
 			_user    = user;
 			_role    = role;
 			_mapper  = mapper;
@@ -54,7 +51,7 @@ namespace Web.Controllers
 		/// <returns></returns>
 		public async Task<PartialViewResult> List(bool isApproved)
 		{
-			var users = await _account.ListAsync(isApproved);
+			var users = await _user.ListAsync(isApproved);
 			var model = _mapper.Map<List<UserVM>>(users);
 
 			return PartialView("Containers/_UsersList", model);
@@ -66,7 +63,7 @@ namespace Web.Controllers
 		/// <returns></returns>
 		public async Task<PartialViewResult> UserDetails(string id)
 		{
-			var users = await _account.DetailsAsync(id);
+			var users = await _user.DetailsAsync(id);
 			var model = _mapper.Map<UserVM>(users);
 
 			return PartialView("Containers/_UserDetails", model);
@@ -82,7 +79,7 @@ namespace Web.Controllers
 			if (string.IsNullOrEmpty(id))
 				return PartialView("Popups/_AddEditUser");
 
-			var user  = await _account.DetailsAsync(id);
+			var user  = await _user.DetailsAsync(id);
 			var model = _mapper.Map<UserVM>(user);
 
 			return PartialView("Popups/_AddEditUser", model);
@@ -100,17 +97,17 @@ namespace Web.Controllers
 				return JsonError("Fields are not valid");
 
 			var user   = _mapper.Map<AppUser>(model);
-			var result = (success: true, errors: new List<string>());
+			var result = new AuthResults();
 			var isAdd  = string.IsNullOrEmpty(model.Id);
 
 			if (isAdd)
-				result = await _account.AddAsync(user);
+				result = await _user.AddAsync(user);
 			else
-				result = await _account.UpdateAsync(user);
+				result = await _user.UpdateAsync(user);
 
-			if (!result.success)
+			if (!result.Success)
 			{
-				foreach (var error in result.errors)
+				foreach (var error in result.Errors)
 				{
 					ModelState.AddModelError(string.Empty, error);
 				}
@@ -147,9 +144,9 @@ namespace Web.Controllers
 		[HttpPost]
 		public async Task<IActionResult> ApproveUnApprove(UserDetailsVM model)
 		{
-            var result = await _account.ApproveUserAsync(model.UserId, model.IsApprove);
+            var result = await _user.ApproveUserAsync(model.UserId, model.IsApprove);
 
-            if (!result.success)
+            if (!result.Success)
                 return JsonError("User status change unsuccessful.");
 
             return JsonSuccess($"User {(model.IsApprove ? "approved" : "un-approved")} successfully.");
@@ -184,7 +181,7 @@ namespace Web.Controllers
 			if (string.IsNullOrEmpty(id))
 				return JsonError("User id not found.");
 
-			var user = await _account.DetailsAsync(id);
+			var user = await _user.DetailsAsync(id);
 
 			if (user == null)
 				return JsonError("User not found.");
@@ -303,12 +300,12 @@ namespace Web.Controllers
 			var imagePath = $"/images/uploads/{uniqueFileName}";
 
 			// appload to the database
-			var result = await _account.UpdateProfilePic(id, imagePath);
+			var result = await _user.UpdateProfilePic(id, imagePath);
 
-			if (!result.success)
-				return JsonError(result.messages[0]);
+			if (!result.Success)
+				return JsonError(result.Errors[0]);
 
-			return JsonSuccess(imagePath);
+			return JsonSuccess(result.Message);
 		}
     }
 }

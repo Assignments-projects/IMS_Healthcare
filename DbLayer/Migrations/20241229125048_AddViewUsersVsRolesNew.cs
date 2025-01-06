@@ -11,6 +11,11 @@ namespace DbLayer.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
 			migrationBuilder.Sql(@"
+                IF EXISTS (SELECT * FROM sys.views WHERE name = 'ViewUsersVsRoles')
+                DROP VIEW [dbo].[ViewUsersVsRoles];
+            ");
+
+			migrationBuilder.Sql(@"
                 CREATE VIEW [dbo].[ViewUsersVsRoles] AS
                 SELECT 
                     dbo.AspNetUserRoles.UserId, 

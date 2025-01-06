@@ -11,11 +11,11 @@ namespace AuthLayer.Interfaces
         /// <returns></returns>
         Task<string> Login(Login model);
 
-        /// <summary>
-        /// Register User account to the system
-        /// </summary>
-        /// <returns></returns>
-        Task<(bool, List<string>)> Register(Register model);
+		/// <summary>
+		/// Register User account to the system
+		/// </summary>
+		/// <returns></returns>
+		Task<AuthResults> Register(Register model);
 
         /// <summary>
         /// Logout from application
@@ -48,21 +48,21 @@ namespace AuthLayer.Interfaces
         /// Register User account to the system
         /// </summary>
         /// <returns></returns>
-        Task<(bool, List<string>)> AddAsync(AppUser model);
+        Task<AuthResults> AddAsync(AppUser model);
 
 		/// <summary>
 		/// Update exisiting user
 		/// </summary>
 		/// <param name="user"></param>
 		/// <returns></returns>
-		Task<(bool success, List<string> errors)> UpdateAsync(AppUser user);
+		Task<AuthResults> UpdateAsync(AppUser user);
 
         /// <summary>
         /// Approve pending user by user id
         /// </summary>
         /// <param name="role"></param>
         /// <returns></returns>
-        Task<(bool success, List<string> errors)> ApproveUserAsync(string id, bool isApprove);
+        Task<AuthResults> ApproveUserAsync(string id, bool isApprove);
 
         /// <summary>
         /// Update profile picture by user id
@@ -70,7 +70,7 @@ namespace AuthLayer.Interfaces
         /// <param name="id"></param>
         /// <param name="picturePath"></param>
         /// <returns></returns>
-        Task<(bool success, List<string> messages)> UpdateProfilePic(string id, string picturePath);
+        Task<AuthResults> UpdateProfilePic(string id, string picturePath);
 
 		#endregion
 	}

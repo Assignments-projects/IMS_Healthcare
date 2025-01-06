@@ -15,5 +15,13 @@ namespace DbLayer.Interfaces
 		/// <param name="UserId"></param>
 		/// <returns></returns>
 		Task<List<ViewUsersVsRoles>> UserRolesListAsync(string UserId);
+
+		/// <summary>
+		/// Add or Update user record to users table from asp net users 
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <param name="isUpdate"></param>
+		/// <returns></returns>
+		Task<string> UpdateUserFromIdentity(string userId, bool isUpdate = false);
 	}
 }
