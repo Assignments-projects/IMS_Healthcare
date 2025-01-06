@@ -8,7 +8,7 @@ namespace Web.Models.Account
 		/// <summary>
 		/// User email address
 		/// </summary>
-		public string Id { get; set; } = string.Empty;
+		public string? Id { get; set; }
 
 		/// <summary>
 		/// User email address
@@ -48,11 +48,6 @@ namespace Web.Models.Account
 		/// </summary>
 		[Display(Name = "Phone No")]
 		public string? PhoneNo { get; set; }
-
-		/// <summary>
-		/// User profile picture
-		/// </summary>
-        public IFormFile ProfilePic { get; set; }
 
         /// <summary>
         /// User profile picture path

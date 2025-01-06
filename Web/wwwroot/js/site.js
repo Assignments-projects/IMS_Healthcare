@@ -55,3 +55,43 @@ LoadTabActive();
 $('.nav-link').click(function () {
     LoadTabActive($(this));
 });
+
+// Activate side menu 
+$(document).ready(function () {
+    // Get the current URL path
+    var currentPath = window.location.pathname.toLowerCase();
+    var savedPath   = localStorage.getItem("lastPath");
+    var hasActive   = false;
+
+    // Function for activate menu by go through each element href
+    var ActivateMenu = function (path) {
+
+        $('.sidebar-link').each(function () {
+
+            var href = $(this).attr('href') ? $(this).attr('href').toLowerCase() : '';
+
+            // Check if the href matches the current path
+            if (path === href || (path === "/home/index" && href === "/")) {
+
+                // Expand the parent dropdown
+                var parentDropdown = $(this).closest('.sidebar-dropdown');
+                $(this).parents('.sidebar-item').addClass('active');
+
+                if (parentDropdown.length) {
+                    parentDropdown.addClass('show');
+                    $(this).parents('.sidebar-item').children('[data-bs-toggle="collapse"]').removeClass('collapsed');
+                }
+
+                hasActive = true;
+                localStorage.setItem("lastPath", path);
+            }
+        });
+    }
+
+    // Activate the menu
+    ActivateMenu(currentPath);
+
+    if (!hasActive) {
+        ActivateMenu(savedPath);
+    }
+});

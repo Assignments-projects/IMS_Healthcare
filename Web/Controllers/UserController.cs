@@ -37,7 +37,7 @@ namespace Web.Controllers
         public IActionResult Index()
 		{
 			return View();
-		}
+		}		
 
 		/// <summary>
 		/// Application users details page
@@ -94,7 +94,7 @@ namespace Web.Controllers
 		/// <param name="model"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public async Task<IActionResult> AddEdit(RoleVM model)
+		public async Task<IActionResult> AddEdit(UserVM model)
 		{
 			if (!ModelState.IsValid)
 				return JsonError("Fields are not valid");
@@ -273,5 +273,42 @@ namespace Web.Controllers
             }
             return JsonSuccess($"Role un-assigned to the user successfully.");
         }
+
+		/// <summary>
+		/// Upload profile picture and return path
+		/// </summary>
+		/// <param name="file"></param>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[HttpPost]
+		public async Task<IActionResult> UploadProfilePic(IFormFile file, string id)
+		{
+			if (file == null || file.Length == 0)
+				return JsonError("Uploaded file not found.");
+
+			// Define the target directory and file name
+			var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/uploads");
+			Directory.CreateDirectory(uploadsFolder);
+
+			var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+			var filePath       = Path.Combine(uploadsFolder, uniqueFileName);
+
+			// Save the file locally
+			using (var fileStream = new FileStream(filePath, FileMode.Create))
+			{
+				await file.CopyToAsync(fileStream);
+			}
+
+			// Save the path to the database
+			var imagePath = $"/images/uploads/{uniqueFileName}";
+
+			// appload to the database
+			var result = await _account.UpdateProfilePic(id, imagePath);
+
+			if (!result.success)
+				return JsonError(result.messages[0]);
+
+			return JsonSuccess(imagePath);
+		}
     }
 }

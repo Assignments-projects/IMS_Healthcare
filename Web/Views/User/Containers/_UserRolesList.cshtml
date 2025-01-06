@@ -4,9 +4,9 @@
 @model UserRolesDetailsVM
 
 <div>
-	<div class="mb-3 d-flex align-items-center justify-content-between flex-wrap">
+	<div class="mb-4 d-flex align-items-center justify-content-between flex-wrap">
 		<h4 class="tab-title text-black">User Roles</h4>
-		<button data-id="@Model.Details.UserId" class="btn btn-sm btn-primary" id="@ButtonId.AssignRole">Assign Role</button>
+		<button data-id="@Model.Details.UserId" class="btn btn-primary" id="@ButtonId.AssignRole">Assign Role</button>
 	</div>
 	<div>
 		<table id="@TableId.RolesList" class="table table-striped w-100">
@@ -26,7 +26,7 @@
 							<td>@role.RoleName</td>
 							<td>@role.RoleNormalizedName</td>
 							<td>
-								<a data-id="@role.RoleId" data-user-id="@role.UserId" class="p-1 @ButtonClass.UnAssignRole text-danger">Unassign</a>
+								<a data-id="@role.RoleId" data-user-id="@role.UserId" class="p-1 @ButtonClass.UnAssignRole btn btn-danger">Unassign</a>
 							</td>
 						</tr>
 					}

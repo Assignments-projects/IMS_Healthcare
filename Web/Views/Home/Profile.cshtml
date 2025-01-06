@@ -1,0 +1,63 @@
+﻿@using Web.Helper
+
+@{
+	ViewBag.Title = "Profile";
+	var currentUser = UserHelper.GetCurrentUser();
+}
+
+<div class="container-fluid p-0">
+
+	<div class="mb-3">
+		<h1 class="h3 d-inline align-middle">Profile</h1>
+	</div>
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card main-frame-card">
+				<div class="card-header d-flex justify-content-between align-content-between align-items-center flex-wrap">
+					<div>
+						<h5 class="card-title">Profile details</h5>
+						<h6 class="card-subtitle text-muted">
+							Here you can manage profile.
+						</h6>
+					</div>
+				</div>
+				<div class="card-body" id="@ContainerId.UsersList">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section scripts {
+
+	<script>
+		(function(){
+
+			// Load users detail
+			var LoadProfileDetails = function () {
+				Controls.RelaodContainer('@Url.Action("UserDetails", "User", new { id = currentUser.UserId })', '@ContainerId.UsersList');
+			}
+
+			// Call profile details
+			LoadProfileDetails();
+
+			// Open popup modal for edit a user details
+			$(document).on('click', '#@ButtonId.UserEdit', function () {
+				var id  = $(this).data("id");
+				var url = `@Url.Action("AddEdit", "user")?id=${id}`;
+
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "User Approval");
+			});
+
+			/**
+			* Submit the form via ajax and close the modal
+			*/
+			$(document).on('click', '.@ButtonClass.MainModalSubmit', function () {
+				var form = $(this).closest('.modal').find('.modal-body form');
+
+				Controls.RelaodContainerOnModalPost("@UniqueIdentifier.MainModelId", form, '@ContainerId.UsersList', LoadProfileDetails);
+			});
+		})();
+	</script>
+}

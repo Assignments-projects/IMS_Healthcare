@@ -9,6 +9,16 @@
 	}
 
 	/// <summary>
+	/// General unique id's static class
+	/// </summary>
+	public static class UniqueClass
+	{
+		public const string ProfilePicUpload = "jq-profile-pic-file-upload-field-class";
+		public const string ProfilePic       = "jq-profile-pic-image-class";
+		public const string UserSpecificProfilePic = "jq-user-specific-profile-pic-image-class";
+	}
+
+	/// <summary>
 	/// Unique container id's static class
 	/// </summary>
 	public static class ContainerId

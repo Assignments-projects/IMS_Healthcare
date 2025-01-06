@@ -1,0 +1,47 @@
+﻿@using Web.Helper
+
+@{
+	var currentUser = UserHelper.GetCurrentUser();
+}
+
+<script>
+	(function () {
+
+		// Update profile picture on file upload change on edit only
+		$(document).on('change', '.@UniqueClass.ProfilePicUpload', function () {
+			var formData = new FormData();
+			var id = $(this).data('id');
+
+			// Append form data
+			formData.append("file", this.files[0]);
+			formData.append("id", id);
+
+			$.ajax({
+				url: '@Url.Action("UploadProfilePic", "User")',
+				type: "POST",
+				data: formData,
+				processData: false,
+				contentType: false,
+				success: function (response) {
+					if (response.success) {
+
+						if(id == "@currentUser.UserId"){
+							$('.@UniqueClass.ProfilePic').attr("src", response.message);
+							$('.@UniqueClass.UserSpecificProfilePic').attr("src", response.message);
+						}
+						else{
+							$('.@UniqueClass.UserSpecificProfilePic').attr("src", response.message);
+						}
+
+						toastr.success("Profile picture updated successfully.");
+					}
+					else
+						toastr.error(response.message);
+				},
+				error: function () {
+					toastr.error("Something went wrong!");
+				}
+			});
+		});
+	})();
+</script>

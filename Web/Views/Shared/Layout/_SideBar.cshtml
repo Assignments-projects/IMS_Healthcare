@@ -21,7 +21,14 @@
 		<div class="sidebar-user">
 			<div class="d-flex justify-content-center">
 				<div class="flex-shrink-0">
-					<img src="~/img/general/new-unknown-pic.jpeg" class="avatar img-fluid rounded-circle me-1" alt="profile pic">
+					@if (string.IsNullOrEmpty(currentUser.ProfilePicPath))
+					{
+						<img src="~/img/general/new-unknown-pic.jpeg" class="avatar img-fluid rounded-circle me-1 @UniqueClass.ProfilePic" alt="profile pic">
+					}
+					else
+					{
+						<img src="@currentUser.ProfilePicPath" class="avatar img-fluid rounded-circle me-1 @UniqueClass.ProfilePic" alt="profile pic">
+					}
 				</div>
 				<div class="flex-grow-1 ps-2">
 					<a class="sidebar-user-title">@currentUser.FullName</a>
@@ -51,21 +58,22 @@
 			<li class="sidebar-header">
 				Home
 			</li>
-			<li class="sidebar-item active">
-				<a data-bs-target="#dashboards" data-bs-toggle="collapse" class="sidebar-link">
-					<i class="align-middle" data-feather="sliders"></i> 
-					<span class="align-middle">Dashboard</span>
+			<li class="sidebar-item">
+				<a class="sidebar-link" asp-controller="Home" asp-action="Index">
+					<i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
 				</a>
-				<ul id="dashboards" class="sidebar-dropdown list-unstyled collapse show" data-bs-parent="#sidebar">
-					<li class="sidebar-item active"><a class="sidebar-link" href="index.html">Analytics</a></li>
-				</ul>
+			</li>
+			<li class="sidebar-item">
+				<a class="sidebar-link" asp-controller="Home" asp-action="Profile">
+					<i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
+				</a>
 			</li>
 
 			<li class="sidebar-item">
 				<a data-bs-target="#pages" data-bs-toggle="collapse" class="sidebar-link collapsed">
 					<i class="align-middle" data-feather="layout"></i> <span class="align-middle">Pages</span>
 				</a>
-				<ul id="pages" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+				<ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
 					<li class="sidebar-item"><a class="sidebar-link" href="pages-settings.html">Settings</a></li>
 					<li class="sidebar-item"><a class="sidebar-link" href="pages-chat.html">Chat <span class="sidebar-badge badge bg-primary">Pro</span></a></li>
 				</ul>
@@ -76,7 +84,7 @@
 				Advanced
 			</li>
 			<li class="sidebar-item">
-				<a data-bs-target="#setting" data-bs-toggle="collapse" class="sidebar-link">
+				<a data-bs-target="#setting" data-bs-toggle="collapse" class="sidebar-link collapsed">
 					<i class="align-middle" data-feather="settings"></i>
 					<span class="align-middle">Setting</span>
 				</a>
@@ -84,12 +92,7 @@
 					<li class="sidebar-item"><a class="sidebar-link" asp-controller="User" asp-action="Index">Users</a></li>
 					<li class="sidebar-item"><a class="sidebar-link" asp-controller="Role" asp-action="Index">Roles</a></li>
 				</ul>
-			</li>
-			<li class="sidebar-item">
-				<a class="sidebar-link" href="pages-profile.html">
-					<i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
-				</a>
-			</li>
+			</li>			
 		</ul>
 	</div>
 </nav>		

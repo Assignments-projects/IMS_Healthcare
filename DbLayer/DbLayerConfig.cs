@@ -22,7 +22,8 @@ namespace DbLayer
 					.AddDefaultTokenProviders();
 
 			services.AddTransient<IUsersRepository, UserRepository>();
-
+			services.AddTransient<IPatientsRepository, PatientsRepository>();
+			services.AddTransient<IStaffsRepository, StaffsRepository>();
 
 			return services;
         }

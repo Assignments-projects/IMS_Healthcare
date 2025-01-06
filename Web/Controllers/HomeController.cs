@@ -14,13 +14,26 @@ namespace Web.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Home index page dashboard
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
             var currentUser = UserHelper.GetCurrentUser();
             return View();
         }
 
-        public IActionResult Privacy()
+		/// <summary>
+		/// Current user profile
+		/// </summary>
+		/// <returns></returns>
+		public IActionResult Profile()
+		{
+			return View();
+		}
+
+		public IActionResult Privacy()
         {
             return View();
         }

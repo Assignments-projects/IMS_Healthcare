@@ -10,6 +10,8 @@ namespace ServiceLayer
         public static IServiceCollection AddBusinessLogicServices(this IServiceCollection services, IConfiguration configuration)
         {
 			services.AddTransient<IUserService, UserService>();
+			services.AddTransient<IPatientsService, PatientsService>();
+			services.AddTransient<IStaffService, StaffService>();
 
 			return services;
         }

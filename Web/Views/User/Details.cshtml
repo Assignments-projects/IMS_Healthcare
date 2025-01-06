@@ -67,6 +67,7 @@
 </div>
 
 @section scripts {
+
 	<script>
 		(function () {
 
@@ -96,9 +97,9 @@
 			});
 
 			/**
-			 * Submit the form via ajax and close the modal
-			 */
-			$('.@ButtonClass.MainModalSubmit').click(function () {
+			* Submit the form via ajax and close the modal
+			*/
+			$(document).on('click', '.@ButtonClass.MainModalSubmit', function () {
 				var form = $(this).closest('.modal').find('.modal-body form');
 
 				Controls.RelaodContainerOnModalPost("@UniqueIdentifier.MainModelId", form, '@ContainerId.UsersList', LoadTabActive);

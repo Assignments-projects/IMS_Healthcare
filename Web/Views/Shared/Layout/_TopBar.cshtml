@@ -1,4 +1,9 @@
-﻿
+﻿@using Web.Helper
+
+@{
+	var currentUser = UserHelper.GetCurrentUser();
+}
+
 <nav class="navbar navbar-expand navbar-light navbar-bg">
 	<a class="sidebar-toggle js-sidebar-toggle">
 		<i class="hamburger align-self-center"></i>
@@ -24,10 +29,17 @@
 			</li>
 			<li class="nav-item dropdown">
 				<a class="nav-icon pe-md-0 dropdown-toggle" href="#" data-bs-toggle="dropdown">
-					<img src="~/img/general/new-unknown-pic.jpeg" class="avatar profile-pic img-fluid rounded-circle" alt="profile pic">
+					@if (string.IsNullOrEmpty(currentUser.ProfilePicPath))
+					{
+						<img src="~/img/general/new-unknown-pic.jpeg" class="avatar img-fluid rounded-circle me-1 @UniqueClass.ProfilePic" alt="profile pic">
+					}
+					else
+					{
+						<img src="@currentUser.ProfilePicPath" class="avatar img-fluid rounded-circle me-1 @UniqueClass.ProfilePic" alt="profile pic">
+					}
 				</a>
 				<div class="dropdown-menu dropdown-menu-end">
-					<a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
+					<a class="dropdown-item" asp-controller="Home" asp-action="Profile"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
 					<a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="pie-chart"></i> Analytics</a>
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href="pages-settings.html">

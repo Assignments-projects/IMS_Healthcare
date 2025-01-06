@@ -27,6 +27,10 @@ var app = builder.Build();
 var httpContextAccessor = app.Services.GetRequiredService<IHttpContextAccessor>();
 UserHelper.Initialize(httpContextAccessor);
 
+// Use refresh claims middleware
+app.UseMiddleware<RefreshClaimsMiddleware>();
+
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

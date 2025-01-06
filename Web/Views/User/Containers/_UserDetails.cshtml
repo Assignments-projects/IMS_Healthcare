@@ -3,14 +3,92 @@
 
 @model UserVM
 
+<style>
+	.tbl-user-details td{
+		padding: 10px;
+		font-size: 16px;
+	}
+</style>
+
 <div>
-	<div class="mb-3 d-flex align-items-center justify-content-between flex-wrap">
-		<h4 class="tab-title text-black">User informations</h4>
-		<button class="btn btn-sm btn-primary" id="@ButtonId.UserEdit">Edit</button>
+	<div class="mb-4 d-flex align-items-center justify-content-between flex-wrap">
+		<h2 class="tab-title text-black">User Informations</h2>
+		<button class="btn btn-primary" data-id="@Model.Id" id="@ButtonId.UserEdit">Edit</button>
 	</div>
-	<p>
-		Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor tellus eget condimentum
-		rhoncus. Aenean massa. Cum sociis natoque penatibus et magnis neque dis parturient montes, nascetur ridiculus mus.
-		In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-	</p>
+	<div class="">
+		<div class="row">
+			<div class="col-12 col-md-2 d-flex align-items-center">
+				<div class="mb-3 position-relative">
+					<button class="btn btn-sm btn-default bg-white position-absolute top-0 end-0 rounded-circle">
+						<i class="align-middle" data-feather="edit-2"></i>
+						<input type="file" accept="image/" class="form-control opacity-0 top-0 start-0 end-0 bottom-0 position-absolute @UniqueClass.ProfilePicUpload" autocomplete="username" data-id="@Model.Id" aria-required="true" />
+					</button>
+					@if(string.IsNullOrEmpty(Model.ProfilePicPath))
+					{
+						<img src="~/img/general/new-unknown-pic.jpeg" alt="user profile" class="img-fluid rounded-circle @UniqueClass.UserSpecificProfilePic" width="120" height="120" />
+					}
+					else
+					{
+						<img src="@Model.ProfilePicPath" alt="user profile" class="img-fluid rounded-circle @UniqueClass.UserSpecificProfilePic" width="120" height="120" />
+					}
+				</div>
+			</div>
+			<div class="col-12 col-md-9">
+				<div class="row">
+					<div class="col-12 col-lg-6">
+						<table class="w-100 tbl-user-details">
+							<tr>
+								<td>First name</td>
+								<td>:</td>
+								<td>@Model.FirstName.PropString()</td>
+							</tr>
+							<tr>
+								<td>Last name</td>
+								<td>:</td>
+								<td>@Model.LastName.PropString()</td>
+							</tr>
+							<tr>
+								<td>Email Address</td>
+								<td>:</td>
+								<td>@Model.Email.PropString()</td>
+							</tr>
+							<tr>
+								<td>Username</td>
+								<td>:</td>
+								<td>@Model.UserName.PropString()</td>
+							</tr>
+						</table>
+					</div>
+					<div class="col-12 col-lg-6">
+						<table class="w-100 tbl-user-details">
+							<tr>
+								<td>Address</td>
+								<td>:</td>
+								<td>@Model.Address.PropString()</td>
+							</tr>
+							<tr>
+								<td>Phone Number</td>
+								<td>:</td>
+								<td>@Model.PhoneNo.PropString()</td>
+							</tr>
+							<tr>
+								<td>Status</td>
+								<td>:</td>
+								<td>
+									@if(Model.IsApproved)
+									{
+										<span class="badge rounded-pill bg-success">Approved</span>
+									}
+									else
+									{
+										<span class="badge rounded-pill bg-warning">Pending</span>
+									}
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
