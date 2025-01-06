@@ -21,7 +21,7 @@ namespace DbLayer.Models.Settings
 		/// <summary>
 		/// Image type name
 		/// </summary>
-		public required string TypeName { get; set; }
+		public string TypeName { get; set; } = string.Empty;
 
 		/// <summary>
 		/// Description of disease type

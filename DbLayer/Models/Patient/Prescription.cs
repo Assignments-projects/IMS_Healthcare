@@ -44,6 +44,11 @@ namespace DbLayer.Models.Patient
 		/// </summary>
 		public string? Comments      { get; set; }
 
+		/// <summary>
+		/// Cost of the Prescription
+		/// </summary>
+		public decimal? TotalCost { get; set; }
+
 
 		// ------ System props ----------
 

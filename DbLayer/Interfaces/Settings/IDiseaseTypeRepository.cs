@@ -1,50 +1,43 @@
-﻿using DbLayer.Models;
+﻿using DbLayer.Models.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DbLayer.Interfaces
+namespace DbLayer.Interfaces.Settings
 {
-	public interface IStaffsRepository
+	public interface IDiseaseTypeRepository
 	{
 		/// <summary>
-		/// Load staffs list
+		/// Load disease type list
 		/// </summary>
 		/// <returns></returns>
-		Task<List<Staff>> ListAsync();
+		Task<List<DiseaseType>> ListAsync();
 
 		/// <summary>
-		/// Get staff details by user uuid
+		/// Get disease type details by user uuid
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		Task<Staff> DetailsAsync(int id);
+		Task<DiseaseType> DetailsAsync(int id);
 
 		/// <summary>
-		/// Get staff details by user uuid
-		/// </summary>
-		/// <param name="userUuid"></param>
-		/// <returns></returns>
-		Task<Staff> DetailsAsync(string userUuid);
-
-		/// <summary>
-		/// Add staffs to the database
+		/// Add disease type to the database
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		Task<string> AddAsync(Staff model);
+		Task<string> AddAsync(DiseaseType model);
 
 		/// <summary>
-		/// Update staff record finding by id
+		/// Update disease type record finding by id
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		Task<string> UpdateAsync(Staff model);
+		Task<string> UpdateAsync(DiseaseType model);
 
 		/// <summary>
-		/// Delete staff record by id
+		/// Delete disease type record by id
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>

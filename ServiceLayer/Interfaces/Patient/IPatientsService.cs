@@ -1,45 +1,45 @@
-﻿using DbLayer.Models;
+﻿using DbLayer.Models.Patient;
 
-namespace ServiceLayer.Interfaces
+namespace ServiceLayer.Interfaces.Patient
 {
-	public interface IStaffService
+	public interface IPatientsService
 	{
 		/// <summary>
-		/// Load staffs list
+		/// Load patients list
 		/// </summary>
 		/// <returns></returns>
-		Task<List<Staff>> ListAsync();
+		Task<List<Patients>> ListAsync();
 
 		/// <summary>
-		/// Get staff details by user uuid
+		/// Get patient details by user uuid
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		Task<Staff> DetailsAsync(int id);
+		Task<Patients> DetailsAsync(int id);
 
 		/// <summary>
-		/// Get staff details by user uuid
+		/// Get patient details by user uuid
 		/// </summary>
 		/// <param name="userUuid"></param>
 		/// <returns></returns>
-		Task<Staff> DetailsAsync(string userUuid);
+		Task<Patients> DetailsAsync(string userUuid);
 
 		/// <summary>
-		/// Add staffs to the database
+		/// Add patients to the database
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		Task<string> AddAsync(Staff model);
+		Task<string> AddAsync(Patients model);
 
 		/// <summary>
-		/// Update staff record finding by id
+		/// Update patient record finding by id
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		Task<string> UpdateAsync(Staff model);
+		Task<string> UpdateAsync(Patients model);
 
 		/// <summary>
-		/// Delete staff record by id
+		/// Delete patient record by id
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>

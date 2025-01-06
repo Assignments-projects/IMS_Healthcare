@@ -21,7 +21,7 @@ namespace DbLayer.Models.Settings
 		/// <summary>
 		/// Image type name
 		/// </summary>
-		public required string TypeName { get; set; }
+		public string TypeName { get; set; } = string.Empty;
 
 		/// <summary>
 		/// Description of image type
@@ -44,6 +44,6 @@ namespace DbLayer.Models.Settings
 
 		public DateTime? UpdatedDate { get; set; }
 
-		public bool IsActive { get; set; }
+		public bool IsActive { get; set; } = true;
 	}
 }

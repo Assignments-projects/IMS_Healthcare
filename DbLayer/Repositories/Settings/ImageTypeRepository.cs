@@ -1,71 +1,61 @@
 ﻿using DbLayer.Data;
-using DbLayer.Interfaces;
-using DbLayer.Models;
+using DbLayer.Models.Patient;
+using DbLayer.Models.Settings;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace DbLayer.Repositories
+namespace DbLayer.Repositories.Settings
 {
-	public class StaffsRepository : IStaffsRepository
+	public class ImageTypeRepository
 	{
 		private readonly IMSDbContext _context;
 
-		public StaffsRepository(IMSDbContext context)
+		public ImageTypeRepository(IMSDbContext context)
 		{
 			_context = context;
 		}
 
 		/// <summary>
-		/// Load staffs list
+		/// Load image type list
 		/// </summary>
 		/// <returns></returns>
-		public async Task<List<Staff>> ListAsync()
+		public async Task<List<ImageType>> ListAsync()
 		{
-			var result = await _context.Staffs.ToListAsync();
+			var result = await _context.ImageTypes.ToListAsync();
 
 			if (!result.Any())
-				return new List<Staff>();
+				return new List<ImageType>();
 
 			return result;
 		}
 
 		/// <summary>
-		/// Get staff details by user uuid
+		/// Get image type details by user uuid
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public async Task<Staff> DetailsAsync(int id)
+		public async Task<ImageType> DetailsAsync(int id)
 		{
-			var result = await _context.Staffs.FindAsync(id);
+			var result = await _context.ImageTypes.FindAsync(id);
 
 			if (result == null)
-				return new Staff();
+				return new ImageType();
 
 			return result;
 		}
 
 		/// <summary>
-		/// Get staff details by user uuid
-		/// </summary>
-		/// <param name="userUuid"></param>
-		/// <returns></returns>
-		public async Task<Staff> DetailsAsync(string userUuid)
-		{
-			var result = await _context.Staffs.FirstOrDefaultAsync(x => x.UserUuid == userUuid);
-
-			if (result == null)
-				return new Staff();
-
-			return result;
-		}
-
-		/// <summary>
-		/// Add staffs to the database
+		/// Add image type to the database
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		public async Task<string> AddAsync(Staff model)
-		{			
+		public async Task<string> AddAsync(ImageType model)
+		{
 			try
 			{
 				await _context.AddAsync(model);
@@ -84,30 +74,22 @@ namespace DbLayer.Repositories
 		}
 
 		/// <summary>
-		/// Update staff record finding by id
+		/// Update image type record finding by id
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		public async Task<string> UpdateAsync(Staff model)
+		public async Task<string> UpdateAsync(ImageType model)
 		{
 			try
 			{
-				var exist = await _context.Staffs.FindAsync(model.StaffId);
+				var exist = await _context.ImageTypes.FindAsync(model.ImageTypeId);
 
 				if (exist == null)
 					return NotFound;
 
-				exist.UserUuid    = model.UserUuid;
-				exist.FirstName   = model.FirstName;
-				exist.LastName    = model.LastName;
-				exist.Address     = model.Address;
-				exist.PhoneNo     = model.PhoneNo;
-				exist.DateOfBirth = model.DateOfBirth;
+				exist.TypeName    = model.TypeName;
+				exist.Description = model.Description;
 				exist.Comments    = model.Comments;
-				exist.Gender      = model.Gender;
-				exist.IdentityNo  = model.IdentityNo;
-				exist.Educations  = model.Educations;
-				exist.Salary      = model.Salary;
 				exist.UpdatedById = model.UpdatedById;
 				exist.UpdatedDate = model.UpdatedDate;
 
@@ -126,7 +108,7 @@ namespace DbLayer.Repositories
 		}
 
 		/// <summary>
-		/// Delete staff record by id
+		/// Delete image type record by id
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
@@ -134,12 +116,12 @@ namespace DbLayer.Repositories
 		{
 			try
 			{
-				var exist = await _context.Staffs.FindAsync(id);
+				var exist = await _context.ImageTypes.FindAsync(id);
 
 				if (exist == null)
 					return NotFound;
 
-				_context.Staffs.Remove(exist);
+				_context.ImageTypes.Remove(exist);
 
 				await _context.SaveChangesAsync();
 			}
@@ -158,6 +140,6 @@ namespace DbLayer.Repositories
 		/// <summary>
 		/// Not found message
 		/// </summary>
-		private string NotFound => "The staff not found.";
+		private string NotFound => "The image type not found.";
 	}
 }

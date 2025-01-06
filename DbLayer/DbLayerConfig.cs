@@ -1,7 +1,9 @@
 ﻿using AuthLayer.Models;
 using DbLayer.Data;
 using DbLayer.Interfaces;
+using DbLayer.Interfaces.Patients;
 using DbLayer.Repositories;
+using DbLayer.Repositories.Patients;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DbLayer
 {
-    public static class DbLayerConfig
+	public static class DbLayerConfig
     {
         public static IServiceCollection AddDataAccessServices(this IServiceCollection services, IConfiguration configuration)
         {

@@ -1,6 +1,7 @@
 ﻿using AuthLayer.Models;
 using DbLayer.Models;
 using DbLayer.Models.Patient;
+using DbLayer.Models.Settings;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -24,6 +25,9 @@ namespace DbLayer.Data
 		public DbSet<Disease> Diseases                  { get; set; }
 		public DbSet<Prescription> Prescriptions        { get; set; }
 		public DbSet<Staff> Staffs                      { get; set; }
+
+		public DbSet<ImageType> ImageTypes              { get; set; }
+		public DbSet<DiseaseType> DiseaseTypes          { get; set; }
 
 		public DbSet<ViewUsersVsRoles> ViewUsersVsRoles { get; set; }
 
