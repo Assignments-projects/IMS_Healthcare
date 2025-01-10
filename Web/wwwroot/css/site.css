@@ -16,6 +16,11 @@
     min-height: 65vh;
 }
 
+.label-required::after {
+    content: " *";
+    color: #dc3545;
+    font-weight: bold;
+}
 
 /*----- Over written theme css starts ------*/
 
@@ -32,3 +37,5 @@
 }
 
 /*----- Over written theme css ends ------*/
+
+

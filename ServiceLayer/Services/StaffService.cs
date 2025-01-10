@@ -1,18 +1,11 @@
-﻿using DbLayer.Data;
+﻿using DbLayer.Helpers;
 using DbLayer.Interfaces;
 using DbLayer.Models;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using ServiceLayer.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServiceLayer.Services
 {
-	public class StaffService : IStaffService
+	public class StaffService : BaseService, IStaffService
 	{
 		private readonly IStaffsRepository _staff;
 
@@ -55,8 +48,9 @@ namespace ServiceLayer.Services
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		public async Task<string> AddAsync(Staff model)
+		public async Task<string> AddAsync(Staff model, ICurrentUser user)
 		{
+			AddAudit(model, user);
 			return await _staff.AddAsync(model);
 		}
 
@@ -65,8 +59,9 @@ namespace ServiceLayer.Services
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		public async Task<string> UpdateAsync(Staff model)
+		public async Task<string> UpdateAsync(Staff model, ICurrentUser user)
 		{
+			UpdateAudit(model, user);
 			return await _staff.UpdateAsync(model);
 		}
 

@@ -1,16 +1,12 @@
 ﻿using DbLayer.Data;
+using DbLayer.Interfaces.Settings;
 using DbLayer.Models.Settings;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DbLayer.Repositories.Settings
 {
-	public class DiseaseTypeRepository
+	public class DiseaseTypeRepository : BaseRepository, IDiseaseTypeRepository
 	{
 		private readonly IMSDbContext _context;
 
@@ -25,12 +21,7 @@ namespace DbLayer.Repositories.Settings
 		/// <returns></returns>
 		public async Task<List<DiseaseType>> ListAsync()
 		{
-			var result = await _context.DiseaseTypes.ToListAsync();
-
-			if (!result.Any())
-				return new List<DiseaseType>();
-
-			return result;
+			return await MakeDiseaseTypes(_context.DiseaseTypes);
 		}
 
 		/// <summary>
@@ -40,12 +31,9 @@ namespace DbLayer.Repositories.Settings
 		/// <returns></returns>
 		public async Task<DiseaseType> DetailsAsync(int id)
 		{
-			var result = await _context.DiseaseTypes.FindAsync(id);
+			var result = _context.DiseaseTypes.Where(x => x.DiseaseTypeId == id);
 
-			if (result == null)
-				return new DiseaseType();
-
-			return result;
+			return (await MakeDiseaseTypes(result)).FirstOrDefault();
 		}
 
 		/// <summary>
@@ -134,6 +122,23 @@ namespace DbLayer.Repositories.Settings
 			}
 
 			return null;
+		}
+
+		/// <summary>
+		/// Make List of disease type with aditional datas
+		/// </summary>
+		/// <param name="found"></param>
+		/// <returns></returns>
+		private async Task<List<DiseaseType>> MakeDiseaseTypes(IQueryable<DiseaseType> found)
+		{
+			var result = await found.Include(x => x.AddedBy)
+									.Include(x => x.UpdatedBy)
+									.ToListAsync();
+			if (!result.Any())
+				return new List<DiseaseType>();
+
+			AddAuditNames(result);
+			return result;
 		}
 
 		/// <summary>

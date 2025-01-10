@@ -1,12 +1,13 @@
 ﻿using DbLayer.Data;
 using DbLayer.Interfaces;
 using DbLayer.Models;
+using DbLayer.Models.Settings;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace DbLayer.Repositories
 {
-	public class StaffsRepository : IStaffsRepository
+	public class StaffsRepository : BaseRepository, IStaffsRepository
 	{
 		private readonly IMSDbContext _context;
 
@@ -21,12 +22,7 @@ namespace DbLayer.Repositories
 		/// <returns></returns>
 		public async Task<List<Staff>> ListAsync()
 		{
-			var result = await _context.Staffs.ToListAsync();
-
-			if (!result.Any())
-				return new List<Staff>();
-
-			return result;
+			return await MakeStaffs(_context.Staffs);
 		}
 
 		/// <summary>
@@ -36,12 +32,9 @@ namespace DbLayer.Repositories
 		/// <returns></returns>
 		public async Task<Staff> DetailsAsync(int id)
 		{
-			var result = await _context.Staffs.FindAsync(id);
+			var result = _context.Staffs.Where(x => x.StaffId == id);
 
-			if (result == null)
-				return new Staff();
-
-			return result;
+			return (await MakeStaffs(result)).FirstOrDefault();
 		}
 
 		/// <summary>
@@ -51,7 +44,7 @@ namespace DbLayer.Repositories
 		/// <returns></returns>
 		public async Task<Staff> DetailsAsync(string userUuid)
 		{
-			var result = await _context.Staffs.FirstOrDefaultAsync(x => x.UserUuid == userUuid);
+			var result = await _context.Staffs.FirstOrDefaultAsync(x => x.StaffUuid == userUuid);
 
 			if (result == null)
 				return new Staff();
@@ -97,7 +90,7 @@ namespace DbLayer.Repositories
 				if (exist == null)
 					return NotFound;
 
-				exist.UserUuid    = model.UserUuid;
+				exist.StaffUuid    = model.StaffUuid;
 				exist.FirstName   = model.FirstName;
 				exist.LastName    = model.LastName;
 				exist.Address     = model.Address;
@@ -153,6 +146,23 @@ namespace DbLayer.Repositories
 			}
 
 			return null;
+		}
+
+		/// <summary>
+		/// Make List of staffs with aditional datas
+		/// </summary>
+		/// <param name="found"></param>
+		/// <returns></returns>
+		private async Task<List<Staff>> MakeStaffs(IQueryable<Staff> found)
+		{
+			var result = await found.Include(x => x.AddedBy)
+									.Include(x => x.UpdatedBy)
+									.ToListAsync();
+			if (!result.Any())
+				return new List<Staff>();
+
+			AddAuditNames(result);
+			return result;
 		}
 
 		/// <summary>

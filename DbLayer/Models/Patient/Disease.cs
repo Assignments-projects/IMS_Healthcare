@@ -6,10 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DbLayer.Models.Settings;
+using DbLayer.Helper;
 
 namespace DbLayer.Models.Patient
 {
-	public class Disease
+	public class Disease : IAuditCurrent
 	{
 		/// <summary>
 		/// Primary key
@@ -53,6 +54,15 @@ namespace DbLayer.Models.Patient
 		public string? Comments { get; set; }
 
 
+		//------ Additional props ---------
+
+		[NotMapped]
+		public string? AddedByName { get; set; }
+
+		[NotMapped]
+		public string? UpdatedByName { get; set; }
+
+
 		// ------ System props ----------
 
 		public string? AddedById { get; set; }
@@ -68,13 +78,18 @@ namespace DbLayer.Models.Patient
 
 		//----- Foriegn key objects --------- 
 
-		public Patients Patient { get; set; }
+		public virtual Patients Patient { get; set; }
 
-		public DiseaseType DiseaseType { get; set; }
+		public virtual DiseaseType DiseaseType { get; set; }
 
-		public Staff Doctor { get; set; }
+		public virtual Staff Doctor { get; set; }
+
+		public virtual User AddedBy { get; set; }
+
+		public virtual User UpdatedBy { get; set; }
+
 		//-----------------------------------
 
-		public ICollection<Prescription> Prescriptions { get; set; }
+		public virtual ICollection<Prescription> Prescriptions { get; set; }
 	}
 }

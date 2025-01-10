@@ -1,6 +1,8 @@
-﻿namespace Web.Models
+﻿using DbLayer.Helpers;
+
+namespace Web.Models
 {
-    public class CurrentUser
+    public class CurrentUser : ICurrentUser
     {
         public CurrentUser()
         {

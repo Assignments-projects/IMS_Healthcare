@@ -31,14 +31,6 @@
 
 <script>
 	(function () {
-		$("#@TableId.RolesList").DataTable().destroy();
-
-		$("#@TableId.RolesList").DataTable({
-			layout: {
-				topStart: {
-					buttons: ['excelHtml5', 'pdfHtml5']
-				}
-			}
-		});
+		Controls.InitiateDataTable('@TableId.RolesList');
 	})();
 </script>

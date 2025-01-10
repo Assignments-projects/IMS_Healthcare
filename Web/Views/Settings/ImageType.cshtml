@@ -1,0 +1,100 @@
+﻿@using Web.Helper
+
+@{
+	ViewBag.Title = "Image Types";
+}
+
+<div class="container-fluid p-0">
+
+	<div class="mb-3">
+		<h1 class="h3 d-inline align-middle">Image Types</h1>
+	</div>
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card main-frame-card">
+				<div class="card-header d-flex justify-content-between align-content-between align-items-center flex-wrap">
+					<div>
+						<h5 class="card-title">Image Type DataTable</h5>
+						<h6 class="card-subtitle text-muted">
+							Here you can manage your diagnosis image types. (ctc, x-ray, etc..)
+						</h6>
+					</div>
+					<div>
+						<button class="btn btn-primary" id="@ButtonId.ImageTypeAddNew">Add Image Type</button>
+					</div>
+				</div>
+				<div class="card-body" id="@ContainerId.ImageTypeList">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section scripts {
+	<script>
+		(function () {
+
+			/**
+			 * Load image type list table
+			 * Take the Url action to load partial and load the container
+			 */
+			var LoadImageTypes = function () 
+			{
+				Controls.RelaodContainer('@Url.Action("ImageTypeList", "Settings")', '@ContainerId.ImageTypeList');
+			}
+
+			/**
+			 * Open add image type pop-up when click edit button
+			 * Take the Url action to load partial and Open the bootstrap modal
+			 */
+			var AddNewImageType =  function()
+			{
+				var url = '@Url.Action("AddEditImageType", "Settings")';
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Add New Image Type");
+			}
+
+			/**
+			 * Open image type pop-up when click edit button
+			 * Take the Url action to load partial and Open the bootstrap modal
+			 */
+			var EditImageType = function()
+			{
+				var id  = $(this).attr("data-id");
+				var url = `@Url.Action("AddEditImageType", "Settings")?id=${id}`;
+
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Update Image Type Details");
+			}
+
+			/**
+			 * Open image type role confirmation pop-up when click delete button
+			 * Take the Url action to load partial and Open the bootstrap modal
+			 */
+			var DeleteImageType = function()
+			{
+				var id  = $(this).attr("data-id");
+				var url = `@Url.Action("DeleteImageType", "Settings")?id=${id}`;
+
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Delete Image Type", "Delete", "btn-danger");
+			}
+
+			/**
+			 * Submit the form via ajax and close the modal
+			 */
+			var SubmitModalForm = function()
+			{
+				var form = $(this).closest('.modal').find('.modal-body form');
+
+				Controls.RelaodContainerOnModalPost("@UniqueIdentifier.MainModelId", form, '@ContainerId.ImageTypeList', LoadImageTypes);
+			}
+
+			// Handle events
+			$(document).ready(LoadImageTypes);
+			$(document).on('click', '#@ButtonId.ImageTypeAddNew', AddNewImageType);
+			$(document).on('click', '.@ButtonClass.ImageTypeEdit', EditImageType);
+			$(document).on('click', '.@ButtonClass.ImageTypeDelete', DeleteImageType);
+			$(document).on('click', '.@ButtonClass.MainModalSubmit', SubmitModalForm);
+
+		})();
+	</script>
+}

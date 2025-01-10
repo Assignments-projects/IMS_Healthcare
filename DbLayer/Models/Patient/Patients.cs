@@ -5,10 +5,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DbLayer.Helper;
 
 namespace DbLayer.Models.Patient
 {
-	public class Patients
+	public class Patients : IAuditCurrent
 	{
 		/// <summary>
 		/// Primary key
@@ -24,7 +25,7 @@ namespace DbLayer.Models.Patient
 		/// User's universal unique id from - Identity user
 		/// </summary>
 		[ForeignKey(nameof(User))]
-		public string? UserUuid      { get; set; }
+		public string? PatientUuid      { get; set; }
 
 		/// <summary>
 		/// Doctor any staff who is incharge of the patient uuid
@@ -85,6 +86,15 @@ namespace DbLayer.Models.Patient
 		public bool IsDischarged     { get; set; }
 
 
+		//------ Additional props ---------
+
+		[NotMapped]
+		public string? AddedByName { get; set; }
+
+		[NotMapped]
+		public string? UpdatedByName { get; set; }
+
+
 		// ------ System props ----------
 
 		public string? AddedById     { get; set; }
@@ -100,12 +110,16 @@ namespace DbLayer.Models.Patient
 
 		//----- Foriegn key objects --------- 
 
-		public User User			 { get; set; }
+		public virtual User User			 { get; set; }
 
-		public Staff Staff           { get; set; }
+		public virtual Staff Staff           { get; set; }
+
+		public virtual User AddedBy { get; set; }
+
+		public virtual User UpdatedBy { get; set; }
 
 		//----------------------------------
 
-		public Disease Disease { get; set; }
+		public virtual Disease Disease { get; set; }
 	}
 }

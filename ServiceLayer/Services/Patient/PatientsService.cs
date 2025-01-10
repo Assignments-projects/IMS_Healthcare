@@ -1,4 +1,5 @@
-﻿using DbLayer.Interfaces.Patient;
+﻿using DbLayer.Helpers;
+using DbLayer.Interfaces.Patient;
 using DbLayer.Models;
 using DbLayer.Models.Patient;
 using ServiceLayer.Interfaces.Patient;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer.Services.Patient
 {
-	public class PatientsService : IPatientsService
+	public class PatientsService : BaseService, IPatientsService
 	{
 		private readonly IPatientsRepository _patient;
 
@@ -53,8 +54,9 @@ namespace ServiceLayer.Services.Patient
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		public async Task<string> AddAsync(Patients model)
+		public async Task<string> AddAsync(Patients model, ICurrentUser user)
 		{
+			AddAudit(model, user);
 			return await _patient.AddAsync(model);
 		}
 
@@ -63,8 +65,9 @@ namespace ServiceLayer.Services.Patient
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		public async Task<string> UpdateAsync(Patients model)
+		public async Task<string> UpdateAsync(Patients model, ICurrentUser user)
 		{
+			UpdateAudit(model, user);
 			return await _patient.UpdateAsync(model);
 		}
 

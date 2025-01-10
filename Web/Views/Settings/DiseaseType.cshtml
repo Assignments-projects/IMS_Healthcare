@@ -1,0 +1,100 @@
+﻿@using Web.Helper
+
+@{
+	ViewBag.Title = "Disease Types";
+}
+
+<div class="container-fluid p-0">
+
+	<div class="mb-3">
+		<h1 class="h3 d-inline align-middle">Disease Types</h1>
+	</div>
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card main-frame-card">
+				<div class="card-header d-flex justify-content-between align-content-between align-items-center flex-wrap">
+					<div>
+						<h5 class="card-title">Disease Type DataTable</h5>
+						<h6 class="card-subtitle text-muted">
+							Here you can manage your disease types.
+						</h6>
+					</div>
+					<div>
+						<button class="btn btn-primary" id="@ButtonId.DiseaseTypeAddNew">Add Disease type</button>
+					</div>
+				</div>
+				<div class="card-body" id="@ContainerId.DiseaseTypeList">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section scripts {
+	<script>
+		(function () {
+
+			/**
+			 * Load disease type list table
+			 * Take the Url action to load partial and load the container
+			 */
+			var LoadDiseaseTypes = function ()
+			{
+				Controls.RelaodContainer('@Url.Action("DiseaseTypeList", "Settings")', '@ContainerId.DiseaseTypeList');
+			}
+
+			/**
+			 * Open add disease type pop-up when click edit button
+			 * Take the Url action to load partial and Open the bootstrap modal
+			 */
+			var AddNewDiseaseType =  function()
+			{
+				var url = '@Url.Action("AddEditDiseaseType", "Settings")';
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Add New Disease Type");
+			}
+
+			/**
+			 * Open disease type pop-up when click edit button
+			 * Take the Url action to load partial and Open the bootstrap modal
+			 */
+			var EditDiseaseType = function()
+			{
+				var id  = $(this).attr("data-id");
+				var url = `@Url.Action("AddEditDiseaseType", "Settings")?id=${id}`;
+
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Update Disease Type Details");
+			}
+
+			/**
+			 * Open disease type role confirmation pop-up when click delete button
+			 * Take the Url action to load partial and Open the bootstrap modal
+			 */
+			var DeleteDiseaseType = function()
+			{
+				var id  = $(this).attr("data-id");
+				var url = `@Url.Action("DeleteDiseaseType", "Settings")?id=${id}`;
+
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Delete Disease Type", "Delete", "btn-danger");
+			}
+
+			/**
+			 * Submit the form via ajax and close the modal
+			 */
+			var SubmitModalForm = function()
+			{
+				var form = $(this).closest('.modal').find('.modal-body form');
+
+				Controls.RelaodContainerOnModalPost("@UniqueIdentifier.MainModelId", form, '@ContainerId.DiseaseTypeList', LoadDiseaseTypes);
+			}
+
+			// Handle events
+			$(document).ready(LoadDiseaseTypes);
+			$(document).on('click', '#@ButtonId.DiseaseTypeAddNew', AddNewDiseaseType);
+			$(document).on('click', '.@ButtonClass.DiseaseTypeEdit', EditDiseaseType);
+			$(document).on('click', '.@ButtonClass.DiseaseTypeDelete', DeleteDiseaseType);
+			$(document).on('click', '.@ButtonClass.MainModalSubmit', SubmitModalForm);
+
+		})();
+	</script>
+}

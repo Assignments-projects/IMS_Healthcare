@@ -1,0 +1,50 @@
+﻿@using Web.Models.Settings
+@using Web.Helper
+
+@model List<DiseaseTypeVM>
+
+<table id="@TableId.DiseaseTypeList" class="table table-striped w-100">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Comment</th>
+			<th>Added by</th>
+			<th>Updated by</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		@if (Model.Any())
+		{
+			@foreach (var type in Model)
+			{
+				<tr>
+					<td>@type.DiseaseTypeId</td>
+					<td>@type.TypeName</td>
+					<td>@type.Description.PropString()</td>
+					<td>@type.Comments.PropString()</td>
+					<td>
+						<p class="m-0">@type.AddedByName.PropString()</p>
+						<p class="m-0 text-secondary"><small>@type.AddedDate.PropString()</small></p>
+					</td>
+					<td>
+						<p class="m-0">@type.UpdatedByName.PropString()</p>
+						<p class="m-0 text-secondary"><small>@type.UpdatedDate.PropString()</small></p>
+					</td>
+					<td>
+						<a data-id="@type.DiseaseTypeId" class="p-1 @ButtonClass.DiseaseTypeEdit"><i class="align-middle" data-feather="edit-2"></i></a>
+						<a data-id="@type.DiseaseTypeId" class="p-1 @ButtonClass.DiseaseTypeDelete text-danger"><i class="align-middle" data-feather="trash"></i></a>
+					</td>
+				</tr>
+			}
+		}
+	</tbody>
+</table>
+
+<script>
+	(function () {
+		Controls.InitiateDataTable('@TableId.DiseaseTypeList');
+	})();
+</script>

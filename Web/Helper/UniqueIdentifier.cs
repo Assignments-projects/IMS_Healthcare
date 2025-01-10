@@ -23,8 +23,12 @@
 	/// </summary>
 	public static class ContainerId
 	{
-		public const string RolesList = "jq-roles-list-container-id";
-		public const string UsersList = "jq-users-list-container-id";
+		public const string RolesList       = "jq-roles-list-container-id";
+		public const string UsersList       = "jq-users-list-container-id";
+
+		public const string ImageTypeList   = "jq-image-type-list-container-id";
+		public const string DiseaseTypeList = "jq-diease-type-list-container-id";
+
 	}
 
 	/// <summary>
@@ -32,13 +36,16 @@
 	/// </summary>
 	public static class ButtonId
 	{
-		public const string RoleAddNew = "jq-add-new-role-button-id";
-		public const string UserAddNew = "jq-add-new-user-button-id";
-		public const string UserEdit   = "jq-edit-exisitng-user-button-id";
+		public const string RoleAddNew        = "jq-add-new-role-button-id";
+		
+		public const string UserAddNew        = "jq-add-new-user-button-id";
+		public const string UserEdit          = "jq-edit-exisitng-user-button-id";
+		public const string UserApproved      = "jq-approved-user-button-id";
+		public const string UserPending       = "jq-pending-user-button-id";
+		public const string AssignRole        = "jq-assign-new-role-button-id";
 
-		public const string UserApproved = "jq-approved-user-button-id";
-		public const string UserPending = "jq-pending-user-button-id";
-		public const string AssignRole = "jq-assign-new-role-button-id";
+		public const string ImageTypeAddNew   = "jq-add-new-image-type-button-id";
+		public const string DiseaseTypeAddNew = "jq-add-new-disease-type-button-id";
 
 	}
 
@@ -57,15 +64,23 @@
 		public const string UserApprove          = "jq-approve-user-button-class";
 		public const string UserProfilePicUpdate = "jq-user--profile-pic-update-button-class";
         public const string UnAssignRole         = "jq-un-assign-role-button-class";
-    }
 
-    /// <summary>
-    /// Unique table id's static class
-    /// </summary>
-    public static class TableId
+		public const string ImageTypeEdit        = "jq-edit-image-type-button-class";
+		public const string ImageTypeDelete      = "jq-delete-image-type-button-class";
+		public const string DiseaseTypeEdit      = "jq-edit-disease-type-button-class";
+		public const string DiseaseTypeDelete    = "jq-delete-disease-type-button-class";
+	}
+
+	/// <summary>
+	/// Unique table id's static class
+	/// </summary>
+	public static class TableId
 	{
-		public const string RolesList = "jq-roles-list-table-id";
-		public const string UsersList = "jq-users-list-table-id";
+		public const string RolesList       = "jq-roles-list-table-id";
+		public const string UsersList       = "jq-users-list-table-id";
+
+		public const string ImageTypeList   = "jq-image-type-list-table-id";
+		public const string DiseaseTypeList = "jq-disease-type-list-table-id";
 
 	}
 }

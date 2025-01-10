@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using DbLayer.Models.Patient;
+using DbLayer.Helper;
 
 namespace DbLayer.Models
 {
-	public class Staff
+	public class Staff : IAuditCurrent
 	{
 		/// <summary>
 		/// Primary key
@@ -20,7 +21,7 @@ namespace DbLayer.Models
 		/// User's universal unique id from - Identity user
 		/// </summary>
 		[ForeignKey(nameof(User))]
-		public string? UserUuid      { get; set; }
+		public string? StaffUuid      { get; set; }
 
 		//-----------------------------
 
@@ -75,6 +76,15 @@ namespace DbLayer.Models
 		public decimal? Salary       { get; set; }
 
 
+		//------ Additional props ---------
+
+		[NotMapped]
+		public string? AddedByName { get; set; }
+
+		[NotMapped]
+		public string? UpdatedByName { get; set; }
+
+
 		// ------ System props ----------
 
 		public string? AddedById     { get; set; }
@@ -93,8 +103,15 @@ namespace DbLayer.Models
 
 		//----------------------------------
 
-		public ICollection<Patients> Patient { get; set; }
+		public virtual ICollection<Patients> Patient { get; set; }
 
-		public ICollection<Disease> Diseases { get; set; }
+		public virtual ICollection<Disease> Diseases { get; set; }
+
+		public virtual ICollection<Image> Images { get; set; }
+
+		public virtual User AddedBy { get; set; }
+
+		public virtual User UpdatedBy { get; set; }
+
 	}
 }

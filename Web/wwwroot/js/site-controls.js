@@ -109,6 +109,19 @@ var Controls = (function () {
                 });
         },
 
+        // Initiate datatable js for the given id of the table
+        InitiateDataTable: function (tableId) {
+
+            $(`#${tableId}`).DataTable().destroy();
+
+            $(`#${tableId}`).DataTable({
+                layout: {
+                    topStart: {
+                        buttons: ['excelHtml5', 'pdfHtml5']
+                    }
+                }
+            });
+        }
     };
 
 })();

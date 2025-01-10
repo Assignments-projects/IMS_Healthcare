@@ -1,4 +1,5 @@
 ﻿using DbLayer.Data;
+using DbLayer.Interfaces.Settings;
 using DbLayer.Models.Patient;
 using DbLayer.Models.Settings;
 using Microsoft.Data.SqlClient;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace DbLayer.Repositories.Settings
 {
-	public class ImageTypeRepository
+	public class ImageTypeRepository : BaseRepository, IImageTypeRepository
 	{
 		private readonly IMSDbContext _context;
 
@@ -26,12 +27,7 @@ namespace DbLayer.Repositories.Settings
 		/// <returns></returns>
 		public async Task<List<ImageType>> ListAsync()
 		{
-			var result = await _context.ImageTypes.ToListAsync();
-
-			if (!result.Any())
-				return new List<ImageType>();
-
-			return result;
+			return await MakeImageTypes(_context.ImageTypes);
 		}
 
 		/// <summary>
@@ -41,12 +37,9 @@ namespace DbLayer.Repositories.Settings
 		/// <returns></returns>
 		public async Task<ImageType> DetailsAsync(int id)
 		{
-			var result = await _context.ImageTypes.FindAsync(id);
+			var result = _context.ImageTypes.Where(x => x.ImageTypeId == id);
 
-			if (result == null)
-				return new ImageType();
-
-			return result;
+			return (await MakeImageTypes(result)).FirstOrDefault();
 		}
 
 		/// <summary>
@@ -135,6 +128,23 @@ namespace DbLayer.Repositories.Settings
 			}
 
 			return null;
+		}
+
+		/// <summary>
+		/// Make List of image type with aditional datas
+		/// </summary>
+		/// <param name="found"></param>
+		/// <returns></returns>
+		private async Task<List<ImageType>> MakeImageTypes(IQueryable<ImageType> found)
+		{
+			var result = await found.Include(x => x.AddedBy)
+									.Include(x => x.UpdatedBy)
+									.ToListAsync();
+			if (!result.Any())
+				return new List<ImageType>();
+
+			AddAuditNames(result);
+			return result;
 		}
 
 		/// <summary>

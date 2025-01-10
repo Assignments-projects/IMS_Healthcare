@@ -11,7 +11,7 @@ namespace DbLayer.Interfaces.Patient
 		Task<List<Patients>> ListAsync();
 
 		/// <summary>
-		/// Get patient details by user uuid
+		/// Get patient details by id
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DbLayer.Repositories.Patient
 {
-	public class PatientsRepository : IPatientsRepository
+	public class PatientsRepository : BaseRepository, IPatientsRepository
 	{
 		private readonly IMSDbContext _context;
 
@@ -16,32 +16,24 @@ namespace DbLayer.Repositories.Patient
 		}
 
 		/// <summary>
-		/// Load patients list
+		/// Load patient list
 		/// </summary>
 		/// <returns></returns>
 		public async Task<List<Patients>> ListAsync()
 		{
-			var result = await _context.Patients.ToListAsync();
-
-			if (!result.Any())
-				return new List<Patients>();
-
-			return result;
+			return await MakePatients(_context.Patients);
 		}
 
 		/// <summary>
-		/// Get patient details by user uuid
+		/// Get patient details by id
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
 		public async Task<Patients> DetailsAsync(int id)
 		{
-			var result = await _context.Patients.FindAsync(id);
+			var result = _context.Patients.Where(x => x.PateintId == id);
 
-			if (result == null)
-				return new Patients();
-
-			return result;
+			return (await MakePatients(result)).FirstOrDefault();
 		}
 
 		/// <summary>
@@ -51,7 +43,7 @@ namespace DbLayer.Repositories.Patient
 		/// <returns></returns>
 		public async Task<Patients> DetailsAsync(string userUuid)
 		{
-			var result = await _context.Patients.FirstOrDefaultAsync(x => x.UserUuid == userUuid);
+			var result = await _context.Patients.FirstOrDefaultAsync(x => x.PatientUuid == userUuid);
 
 			if (result == null)
 				return new Patients();
@@ -97,19 +89,19 @@ namespace DbLayer.Repositories.Patient
 				if (exist == null)
 					return NotFound;
 
-				exist.UserUuid = model.UserUuid;
-				exist.FirstName = model.FirstName;
-				exist.LastName = model.LastName;
-				exist.Address = model.Address;
-				exist.PhoneNo = model.PhoneNo;
-				exist.DateOfBirth = model.DateOfBirth;
-				exist.Comments = model.Comments;
-				exist.Gender = model.Gender;
-				exist.IdentityNo = model.IdentityNo;
-				exist.TotalCost = model.TotalCost;
+				exist.PatientUuid  = model.PatientUuid;
+				exist.FirstName    = model.FirstName;
+				exist.LastName     = model.LastName;
+				exist.Address      = model.Address;
+				exist.PhoneNo      = model.PhoneNo;
+				exist.DateOfBirth  = model.DateOfBirth;
+				exist.Comments     = model.Comments;
+				exist.Gender       = model.Gender;
+				exist.IdentityNo   = model.IdentityNo;
+				exist.TotalCost    = model.TotalCost;
 				exist.IsDischarged = model.IsDischarged;
-				exist.UpdatedById = model.UpdatedById;
-				exist.UpdatedDate = model.UpdatedDate;
+				exist.UpdatedById  = model.UpdatedById;
+				exist.UpdatedDate  = model.UpdatedDate;
 
 				await _context.SaveChangesAsync();
 			}
@@ -153,6 +145,23 @@ namespace DbLayer.Repositories.Patient
 			}
 
 			return null;
+		}
+
+		/// <summary>
+		/// Make List of patients with aditional datas
+		/// </summary>
+		/// <param name="found"></param>
+		/// <returns></returns>
+		private async Task<List<Patients>> MakePatients(IQueryable<Patients> found)
+		{
+			var result = await found.Include(x => x.AddedBy)
+									.Include(x => x.UpdatedBy)
+									.ToListAsync();
+			if (!result.Any())
+				return new List<Patients>();
+
+			AddAuditNames(result);
+			return result;
 		}
 
 		/// <summary>

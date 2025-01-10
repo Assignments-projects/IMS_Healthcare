@@ -1,0 +1,12 @@
+﻿@using Web.Models.Settings
+
+@model ImageTypeVM
+
+<form asp-controller="Settings" asp-action="DeleteImageType" method="post">
+    <input type="hidden" asp-for="ImageTypeId" />
+    <input type="hidden" asp-for="TypeName" />
+
+    <div>
+        <h6>Are you sure you want to delete this image type (@Model.TypeName) ?</h6>
+    </div>
+</form>

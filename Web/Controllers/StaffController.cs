@@ -2,7 +2,7 @@
 
 namespace Web.Controllers
 {
-	public class StaffController : Controller
+	public class StaffController : BaseController
 	{
 		public IActionResult Index()
 		{

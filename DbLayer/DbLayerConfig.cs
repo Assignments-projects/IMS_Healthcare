@@ -1,9 +1,13 @@
 ﻿using AuthLayer.Models;
 using DbLayer.Data;
 using DbLayer.Interfaces;
-using DbLayer.Interfaces.Patients;
+using DbLayer.Interfaces.Finance;
+using DbLayer.Interfaces.Patient;
+using DbLayer.Interfaces.Settings;
 using DbLayer.Repositories;
-using DbLayer.Repositories.Patients;
+using DbLayer.Repositories.Finance;
+using DbLayer.Repositories.Patient;
+using DbLayer.Repositories.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -24,8 +28,18 @@ namespace DbLayer
 					.AddDefaultTokenProviders();
 
 			services.AddTransient<IUsersRepository, UserRepository>();
-			services.AddTransient<IPatientsRepository, PatientsRepository>();
 			services.AddTransient<IStaffsRepository, StaffsRepository>();
+
+			services.AddTransient<IPatientsRepository, PatientsRepository>();
+			services.AddTransient<IDiseaseRepository, DiseaseRepository>();
+			services.AddTransient<IImageRepository, ImageRepository>();
+			services.AddTransient<IPrescriptionRepository, PrescriptionRepository>();
+
+			services.AddTransient<IStatementRepository, StatementRepository>();
+			services.AddTransient<IStatementItemRepository, StatementItemRepository>();
+
+			services.AddTransient<IDiseaseTypeRepository, DiseaseTypeRepository>();
+			services.AddTransient<IImageTypeRepository, ImageTypeRepository>();
 
 			return services;
         }

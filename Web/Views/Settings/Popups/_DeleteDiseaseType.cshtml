@@ -1,0 +1,12 @@
+﻿@using Web.Models.Settings
+
+@model DiseaseTypeVM
+
+<form asp-controller="Settings" asp-action="DeleteDiseaseType" method="post">
+    <input type="hidden" asp-for="DiseaseTypeId" />
+    <input type="hidden" asp-for="TypeName" />
+
+    <div>
+        <h6>Are you sure you want to delete this disease type (@Model.TypeName) ?</h6>
+    </div>
+</form>

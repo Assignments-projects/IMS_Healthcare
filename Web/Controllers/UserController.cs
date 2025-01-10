@@ -1,12 +1,9 @@
 ﻿using AuthLayer.Interfaces;
 using AuthLayer.Models;
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using ServiceLayer.Interfaces;
 using Web.Models.Account;
-using Web.Models.Role;
 using Web.Models.User;
 
 namespace Web.Controllers

@@ -1,4 +1,5 @@
-﻿using DbLayer.Models;
+﻿using DbLayer.Helpers;
+using DbLayer.Models;
 
 namespace ServiceLayer.Interfaces
 {
@@ -29,14 +30,14 @@ namespace ServiceLayer.Interfaces
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		Task<string> AddAsync(Staff model);
+		Task<string> AddAsync(Staff model, ICurrentUser user);
 
 		/// <summary>
 		/// Update staff record finding by id
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		Task<string> UpdateAsync(Staff model);
+		Task<string> UpdateAsync(Staff model, ICurrentUser user);
 
 		/// <summary>
 		/// Delete staff record by id

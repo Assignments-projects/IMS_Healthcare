@@ -1,15 +1,13 @@
-﻿using AuthLayer.Interfaces;
-using AuthLayer.Models;
+﻿using AuthLayer.Models;
 using AutoMapper;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Interfaces;
 using Web.Models.Account;
 
 namespace Web.Controllers
 {
-    public class AccountController : Controller
-    {
+    public class AccountController : BaseController
+	{
         private readonly IUserService _user;
         private readonly IMapper _mapper;
 

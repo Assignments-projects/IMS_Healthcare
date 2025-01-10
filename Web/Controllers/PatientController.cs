@@ -2,7 +2,7 @@
 
 namespace Web.Controllers
 {
-	public class PatientController : Controller
+	public class PatientController : BaseController
 	{
 		public IActionResult Index()
 		{

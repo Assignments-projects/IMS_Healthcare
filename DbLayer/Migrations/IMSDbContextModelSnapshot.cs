@@ -149,6 +149,116 @@ namespace DbLayer.Migrations
                     b.ToView("ViewUsersVsRoles", (string)null);
                 });
 
+            modelBuilder.Entity("DbLayer.Models.Finance.Statement", b =>
+                {
+                    b.Property<int>("StatementId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StatementId"));
+
+                    b.Property<string>("AddedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("AddedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsGenerated")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSent")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PatientUuid")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("TotalCost")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("StatementId");
+
+                    b.HasIndex("AddedById")
+                        .IsUnique()
+                        .HasFilter("[AddedById] IS NOT NULL");
+
+                    b.HasIndex("PatientUuid");
+
+                    b.HasIndex("StatusId");
+
+                    b.HasIndex("UpdatedById")
+                        .IsUnique()
+                        .HasFilter("[UpdatedById] IS NOT NULL");
+
+                    b.ToTable("Statements");
+                });
+
+            modelBuilder.Entity("DbLayer.Models.Finance.StatementItem", b =>
+                {
+                    b.Property<int>("StatementItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StatementItemId"));
+
+                    b.Property<string>("AddedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("AddedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DiseaseId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("StatementId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("TotalCost")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("StatementItemId");
+
+                    b.HasIndex("AddedById")
+                        .IsUnique()
+                        .HasFilter("[AddedById] IS NOT NULL");
+
+                    b.HasIndex("DiseaseId");
+
+                    b.HasIndex("StatementId");
+
+                    b.HasIndex("UpdatedById")
+                        .IsUnique()
+                        .HasFilter("[UpdatedById] IS NOT NULL");
+
+                    b.ToTable("StatementItems");
+                });
+
             modelBuilder.Entity("DbLayer.Models.Patient.Disease", b =>
                 {
                     b.Property<int>("DiseaseId")
@@ -158,7 +268,7 @@ namespace DbLayer.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DiseaseId"));
 
                     b.Property<string>("AddedById")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("AddedDate")
                         .HasColumnType("datetime2");
@@ -184,18 +294,95 @@ namespace DbLayer.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UpdatedById")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("DiseaseId");
 
+                    b.HasIndex("AddedById")
+                        .IsUnique()
+                        .HasFilter("[AddedById] IS NOT NULL");
+
                     b.HasIndex("DiseaseTypeId");
 
                     b.HasIndex("DoctorId");
 
+                    b.HasIndex("UpdatedById")
+                        .IsUnique()
+                        .HasFilter("[UpdatedById] IS NOT NULL");
+
                     b.ToTable("Diseases");
+                });
+
+            modelBuilder.Entity("DbLayer.Models.Patient.Image", b =>
+                {
+                    b.Property<int>("ImageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageId"));
+
+                    b.Property<string>("AddedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("AddedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Condition")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DiseaseId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("FileContent")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ImageTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MimeType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StaffUuid")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ImageId");
+
+                    b.HasIndex("AddedById")
+                        .IsUnique()
+                        .HasFilter("[AddedById] IS NOT NULL");
+
+                    b.HasIndex("DiseaseId");
+
+                    b.HasIndex("ImageTypeId");
+
+                    b.HasIndex("StaffUuid");
+
+                    b.HasIndex("UpdatedById")
+                        .IsUnique()
+                        .HasFilter("[UpdatedById] IS NOT NULL");
+
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("DbLayer.Models.Patient.Patients", b =>
@@ -207,7 +394,7 @@ namespace DbLayer.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PateintId"));
 
                     b.Property<string>("AddedById")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("AddedDate")
                         .HasColumnType("datetime2");
@@ -244,6 +431,10 @@ namespace DbLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PatientUuid")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("PhoneNo")
                         .HasColumnType("nvarchar(max)");
 
@@ -251,35 +442,36 @@ namespace DbLayer.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UpdatedById")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserUuid")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("PateintId");
+
+                    b.HasIndex("AddedById")
+                        .IsUnique()
+                        .HasFilter("[AddedById] IS NOT NULL");
 
                     b.HasIndex("InChargeuUud");
 
-                    b.HasIndex("UserUuid")
+                    b.HasIndex("UpdatedById")
                         .IsUnique()
-                        .HasFilter("[UserUuid] IS NOT NULL");
+                        .HasFilter("[UpdatedById] IS NOT NULL");
 
                     b.ToTable("Patients");
                 });
 
             modelBuilder.Entity("DbLayer.Models.Patient.Prescription", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("PrescriptionId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PrescriptionId"));
 
                     b.Property<string>("AddedById")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("AddedDate")
                         .HasColumnType("datetime2");
@@ -296,18 +488,29 @@ namespace DbLayer.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Mediciense")
+                    b.Property<string>("Medicines")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal?>("TotalCost")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("UpdatedById")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("PrescriptionId");
+
+                    b.HasIndex("AddedById")
+                        .IsUnique()
+                        .HasFilter("[AddedById] IS NOT NULL");
 
                     b.HasIndex("DiseaseId");
+
+                    b.HasIndex("UpdatedById")
+                        .IsUnique()
+                        .HasFilter("[UpdatedById] IS NOT NULL");
 
                     b.ToTable("Prescriptions");
                 });
@@ -321,7 +524,7 @@ namespace DbLayer.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DiseaseTypeId"));
 
                     b.Property<string>("AddedById")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("AddedDate")
                         .HasColumnType("datetime2");
@@ -340,14 +543,159 @@ namespace DbLayer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UpdatedById")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("DiseaseTypeId");
 
-                    b.ToTable("DiseaseType");
+                    b.HasIndex("AddedById")
+                        .IsUnique()
+                        .HasFilter("[AddedById] IS NOT NULL");
+
+                    b.HasIndex("UpdatedById")
+                        .IsUnique()
+                        .HasFilter("[UpdatedById] IS NOT NULL");
+
+                    b.ToTable("DiseaseTypes");
+                });
+
+            modelBuilder.Entity("DbLayer.Models.Settings.ImageType", b =>
+                {
+                    b.Property<int>("ImageTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageTypeId"));
+
+                    b.Property<string>("AddedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("AddedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("TypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ImageTypeId");
+
+                    b.HasIndex("AddedById")
+                        .IsUnique()
+                        .HasFilter("[AddedById] IS NOT NULL");
+
+                    b.HasIndex("UpdatedById")
+                        .IsUnique()
+                        .HasFilter("[UpdatedById] IS NOT NULL");
+
+                    b.ToTable("ImageTypes");
+                });
+
+            modelBuilder.Entity("DbLayer.Models.Settings.OsSection", b =>
+                {
+                    b.Property<int>("SectionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SectionId"));
+
+                    b.Property<string>("AddedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("AddedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Section")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("SectionId");
+
+                    b.HasIndex("AddedById")
+                        .IsUnique()
+                        .HasFilter("[AddedById] IS NOT NULL");
+
+                    b.HasIndex("UpdatedById")
+                        .IsUnique()
+                        .HasFilter("[UpdatedById] IS NOT NULL");
+
+                    b.ToTable("OsSections");
+                });
+
+            modelBuilder.Entity("DbLayer.Models.Settings.OsStatus", b =>
+                {
+                    b.Property<int>("StatusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StatusId"));
+
+                    b.Property<string>("AddedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("AddedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("SectionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("StatusId");
+
+                    b.HasIndex("AddedById")
+                        .IsUnique()
+                        .HasFilter("[AddedById] IS NOT NULL");
+
+                    b.HasIndex("SectionId");
+
+                    b.HasIndex("UpdatedById")
+                        .IsUnique()
+                        .HasFilter("[UpdatedById] IS NOT NULL");
+
+                    b.ToTable("OsStatuss");
                 });
 
             modelBuilder.Entity("DbLayer.Models.Staff", b =>
@@ -359,7 +707,7 @@ namespace DbLayer.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StaffId"));
 
                     b.Property<string>("AddedById")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("AddedDate")
                         .HasColumnType("datetime2");
@@ -399,17 +747,25 @@ namespace DbLayer.Migrations
                     b.Property<decimal?>("Salary")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("StaffUuid")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("UpdatedById")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserUuid")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("StaffId");
+
+                    b.HasIndex("AddedById")
+                        .IsUnique()
+                        .HasFilter("[AddedById] IS NOT NULL");
+
+                    b.HasIndex("UpdatedById")
+                        .IsUnique()
+                        .HasFilter("[UpdatedById] IS NOT NULL");
 
                     b.ToTable("Staffs");
                 });
@@ -614,8 +970,76 @@ namespace DbLayer.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("DbLayer.Models.Finance.Statement", b =>
+                {
+                    b.HasOne("DbLayer.Models.User", "AddedBy")
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Finance.Statement", "AddedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
+
+                    b.HasOne("DbLayer.Models.Patient.Patients", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientUuid")
+                        .HasPrincipalKey("PatientUuid");
+
+                    b.HasOne("DbLayer.Models.Settings.OsStatus", "OsStatus")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DbLayer.Models.User", "UpdatedBy")
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Finance.Statement", "UpdatedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
+
+                    b.Navigation("AddedBy");
+
+                    b.Navigation("OsStatus");
+
+                    b.Navigation("Patient");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("DbLayer.Models.Finance.StatementItem", b =>
+                {
+                    b.HasOne("DbLayer.Models.User", "AddedBy")
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Finance.StatementItem", "AddedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
+
+                    b.HasOne("DbLayer.Models.Patient.Disease", "Disease")
+                        .WithMany()
+                        .HasForeignKey("DiseaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DbLayer.Models.Finance.Statement", "Statement")
+                        .WithMany("Items")
+                        .HasForeignKey("StatementId");
+
+                    b.HasOne("DbLayer.Models.User", "UpdatedBy")
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Finance.StatementItem", "UpdatedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
+
+                    b.Navigation("AddedBy");
+
+                    b.Navigation("Disease");
+
+                    b.Navigation("Statement");
+
+                    b.Navigation("UpdatedBy");
+                });
+
             modelBuilder.Entity("DbLayer.Models.Patient.Disease", b =>
                 {
+                    b.HasOne("DbLayer.Models.User", "AddedBy")
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Patient.Disease", "AddedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
+
                     b.HasOne("DbLayer.Models.Settings.DiseaseType", "DiseaseType")
                         .WithMany("Diseases")
                         .HasForeignKey("DiseaseTypeId")
@@ -625,58 +1049,230 @@ namespace DbLayer.Migrations
                     b.HasOne("DbLayer.Models.Staff", "Doctor")
                         .WithMany("Diseases")
                         .HasForeignKey("DoctorId")
-                        .HasPrincipalKey("UserUuid")
+                        .HasPrincipalKey("StaffUuid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("DbLayer.Models.User", "UpdatedBy")
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Patient.Disease", "UpdatedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
+
+                    b.Navigation("AddedBy");
 
                     b.Navigation("DiseaseType");
 
                     b.Navigation("Doctor");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("DbLayer.Models.Patient.Image", b =>
+                {
+                    b.HasOne("DbLayer.Models.User", "AddedBy")
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Patient.Image", "AddedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
+
+                    b.HasOne("DbLayer.Models.Patient.Disease", "Disease")
+                        .WithMany()
+                        .HasForeignKey("DiseaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DbLayer.Models.Settings.ImageType", "ImageType")
+                        .WithMany()
+                        .HasForeignKey("ImageTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DbLayer.Models.Staff", "Staff")
+                        .WithMany("Images")
+                        .HasForeignKey("StaffUuid")
+                        .HasPrincipalKey("StaffUuid")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("DbLayer.Models.User", "UpdatedBy")
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Patient.Image", "UpdatedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
+
+                    b.Navigation("AddedBy");
+
+                    b.Navigation("Disease");
+
+                    b.Navigation("ImageType");
+
+                    b.Navigation("Staff");
+
+                    b.Navigation("UpdatedBy");
                 });
 
             modelBuilder.Entity("DbLayer.Models.Patient.Patients", b =>
                 {
+                    b.HasOne("DbLayer.Models.User", "AddedBy")
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Patient.Patients", "AddedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
+
                     b.HasOne("DbLayer.Models.Staff", "Staff")
                         .WithMany("Patient")
                         .HasForeignKey("InChargeuUud")
-                        .HasPrincipalKey("UserUuid");
+                        .HasPrincipalKey("StaffUuid");
 
                     b.HasOne("DbLayer.Models.Patient.Disease", "Disease")
                         .WithOne("Patient")
-                        .HasForeignKey("DbLayer.Models.Patient.Patients", "UserUuid")
-                        .HasPrincipalKey("DbLayer.Models.Patient.Disease", "PatientUuid");
+                        .HasForeignKey("DbLayer.Models.Patient.Patients", "PatientUuid")
+                        .HasPrincipalKey("DbLayer.Models.Patient.Disease", "PatientUuid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DbLayer.Models.User", "User")
                         .WithOne()
-                        .HasForeignKey("DbLayer.Models.Patient.Patients", "UserUuid")
+                        .HasForeignKey("DbLayer.Models.Patient.Patients", "PatientUuid")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DbLayer.Models.User", "UpdatedBy")
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Patient.Patients", "UpdatedById")
                         .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
+
+                    b.Navigation("AddedBy");
 
                     b.Navigation("Disease");
 
                     b.Navigation("Staff");
+
+                    b.Navigation("UpdatedBy");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("DbLayer.Models.Patient.Prescription", b =>
                 {
+                    b.HasOne("DbLayer.Models.User", "AddedBy")
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Patient.Prescription", "AddedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
+
                     b.HasOne("DbLayer.Models.Patient.Disease", "Disease")
                         .WithMany("Prescriptions")
                         .HasForeignKey("DiseaseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DbLayer.Models.User", "UpdatedBy")
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Patient.Prescription", "UpdatedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
+
+                    b.Navigation("AddedBy");
+
                     b.Navigation("Disease");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("DbLayer.Models.Settings.DiseaseType", b =>
+                {
+                    b.HasOne("DbLayer.Models.User", "AddedBy")
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Settings.DiseaseType", "AddedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
+
+                    b.HasOne("DbLayer.Models.User", "UpdatedBy")
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Settings.DiseaseType", "UpdatedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
+
+                    b.Navigation("AddedBy");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("DbLayer.Models.Settings.ImageType", b =>
+                {
+                    b.HasOne("DbLayer.Models.User", "AddedBy")
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Settings.ImageType", "AddedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
+
+                    b.HasOne("DbLayer.Models.User", "UpdatedBy")
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Settings.ImageType", "UpdatedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
+
+                    b.Navigation("AddedBy");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("DbLayer.Models.Settings.OsSection", b =>
+                {
+                    b.HasOne("DbLayer.Models.User", "AddedBy")
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Settings.OsSection", "AddedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
+
+                    b.HasOne("DbLayer.Models.User", "UpdatedBy")
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Settings.OsSection", "UpdatedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
+
+                    b.Navigation("AddedBy");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("DbLayer.Models.Settings.OsStatus", b =>
+                {
+                    b.HasOne("DbLayer.Models.User", "AddedBy")
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Settings.OsStatus", "AddedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
+
+                    b.HasOne("DbLayer.Models.Settings.OsSection", "OsSection")
+                        .WithMany()
+                        .HasForeignKey("SectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DbLayer.Models.User", "UpdatedBy")
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Settings.OsStatus", "UpdatedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
+
+                    b.Navigation("AddedBy");
+
+                    b.Navigation("OsSection");
+
+                    b.Navigation("UpdatedBy");
                 });
 
             modelBuilder.Entity("DbLayer.Models.Staff", b =>
                 {
+                    b.HasOne("DbLayer.Models.User", "AddedBy")
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Staff", "AddedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
+
                     b.HasOne("DbLayer.Models.User", "User")
                         .WithOne()
-                        .HasForeignKey("DbLayer.Models.Staff", "UserUuid")
+                        .HasForeignKey("DbLayer.Models.Staff", "StaffUuid")
                         .HasPrincipalKey("DbLayer.Models.User", "UserUuid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("DbLayer.Models.User", "UpdatedBy")
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Staff", "UpdatedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
+
+                    b.Navigation("AddedBy");
+
+                    b.Navigation("UpdatedBy");
 
                     b.Navigation("User");
                 });
@@ -732,6 +1328,11 @@ namespace DbLayer.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DbLayer.Models.Finance.Statement", b =>
+                {
+                    b.Navigation("Items");
+                });
+
             modelBuilder.Entity("DbLayer.Models.Patient.Disease", b =>
                 {
                     b.Navigation("Patient")
@@ -748,6 +1349,8 @@ namespace DbLayer.Migrations
             modelBuilder.Entity("DbLayer.Models.Staff", b =>
                 {
                     b.Navigation("Diseases");
+
+                    b.Navigation("Images");
 
                     b.Navigation("Patient");
                 });
