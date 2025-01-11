@@ -1,0 +1,89 @@
+﻿@using Web.Models.Account
+@using Web.Helper
+
+@model UserVM
+
+<style>
+	.tbl-user-details td {
+		padding: 5px;
+		font-size: 10px;
+	}
+</style>
+
+<div class="card p-3">
+	<div class="mb-4 d-flex align-items-center justify-content-between flex-wrap">
+		<h2 class="tab-title text-secondary">Registration Informations</h2>
+	</div>
+	<div class="">
+		<div class="row">
+			<div class="col-12 col-md-2 d-flex">
+				<div class="mb-3 position-relative">
+					@if (string.IsNullOrEmpty(Model.ProfilePicPath))
+					{
+						<img src="~/img/general/new-unknown-pic.jpeg" alt="user profile" class="img-fluid rounded-circle" width="50" height="50" />
+					}
+					else
+					{
+						<img src="@Model.ProfilePicPath" alt="user profile" class="img-fluid rounded-circle" width="50" height="50" />
+					}
+				</div>
+			</div>
+			<div class="col-12 col-md-9">
+				<div class="row">
+					<div class="col-12 col-lg-6">
+						<table class="w-100 tbl-user-details">
+							<tr>
+								<td>First name</td>
+								<td>:</td>
+								<td>@Model.FirstName.PropString()</td>
+							</tr>
+							<tr>
+								<td>Last name</td>
+								<td>:</td>
+								<td>@Model.LastName.PropString()</td>
+							</tr>
+							<tr>
+								<td>Email Address</td>
+								<td>:</td>
+								<td>@Model.Email.PropString()</td>
+							</tr>
+							<tr>
+								<td>Username</td>
+								<td>:</td>
+								<td>@Model.UserName.PropString()</td>
+							</tr>
+						</table>
+					</div>
+					<div class="col-12 col-lg-6">
+						<table class="w-100 tbl-user-details">
+							<tr>
+								<td>Address</td>
+								<td>:</td>
+								<td>@Model.Address.PropString()</td>
+							</tr>
+							<tr>
+								<td>Phone Number</td>
+								<td>:</td>
+								<td>@Model.PhoneNo.PropString()</td>
+							</tr>
+							<tr>
+								<td>Status</td>
+								<td>:</td>
+								<td>
+									@if (Model.IsApproved)
+									{
+										<span class="badge rounded-pill bg-success">Approved</span>
+									}
+									else
+									{
+										<span class="badge rounded-pill bg-warning">Pending</span>
+									}
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

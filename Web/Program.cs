@@ -30,6 +30,8 @@ UserHelper.Initialize(httpContextAccessor);
 // Use refresh claims middleware
 app.UseMiddleware<RefreshClaimsMiddleware>();
 
+// Use Authorization middleware
+app.UseMiddleware<AuthorizationMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

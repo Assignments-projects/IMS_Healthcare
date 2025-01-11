@@ -35,7 +35,8 @@ namespace Web.Helper
 							new Claim(nameof(LoggedUser.LastName), user.LastName ?? ""),
 							new Claim(nameof(LoggedUser.FullName), $"{user.FirstName} {user.LastName}".Trim()),
 							new Claim(nameof(LoggedUser.Email), user.Email ?? ""),
-							new Claim(nameof(LoggedUser.ProfilePicture), user.ProfilePicPath ?? "")
+							new Claim(nameof(LoggedUser.ProfilePicture), user.ProfilePicPath ?? ""),
+							new Claim(nameof(LoggedUser.IsApproved), user.IsApproved.ToString() ?? "false")
 						};
 
 						// Fetch updated roles and add them as claims

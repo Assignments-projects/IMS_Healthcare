@@ -8,6 +8,7 @@ namespace AuthLayer.Helpers
         LastName,
         FullName,
         Email,
-        ProfilePicture
+        ProfilePicture,
+        IsApproved
     }
 }

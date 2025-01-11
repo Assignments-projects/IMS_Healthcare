@@ -1,5 +1,6 @@
 ﻿using AuthLayer.Interfaces;
 using AuthLayer.Models;
+using DbLayer.Helpers;
 using DbLayer.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace ServiceLayer.Services
 {
@@ -192,6 +194,44 @@ namespace ServiceLayer.Services
 		public async Task<List<ViewUsersVsRoles>> UserRolesListAsync(string UserId)
 		{
 			return await _user.UserRolesListAsync(UserId);
+		}
+
+		/// <summary>
+		/// Get User Select list item belongs to the user
+		/// </summary>
+		/// <param name="role"></param>
+		/// <returns></returns>
+		public async Task<List<SelectListItem>> UserBasedOnRoleList(UserRole role)
+		{
+			var result = await _user.UserRolesListAsync();
+			var list   = new List<SelectListItem>();
+
+			if(!result.Any())
+				return new List<SelectListItem>();
+
+			if (role == UserRole.Admin || role == UserRole.Patient)
+			{
+				list = result.Where(x => x.RoleName == role.ToString())
+							 .Select(x => new SelectListItem
+							 {
+								Value = x.UserId,
+								Text = $"{x.FirstName} {x.LastName}"
+							 }).ToList();
+			}
+			else
+			{
+				list = result.Where(x => x.RoleName != nameof(UserRole.Admin) && x.RoleName != nameof(UserRole.Patient))
+							 .Select(x => new SelectListItem
+							 {
+								 Value = x.UserId,
+								 Text = $"{x.FirstName} {x.LastName} - {x.RoleName}"
+							 }).ToList();
+			}
+
+			if (!list.Any())
+				return new List<SelectListItem>();
+
+			return list;
 		}
 	}
 }

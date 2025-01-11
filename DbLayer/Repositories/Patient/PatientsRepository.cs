@@ -43,12 +43,9 @@ namespace DbLayer.Repositories.Patient
 		/// <returns></returns>
 		public async Task<Patients> DetailsAsync(string userUuid)
 		{
-			var result = await _context.Patients.FirstOrDefaultAsync(x => x.PatientUuid == userUuid);
+			var result = _context.Patients.Where(x => x.PatientUuid == userUuid);
 
-			if (result == null)
-				return new Patients();
-
-			return result;
+			return (await MakePatients(result)).FirstOrDefault();
 		}
 
 		/// <summary>

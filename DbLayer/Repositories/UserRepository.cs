@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DbLayer.Repositories
 {
-	public class UserRepository : IUsersRepository
+	public class UserRepository : BaseRepository, IUsersRepository
 	{
 		private readonly IMSDbContext _context;
 
@@ -24,6 +24,20 @@ namespace DbLayer.Repositories
 		public async Task<List<ViewUsersVsRoles>> UserRolesListAsync(string UserId)
 		{
 			var result = await _context.ViewUsersVsRoles.Where(x => x.UserId == UserId).ToListAsync();
+
+			if (!result.Any())
+				return new List<ViewUsersVsRoles>();
+
+			return result;
+		}
+
+		/// <summary>
+		/// Get users with roles details
+		/// </summary>
+		/// <returns></returns>
+		public async Task<List<ViewUsersVsRoles>> UserRolesListAsync()
+		{
+			var result = await _context.ViewUsersVsRoles.ToListAsync();
 
 			if (!result.Any())
 				return new List<ViewUsersVsRoles>();

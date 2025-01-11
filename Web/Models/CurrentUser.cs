@@ -21,6 +21,7 @@ namespace Web.Models
 
 		public string ProfilePicPath { get; set; } = string.Empty;
 
+        public bool IsApproved { get; set; } = false;
 
 		public List<string> Roles { get; set; }
     }

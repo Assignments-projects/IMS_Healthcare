@@ -20,6 +20,21 @@
       "files": [
         "feather.min.js"
       ]
+    },
+    {
+      "library": "flatpickr@4.6.13",
+      "destination": "wwwroot/lib/flatpickr/",
+      "files": [
+        "flatpickr.min.js",
+        "flatpickr.css"
+      ]
+    },
+    {
+      "library": "Chart.js@4.4.1",
+      "destination": "wwwroot/lib/Chart.js/",
+      "files": [
+        "chart.min.js"
+      ]
     }
   ]
 }

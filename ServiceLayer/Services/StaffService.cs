@@ -1,4 +1,5 @@
-﻿using DbLayer.Helpers;
+﻿using AuthLayer.Interfaces;
+using DbLayer.Helpers;
 using DbLayer.Interfaces;
 using DbLayer.Models;
 using ServiceLayer.Interfaces;
@@ -8,10 +9,12 @@ namespace ServiceLayer.Services
 	public class StaffService : BaseService, IStaffService
 	{
 		private readonly IStaffsRepository _staff;
+		private readonly IAccountService _account;
 
-		public StaffService(IStaffsRepository staff)
+		public StaffService(IStaffsRepository staff, IAccountService account)
 		{
 			_staff = staff;
+			_account = account;
 		}
 
 		/// <summary>
@@ -50,6 +53,11 @@ namespace ServiceLayer.Services
 		/// <returns></returns>
 		public async Task<string> AddAsync(Staff model, ICurrentUser user)
 		{
+			var result = BindRegistrationDetails(model);
+
+			if (result == null)
+				return "Registration details missing";
+
 			AddAudit(model, user);
 			return await _staff.AddAsync(model);
 		}
@@ -61,6 +69,11 @@ namespace ServiceLayer.Services
 		/// <returns></returns>
 		public async Task<string> UpdateAsync(Staff model, ICurrentUser user)
 		{
+			var result = BindRegistrationDetails(model);
+
+			if (result == null)
+				return "Registration details missing";
+
 			UpdateAudit(model, user);
 			return await _staff.UpdateAsync(model);
 		}
@@ -73,6 +86,26 @@ namespace ServiceLayer.Services
 		public async Task<string> DeleteAsync(int id)
 		{
 			return await _staff.DeleteAsync(id);
+		}
+
+		/// <summary>
+		/// Bind registration details
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
+		private async Task<Staff> BindRegistrationDetails(Staff model)
+		{
+			var result = await _account.DetailsAsync(model.StaffUuid);
+
+			if(result == null)
+				return new Staff();
+
+			model.FirstName = result.FirstName;
+			model.LastName  = result.LastName;
+			model.Address   = result.Address;
+			model.PhoneNo   = result.PhoneNo;
+
+			return model;
 		}
 	}
 }

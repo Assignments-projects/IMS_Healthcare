@@ -27,6 +27,7 @@ namespace DbLayer
 					.AddEntityFrameworkStores<IMSDbContext>()
 					.AddDefaultTokenProviders();
 
+			services.AddTransient<IHomeRepository, HomeRepository>();
 			services.AddTransient<IUsersRepository, UserRepository>();
 			services.AddTransient<IStaffsRepository, StaffsRepository>();
 

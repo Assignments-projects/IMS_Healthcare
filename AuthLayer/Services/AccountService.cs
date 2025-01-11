@@ -43,16 +43,16 @@ namespace AuthLayer.Services
 
             if (user != null)
             {
-                var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
+				if (user.Id == null)
+					return "Something went wrong! please try again later";
+
+				else if (!user.IsApproved)
+					return "Your account is not approved at the movement. Please contact admin";
+
+				var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
 
                 if (!result.Succeeded)
                     return "Invalid login attempt";
-
-                else if (result.IsLockedOut)
-                    return "Your account is not approved at the movement. Please contact admin";
-
-                if (user.Id == null)
-                    return "Something went wrong! please try again later";
 
                 var customClaims = new List<Claim>
                 {
@@ -62,6 +62,7 @@ namespace AuthLayer.Services
 	                new Claim(nameof(LoggedUser.FullName), $"{user.FirstName} {user.LastName}" ?? ""),
 					new Claim(nameof(LoggedUser.Email), user.Email ?? ""),
 		            new Claim(nameof(LoggedUser.ProfilePicture), user.ProfilePicPath ?? ""),
+					new Claim(nameof(LoggedUser.IsApproved), user.IsApproved.ToString() ?? "false"),
 				};
 
                 // Get user roles and add to the claims

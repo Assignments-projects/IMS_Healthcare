@@ -67,6 +67,18 @@ namespace Web.Controllers
 		}
 
 		/// <summary>
+		/// Load mini details of user by id
+		/// </summary>
+		/// <returns></returns>
+		public async Task<PartialViewResult> UserDetailsMini(string id)
+		{
+			var users = await _user.DetailsAsync(id);
+			var model = _mapper.Map<UserVM>(users);
+
+			return PartialView("Containers/_UserDetailsMini", model);
+		}
+
+		/// <summary>
 		/// Load Add of edit modal based on id passed
 		/// </summary>
 		/// <returns></returns>

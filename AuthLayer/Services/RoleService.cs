@@ -187,12 +187,12 @@ namespace AuthLayer.Services
 		public async Task<List<SelectListItem>> RolesSelectList()
 		{
 			// Fetch all roles
-			var roles = _roleManager.Roles
-				.Select(x => new SelectListItem
-				{
-					Value = x.Id,
-					Text  = x.Name 
-				}).ToList();
+			var roles = await _roleManager.Roles
+										.Select(x => new SelectListItem
+										{
+											Value = x.Id,
+											Text  = x.Name 
+										}).ToListAsync();
 
 			return roles;
 		}

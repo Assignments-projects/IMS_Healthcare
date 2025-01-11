@@ -23,5 +23,23 @@ namespace Web.Controllers
 		{
 			return Json(new { success = true, message = message });
 		}
+
+		/// <summary>
+		/// Go to not found error
+		/// </summary>
+		/// <returns></returns>
+		public async Task<IActionResult> NotFound()
+		{
+			return RedirectToAction("Account/NotFound");
+		}
+
+		/// <summary>
+		/// Go to server error
+		/// </summary>
+		/// <returns></returns>
+		public async Task<IActionResult> ServerError()
+		{
+			return RedirectToAction("Account/ServerError");
+		}
 	}
 }

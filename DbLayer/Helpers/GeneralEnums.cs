@@ -5,4 +5,11 @@
         Approve,
         Pending
     }
+
+	public enum UserRole
+	{
+		Admin,
+		Patient,
+		Staff
+	}
 }

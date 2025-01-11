@@ -721,6 +721,10 @@ namespace DbLayer.Migrations
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Designation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Educations")
                         .HasColumnType("nvarchar(max)");
 

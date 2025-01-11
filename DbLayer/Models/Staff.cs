@@ -36,6 +36,11 @@ namespace DbLayer.Models
 		public string LastName       { get; set; } = string.Empty;
 
 		/// <summary>
+		/// Job of the staff
+		/// </summary>
+		public string Designation { get; set; } = string.Empty;
+
+		/// <summary>
 		/// Staff street address
 		/// </summary>
 		public string? Address       { get; set; }

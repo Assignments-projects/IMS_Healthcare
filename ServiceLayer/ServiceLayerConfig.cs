@@ -15,6 +15,7 @@ namespace ServiceLayer
     {
         public static IServiceCollection AddBusinessLogicServices(this IServiceCollection services, IConfiguration configuration)
         {
+			services.AddTransient<IHomeService, HomeService>();
 			services.AddTransient<IUserService, UserService>();
 			services.AddTransient<IStaffService, StaffService>();
 

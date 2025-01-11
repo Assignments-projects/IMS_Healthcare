@@ -17,6 +17,12 @@ namespace DbLayer.Interfaces
 		Task<List<ViewUsersVsRoles>> UserRolesListAsync(string UserId);
 
 		/// <summary>
+		/// Get users with roles details
+		/// </summary>
+		/// <returns></returns>
+		Task<List<ViewUsersVsRoles>> UserRolesListAsync();
+
+		/// <summary>
 		/// Add or Update user record to users table from asp net users 
 		/// </summary>
 		/// <param name="userId"></param>

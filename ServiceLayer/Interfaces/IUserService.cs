@@ -1,9 +1,11 @@
 ﻿using AuthLayer.Models;
+using DbLayer.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace ServiceLayer.Interfaces
 {
@@ -85,5 +87,12 @@ namespace ServiceLayer.Interfaces
 		/// <param name="UserId"></param>
 		/// <returns></returns>
 		Task<List<ViewUsersVsRoles>> UserRolesListAsync(string UserId);
+
+		/// <summary>
+		/// Get User Select list item belongs to the user
+		/// </summary>
+		/// <param name="role"></param>
+		/// <returns></returns>
+		Task<List<SelectListItem>> UserBasedOnRoleList(UserRole role);
 	}
 }

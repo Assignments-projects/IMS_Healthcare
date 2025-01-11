@@ -1,10 +1,5 @@
 ﻿using DbLayer.Helper;
 using DbLayer.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServiceLayer.Services
 {
@@ -38,6 +33,46 @@ namespace ServiceLayer.Services
 
 			obj.UpdatedById = user.UserId;
 			obj.UpdatedDate = DateTime.Now;
+		}
+
+		/// <summary>
+		/// Check the current user has admin role
+		/// </summary>
+		/// <param name="user"></param>
+		/// <returns></returns>
+		protected bool IsAdmin(ICurrentUser user)
+		{
+			if (!user.Roles.Any())
+				return false;
+
+			return user.Roles.Contains(nameof(UserRole.Admin));
+		}
+
+		/// <summary>
+		/// Check the current user has patient role
+		/// </summary>
+		/// <param name="user"></param>
+		/// <returns></returns>
+		protected bool IsPatient(ICurrentUser user)
+		{
+			if (!user.Roles.Any())
+				return false;
+
+			return user.Roles.Count == 1 && user.Roles.Contains(nameof(UserRole.Patient));
+		}
+
+		/// <summary>
+		/// Check the current user has no admin and patient role
+		/// </summary>
+		/// <param name="user"></param>
+		/// <returns></returns>
+		protected bool IsStaff(ICurrentUser user)
+		{
+			if (!user.Roles.Any())
+				return false;
+
+			return !user.Roles.Contains(nameof(UserRole.Patient)) &&
+				   !user.Roles.Contains(nameof(UserRole.Admin));
 		}
 	}
 }

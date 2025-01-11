@@ -1,0 +1,102 @@
+﻿@using Web.Models.Staff
+@using Web.Helper
+
+@model StaffDetailsVM
+
+<form asp-controller="Staff" asp-action="AddEdit" method="post">
+	<input type="hidden" asp-for="Details.StaffId" />
+
+	<div class="row mb-3">
+		<div asp-validation-summary="ModelOnly"></div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-12">
+			<label asp-for="Details.StaffUuid">Select the staff from registration</label>
+			<select asp-for="Details.StaffUuid" id="StaffUuid" name="Details.StaffUuid" class="form-select @UniqueClass.SelectUser">
+				<option value="0">Select the staff</option>
+				@foreach (var role in Model.UsersList)
+				{
+					<option value="@role.Value">@role.Text</option>
+				}
+			</select>
+		</div>
+	</div>
+	<div class="row mb-1">
+		<div class="col-12" id="@ContainerId.UsersDetails">
+			
+		</div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-12 col-sm-6">
+			<div>
+				<label asp-for="Details.Designation">Designation</label>
+				<input asp-for="Details.Designation" class="form-control" autocomplete="email" aria-required="true" placeholder="Enter designation" />
+				<span asp-validation-for="Details.Designation" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="col-12 col-sm-6">
+			<div>
+				<label asp-for="Details.Gender">Gender</label>
+				<select asp-for="Details.Gender" id="Gender" name="Details.Gender" class="form-select">
+					<option value="Male">Male</option>
+					<option value="Female">Female</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-12 col-sm-6">
+			<div>
+				<label asp-for="Details.DateOfBirth">Date of birth</label>
+				<input asp-for="Details.DateOfBirth" class="form-control" autocomplete="username" aria-required="true" placeholder="Enter date of birth" />
+				<span asp-validation-for="Details.DateOfBirth" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="col-12 col-sm-6">
+			<div>
+				<label asp-for="Details.IdentityNo">Identity No</label>
+				<input asp-for="Details.IdentityNo" class="form-control" autocomplete="username" aria-required="true" placeholder="Enter identity number" />
+				<span asp-validation-for="Details.IdentityNo" class="text-danger"></span>
+			</div>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-12 col-sm-6">
+			<div>
+				<label asp-for="Details.Educations">Date of birth</label>
+				<input asp-for="Details.Educations" class="form-control" autocomplete="username" aria-required="true" placeholder="Enter education" />
+				<span asp-validation-for="Details.Educations" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="col-12 col-sm-6">
+			<div>
+				<label asp-for="Details.Salary">Date of birth</label>
+				<input asp-for="Details.Salary" class="form-control" autocomplete="username" aria-required="true" placeholder="Enter salary" />
+				<span asp-validation-for="Details.Salary" class="text-danger"></span>
+			</div>
+		</div>
+	</div>
+	<div class="mb-3">
+		<label asp-for="Details.Comments">Comments</label>
+		<textarea asp-for="Details.Comments" class="form-control" rows="3" autocomplete="email" aria-required="true" placeholder="Enter your comment"></textarea>
+		<span asp-validation-for="Details.Comments" class="text-danger"></span>
+	</div>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Details.StaffUuid))
+{
+	<script>
+		(function(){
+			Controls.RelaodContainer('@Url.Action("UserDetailsMini", "User", new { id = Model.Details.StaffUuid })', '@ContainerId.UsersDetails');
+		})();
+	</script>
+}
+
+<script>
+	(function(){
+		$('.@UniqueClass.SelectUser').change(function(){
+			var value = $(this).val();
+			Controls.RelaodContainer('@Url.Action("UserDetailsMini", "User")', '@ContainerId.UsersDetails', { id: value });
+		});
+	})();
+</script>

@@ -23,6 +23,9 @@ namespace Web.Helper
             if (_httpContextAcc.HttpContext?.User == null)
                 throw new UnauthorizedAccessException();
 
+			// Parse IsApproved string to bool and out the result
+			bool.TryParse(_httpContextAcc.HttpContext.User.FindFirstValue(nameof(LoggedUser.IsApproved)), out bool result);
+
             return new CurrentUser
             {
                 UserId         = _httpContextAcc.HttpContext.User.FindFirstValue(nameof(LoggedUser.Id)),
@@ -31,8 +34,9 @@ namespace Web.Helper
 				FullName       = _httpContextAcc.HttpContext.User.FindFirstValue(nameof(LoggedUser.FullName)),
 				Email          = _httpContextAcc.HttpContext.User.FindFirstValue(nameof(LoggedUser.Email)),
 				ProfilePicPath = _httpContextAcc.HttpContext.User.FindFirstValue(nameof(LoggedUser.ProfilePicture)),
-				Roles          = _httpContextAcc.HttpContext.User.FindAll(ClaimTypes.Role).Select(roleClaim => roleClaim.Value).ToList()
-            };
+				Roles		   = _httpContextAcc.HttpContext.User.FindAll(ClaimTypes.Role).Select(roleClaim => roleClaim.Value).ToList(),
+				IsApproved	   = result,
+			};
         }
     }
 }

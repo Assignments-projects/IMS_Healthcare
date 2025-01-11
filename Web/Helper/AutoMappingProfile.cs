@@ -1,10 +1,13 @@
 ﻿using AuthLayer.Models;
 using AutoMapper;
+using DbLayer.Models;
 using DbLayer.Models.Settings;
 using Microsoft.AspNetCore.Identity;
 using Web.Models.Account;
+using Web.Models.Home;
 using Web.Models.Role;
 using Web.Models.Settings;
+using Web.Models.Staff;
 using Web.Models.User;
 
 namespace Web.Helper
@@ -22,6 +25,10 @@ namespace Web.Helper
 
 			CreateMap<ImageTypeVM, ImageType>().ReverseMap();
 			CreateMap<DiseaseTypeVM, DiseaseType>().ReverseMap();
+
+			CreateMap<StaffVM, Staff>().ReverseMap();
+
+			CreateMap<Dashboard, DashboardVM>();
 		}
 	}
 }

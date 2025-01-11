@@ -1,27 +1,39 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using ServiceLayer.Interfaces;
 using System.Diagnostics;
 using Web.Helper;
 using Web.Models;
+using Web.Models.Home;
 
 namespace Web.Controllers
 {
     public class HomeController : BaseController
 	{
         private readonly ILogger<HomeController> _logger;
+        private readonly IHomeService _home;
+		private readonly IMapper _mapper;
 
-        public HomeController(ILogger<HomeController> logger)
+		public HomeController(
+            ILogger<HomeController> logger, 
+            IHomeService home,
+			IMapper mapper)
         {
             _logger = logger;
+            _home   = home;
+            _mapper = mapper;
         }
 
         /// <summary>
         /// Home index page dashboard
         /// </summary>
         /// <returns></returns>
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var currentUser = UserHelper.GetCurrentUser();
-            return View();
+            var result = await _home.DetailsAsync(UserHelper.GetCurrentUser());
+            var model  = _mapper.Map<DashboardVM>(result);
+
+			return View(model);
         }
 
 		/// <summary>

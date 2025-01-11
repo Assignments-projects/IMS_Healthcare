@@ -44,12 +44,9 @@ namespace DbLayer.Repositories
 		/// <returns></returns>
 		public async Task<Staff> DetailsAsync(string userUuid)
 		{
-			var result = await _context.Staffs.FirstOrDefaultAsync(x => x.StaffUuid == userUuid);
+			var result = _context.Staffs.Where(x => x.StaffUuid == userUuid);
 
-			if (result == null)
-				return new Staff();
-
-			return result;
+			return (await MakeStaffs(result)).FirstOrDefault();
 		}
 
 		/// <summary>

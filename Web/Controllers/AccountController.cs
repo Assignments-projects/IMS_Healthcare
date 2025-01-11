@@ -111,5 +111,54 @@ namespace Web.Controllers
 			_user.Logout();
 			return RedirectToAction(nameof(Login));
 		}
+
+		/// <summary>
+		/// Display not found page
+		/// </summary>
+		/// <returns></returns>
+		public async Task<IActionResult> NotFound()
+		{
+			return View("Errors/NotFoundError");
+		}
+
+		/// <summary>
+		/// Display server error page page
+		/// </summary>
+		/// <returns></returns>
+		public async Task<IActionResult> ServerError()
+		{
+			return View("Errors/ServerError");
+		}
+
+		/// <summary>
+		/// Display accss denied page
+		/// </summary>
+		/// <returns></returns>
+		public async Task<IActionResult> AccessDenied()
+		{
+			return View("Errors/AccessDenied");
+		}
+
+		/// <summary>
+		/// Display accss declined page
+		/// </summary>
+		/// <returns></returns>
+		public async Task<IActionResult> AccessDeclined()
+		{
+			string message = "You are not approved to use this account. Please contact admin.";
+
+			return View("Errors/UnauthorizedError", message);
+		}
+
+		/// <summary>
+		/// Display unauthorized coz has no user roles page
+		/// </summary>
+		/// <returns></returns>
+		public async Task<IActionResult> NoUserRoles()
+		{
+			string message = "You have no assigned roles to login. Please contact admin.";
+
+			return View("Errors/UnauthorizedError", message);
+		}
 	}
 }
