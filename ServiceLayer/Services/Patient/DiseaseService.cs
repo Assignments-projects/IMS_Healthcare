@@ -1,7 +1,9 @@
 ﻿using DbLayer.Helpers;
 using DbLayer.Interfaces.Patient;
 using DbLayer.Models.Patient;
+using DbLayer.Models.Settings;
 using ServiceLayer.Interfaces.Patient;
+using System.Web.Mvc;
 
 namespace ServiceLayer.Services.Patient
 {
@@ -73,6 +75,29 @@ namespace ServiceLayer.Services.Patient
 		public async Task<string> DeleteAsync(int id)
 		{
 			return await _disease.DeleteAsync(id);
+		}
+
+		/// <summary>
+		/// Disease Select list item
+		/// </summary>
+		/// <returns></returns>
+		public async Task<List<SelectListItem>> DiseaseSelectList()
+		{
+			var result = await _disease.ListAsync();
+
+			if (!result.Any())
+				return new List<SelectListItem>();
+
+			var list = result.Select(x => new SelectListItem
+			{
+				Value = x.DiseaseId.ToString(),
+				Text = $"{x.DiseaseType?.TypeName} - {x.DiseaseId}"
+			}).ToList();
+
+			if (!list.Any())
+				return new List<SelectListItem>();
+
+			return list;
 		}
 	}
 }

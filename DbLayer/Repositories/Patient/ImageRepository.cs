@@ -1,14 +1,8 @@
 ﻿using DbLayer.Data;
 using DbLayer.Interfaces.Patient;
 using DbLayer.Models.Patient;
-using DbLayer.Models.Settings;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DbLayer.Repositories.Patient
 {
@@ -82,7 +76,6 @@ namespace DbLayer.Repositories.Patient
 
 				exist.ImageTypeId = model.ImageTypeId;
 				exist.DiseaseId   = model.DiseaseId;
-				exist.StaffUuid   = model.StaffUuid;
 				exist.FileName    = model.FileName;
 				exist.FileContent = model.FileContent;
 				exist.MimeType    = model.MimeType;
@@ -143,6 +136,14 @@ namespace DbLayer.Repositories.Patient
 		{
 			var result = await found.Include(x => x.AddedBy)
 									.Include(x => x.UpdatedBy)
+									.Include(x => x.Disease)
+										.ThenInclude(x => x.DiseaseType)
+									.Include(x => x.Disease)
+										.ThenInclude(x => x.Doctor)
+									.Include(x => x.Disease)
+										.ThenInclude(x => x.Patient)
+									.Include(x => x.ImageType)
+									.AsNoTracking()
 									.ToListAsync();
 			if (!result.Any())
 				return new List<Image>();

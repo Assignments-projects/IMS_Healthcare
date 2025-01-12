@@ -1,0 +1,40 @@
+﻿@using Web.Models.Image
+@using Web.Helper
+
+@model List<ImageVM>
+
+
+<div class="row">
+	<div class="col-12">
+		<div class="row">
+			@if(Model.Any())
+			{
+				foreach(var image in Model)
+				{
+					<div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+						<div class="card h-100 mb-3">
+							<img src="@image.ImageUrl" class="card-img-top" alt="@image.ImageType?.TypeName image" style="max-height: 100px">
+							<div class="card-body border-card-body">
+								<h5 class="card-title">@image.ImageType?.TypeName - @image.Disease?.Patient?.FullName</h5>
+								<p class="card-text">Disease - @image.Disease?.DiseaseType?.TypeName (@image.DiseaseId)</p>
+								<p class="card-text"><small class="text-muted">Added at @image.AddedDate</small></p>
+							</div>
+							<div class="p-2 d-flex align-items-center gap-2">
+								<a data-id="@image.ImageId" class="btn btn-sm flex-fill btn-default @ButtonClass.ImageView">View</a>
+								<a data-id="@image.ImageId" class="btn btn-sm btn-default @ButtonClass.ImageDelete"><i class="align-middle text-danger" data-feather="trash"></i></a>
+							</div>
+						</div>
+					</div>
+				}
+			}
+			else
+			{
+				<div class="col-12">
+					<div class="alert alert-danger w-100" role="alert">
+						<div class="alert-message">Images not found.</div>
+					</div>
+				</div>
+			}
+		</div>
+	</div>
+</div>

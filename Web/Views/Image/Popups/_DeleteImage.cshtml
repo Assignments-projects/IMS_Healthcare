@@ -1,0 +1,11 @@
+﻿@using Web.Models.Image
+
+@model ImageVM
+
+<form asp-controller="Image" asp-action="Delete" method="post">
+    <input type="hidden" asp-for="ImageId" />
+
+    <div>
+        <h6>Are you sure you want to delete this image ?</h6>
+    </div>
+</form>

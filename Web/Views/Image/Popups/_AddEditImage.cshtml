@@ -1,0 +1,62 @@
+﻿@using Web.Models.Image
+@using Web.Helper
+
+@model ImageDetailsVM
+
+<form asp-controller="Image" asp-action="Add" enctype="multipart/form-data" method="post">
+
+	<div class="row mb-3">
+		<div asp-validation-summary="ModelOnly"></div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-12">
+			<label asp-for="Details.DiseaseId">Select Disease</label>
+			<select asp-for="Details.DiseaseId" id="DiseaseId" name="Details.DiseaseId" class="form-select">
+				<option value="" selected>Nothing selected</option>
+				@foreach (var role in Model.DiseaseList)
+				{
+					<option value="@role.Value">@role.Text</option>
+				}
+			</select>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-12">
+			<label asp-for="Details.ImageTypeId">Select Image Type</label>
+			<select asp-for="Details.ImageTypeId" id="ImageTypeId" name="Details.ImageTypeId" class="form-select">
+				<option value="" selected>Nothing selected</option>
+				@foreach (var role in Model.ImageTypeList)
+				{
+					<option value="@role.Value">@role.Text</option>
+				}
+			</select>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-12">
+			<div>
+				<label asp-for="File">Upload Image</label>
+				<input asp-for="File" class="form-control" type="file" name="File" aria-required="true" />
+				<span asp-validation-for="File" class="text-danger"></span>
+			</div>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-12">
+			<div>
+				<label asp-for="Details.Condition">Condition</label>
+				<input asp-for="Details.Condition" class="form-control" autocomplete="condition" aria-required="true" placeholder="Enter the image's condition'" />
+				<span asp-validation-for="Details.Condition" class="text-danger"></span>
+			</div>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-12">
+			<div>
+				<label asp-for="Details.Comments">Comments</label>
+				<textarea asp-for="Details.Comments" class="form-control" rows="3" autocomplete="comment" aria-required="true" placeholder="Enter your comment"></textarea>
+				<span asp-validation-for="Details.Comments" class="text-danger"></span>
+			</div>
+		</div>
+	</div>
+</form>

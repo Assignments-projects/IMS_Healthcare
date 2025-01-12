@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Web.Models.Account;
 using Web.Models.Disease;
 using Web.Models.Home;
+using Web.Models.Image;
 using Web.Models.Patient;
 using Web.Models.Role;
 using Web.Models.Settings;
@@ -33,6 +34,10 @@ namespace Web.Helper
 
 			CreateMap<PatientVM, Patients>().ReverseMap();
 			CreateMap<DiseaseVM, Disease>().ReverseMap();
+
+			// Explicit mapping for Image to handle complex navigation properties
+			CreateMap<Image, ImageVM>().ReverseMap();
+
 
 			CreateMap<Dashboard, DashboardVM>();
 		}

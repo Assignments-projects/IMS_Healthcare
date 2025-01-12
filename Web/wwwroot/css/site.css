@@ -42,9 +42,20 @@
     color: #f8d7da;
 }
 
+.border-card-body {
+    border-top: 1px solid #f1f1f1 !important;
+    border-bottom: 1px solid #f1f1f1 !important;
+}
+
+.border-top {
+    border-top: 1px solid #f1f1f1 !important;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #f1f1f1 !important;
+}
 
 /*----- Over written theme css starts ------*/
-
 .tab-light .nav-tabs .nav-link.active {
     color: #343a40 !important;
 }

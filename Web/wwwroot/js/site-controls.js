@@ -36,15 +36,23 @@ var Controls = (function () {
                                 <p class="fs-5 m-0">Loading...</p>
                             </div>`;
 
+            var formData = new FormData(form[0]);
+
             $.ajax({
                 url: form.attr("action"),
                 type: "POST",
-                data: form.serialize(),
+                data: formData,
+                processData: false,
+                contentType: false, 
                 success: function (response) {
                     if (response.success) {
                         $(`#${popUpId}`).modal('hide');
                         toastr.success(response.message);
                         $(`#${reloadContainerId}`).html(loading);
+
+                        if (response.url) {
+                            window.location.href = response.url;
+                        }
 
                         setTimeout(function () {
 

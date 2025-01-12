@@ -69,10 +69,10 @@ namespace Web.Models.Disease
 
 		//----- Foriegn key objects --------- 
 
-		public virtual PatientVM? Patient { get; set; }
+		public PatientVM? Patient { get; set; }
 
-		public virtual DiseaseTypeVM? DiseaseType { get; set; }
+		public DiseaseTypeVM? DiseaseType { get; set; }
 
-		public virtual StaffVM? Doctor { get; set; }
+		public StaffVM? Doctor { get; set; }
 	}
 }

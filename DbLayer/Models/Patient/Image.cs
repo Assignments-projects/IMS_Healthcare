@@ -34,12 +34,6 @@ namespace DbLayer.Models.Patient
 		[ForeignKey(nameof(Disease))]
 		public int DiseaseId         { get; set; }
 
-		/// <summary>
-		/// Staff unique id
-		/// </summary>
-		[ForeignKey(nameof(Staff))]
-		public string? StaffUuid { get; set; }
-
 		//-------------------------------
 
 		/// <summary>
@@ -95,8 +89,6 @@ namespace DbLayer.Models.Patient
 		public virtual ImageType ImageType   { get; set; }
 
 		public virtual Disease Disease       { get; set; }
-
-		public virtual Staff Staff           { get; set; }
 
 		public virtual User AddedBy { get; set; }
 

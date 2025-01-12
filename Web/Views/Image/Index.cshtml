@@ -1,0 +1,109 @@
+﻿@using Web.Models.Image
+@using Web.Helper
+@using System.Web.Mvc.Ajax
+
+@model ImageDetailsVM
+
+@{
+    ViewBag.Title = "Images";
+}
+
+<div class="container-fluid p-0">
+
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle">Images</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card main-frame-card">
+                <div class="card-header d-flex justify-content-between align-content-between align-items-center flex-wrap">
+                    <div>
+                        <h5 class="card-title">Images DataTables</h5>
+                        <h6 class="card-subtitle text-muted">
+                            Here you can manage images.
+                        </h6>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" id="@ButtonId.ImageAddNew">Add Image</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div>
+                        
+					</div>
+					<div class="bg-light" id="@ContainerId.ImageList">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section scripts {
+	<script>
+		(function () {
+
+			/**
+			 * Load image list table
+			 * Take the Url action to load partial and load the container
+			 */
+			var LoadImages = function ()
+			{
+				Controls.RelaodContainer('@Url.Action("ImageList", "Image")', '@ContainerId.ImageList');
+			}
+
+			/**
+			 * Open add image pop-up when click edit button
+			 * Take the Url action to load partial and Open the bootstrap modal
+			 */
+			var AddNewImage =  function()
+			{
+				var url = '@Url.Action("Add", "Image")';
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Add New Image");
+			}
+
+			/**
+			 * Open image pop-up when click view button
+			 * Take the Url action to load partial and Open the bootstrap modal
+			 */
+			var ViewImage = function()
+			{
+				var id  = $(this).attr("data-id");
+				var url = `@Url.Action("ImageDetails", "Image")?id=${id}`;
+
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Image Details", "Download");
+			}
+
+			/**
+			 * Open image pop-up when click delete button
+			 * Take the Url action to load partial and Open the bootstrap modal
+			 */
+			var DeleteImage = function()
+			{
+				var id  = $(this).attr("data-id");
+				var url = `@Url.Action("Delete", "Image")?id=${id}`;
+
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Delete Image", "Delete", "btn-danger");
+			}
+
+			/**
+			 * Submit the form via ajax and close the modal
+			 */
+			var SubmitModalForm = function()
+			{
+				var form = $(this).closest('.modal').find('.modal-body form');
+
+				Controls.RelaodContainerOnModalPost("@UniqueIdentifier.MainModelId", form, '@ContainerId.ImageList', LoadImages);
+			}
+
+			// Handle events
+			$(document).ready(LoadImages);
+			$(document).on('click', '#@ButtonId.ImageAddNew', AddNewImage);
+			$(document).on('click', '.@ButtonClass.ImageView', ViewImage);
+			$(document).on('click', '.@ButtonClass.ImageDelete', DeleteImage);
+			$(document).on('click', '.@ButtonClass.MainModalSubmit', SubmitModalForm);
+
+		})();
+	</script>
+}

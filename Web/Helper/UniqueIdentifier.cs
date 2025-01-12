@@ -105,7 +105,7 @@
 		public const string PatientEdit          = "jq-edit-patient-button-class";
 		public const string PatientDischarge     = "jq-discharge-patient-role-button-class";
 
-		public const string ImageEdit            = "jq-edit-image-button-class";
+		public const string ImageView = "jq-view-image-button-class";
 		public const string ImageDelete          = "jq-delete-image-button-class";
 
 		public const string DiseaseEdit          = "jq-edit-disease-button-class";
@@ -119,7 +119,7 @@
 		public const string StatementItemEdit    = "jq-edit-statement-item-button-class";
 		public const string StatementItemDelete  = "jq-delete-statement-item-button-class";
 
-		public const string ImageTypeEdit        = "jq-edit-image-type-button-class";
+		public const string ImageTypeEdit = "jq-edit-image-type-button-class";
 		public const string ImageTypeDelete      = "jq-delete-image-type-button-class";
 		public const string DiseaseTypeEdit      = "jq-edit-disease-type-button-class";
 		public const string DiseaseTypeDelete    = "jq-delete-disease-type-button-class";

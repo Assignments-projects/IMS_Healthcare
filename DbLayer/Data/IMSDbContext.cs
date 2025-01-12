@@ -87,14 +87,6 @@ namespace DbLayer.Data
 					.HasForeignKey<Staff>(s => s.StaffUuid)
 					.HasPrincipalKey<User>(u => u.UserUuid);
 
-			// Configure the relationship between Image and staff
-			builder.Entity<Image>()
-				   .HasOne(i => i.Staff)
-				   .WithMany(s => s.Images)
-				   .HasForeignKey(i => i.StaffUuid)
-				   .HasPrincipalKey(s => s.StaffUuid)
-				   .OnDelete(DeleteBehavior.Restrict);
-
 			// Configure the relationship between Statement and Patient
 			builder.Entity<Statement>()
 				   .HasOne(s => s.Patient)

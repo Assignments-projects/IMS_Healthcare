@@ -1,0 +1,69 @@
+﻿@using Web.Models.Image
+@using Web.Helper
+
+@model ImageVM
+
+<form asp-controller="Image" asp-action="Download" method="post">
+    <input type="hidden" asp-for="ImageId" />
+    <input type="hidden" asp-for="FileName" />
+    <input type="hidden" asp-for="FileContent" />
+    <input type="hidden" asp-for="MimeType" />
+
+    <div>
+        <div>
+            <img class="w-100" src="@Model.ImageUrl" style="max-height: 200px"/>
+        </div>
+        <div class="row border-top p-2">
+            <div class="col-6">
+                <p class="m-0 mb-1 text-secondary fw-bold">Image Type</p>
+                <p class="m-0 text-muted">@Model.ImageType?.TypeName.PropString()</p>
+            </div>
+            <div class="col-6">
+                <p class="m-0 mb-1 text-secondary fw-bold">Disease Type</p>
+                <p class="m-0 text-muted">@Model.Disease?.DiseaseType?.TypeName.PropString()</p>
+            </div>
+        </div>
+        <div class="row border-top p-2">
+            <div class="col-6">
+                <p class="m-0 mb-1 text-secondary fw-bold">Disease Id</p>
+                <p class="m-0 text-muted">@Model.DiseaseId.PropString()</p>
+            </div>
+            <div class="col-6">
+                <p class="m-0 mb-1 text-secondary fw-bold">Patient</p>
+                <p class="m-0 text-muted">@Model.Disease?.Patient?.FullName.PropString()</p>
+            </div>
+        </div>
+        <div class="row border-top p-2">
+            <div class="col-12">
+                <p class="m-0 mb-1 text-secondary fw-bold">Disease</p>
+                <p class="m-0 text-muted">@Model.Disease?.DiseaseSpec.PropString()</p>
+            </div>
+        </div>
+        <div class="row border-top p-2">
+            <div class="col-6">
+                <p class="m-0 mb-1 text-secondary fw-bold">Doctor</p>
+                <p class="m-0 text-muted">@Model.Disease?.Doctor.FullName.PropString()</p>
+            </div>
+            <div class="col-6">
+                <p class="m-0 mb-1 text-secondary fw-bold">Condition</p>
+                <p class="m-0 text-muted">@Model.Condition.PropString()</p>
+            </div>
+        </div>
+        <div class="row border-top p-2">
+            <div class="col-12">
+                <p class="m-0 mb-1 text-secondary fw-bold">Comment</p>
+                <p class="m-0 text-muted">@Model.Comments.PropString()</p>
+            </div>
+        </div>
+        <div class="row border-top pt-2">
+            <div class="col-6">
+                <p class="m-0 mb-1 text-secondary fw-bold">Added by</p>
+                <p class="m-0 text-muted">@Model.AddedByName.PropString()</p>
+            </div>
+            <div class="col-6">
+                <p class="m-0 mb-1 text-secondary fw-bold">Added date</p>
+                <p class="m-0 text-muted">@Model.AddedDate.PropString()</p>
+            </div>
+        </div>
+    </div>
+</form>

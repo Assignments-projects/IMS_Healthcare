@@ -16,7 +16,6 @@ namespace Web.Controllers
 		private readonly IPatientsService _patient;
 		private readonly IStaffService _staff;
 		private readonly IDiseaseTypeService _diseaseType;
-		private readonly IUserService _user;
 		private readonly IMapper _mapper;
 
 		public DiseaseController(
@@ -24,10 +23,8 @@ namespace Web.Controllers
 			IPatientsService patient,
 			IStaffService staff,
 			IDiseaseTypeService diseaseType,
-			IUserService user,
 			IMapper mapper)
 		{
-			_user    = user;
 			_disease = disease;
 			_patient = patient;
 			_staff = staff;
