@@ -87,6 +87,7 @@ namespace DbLayer.Repositories.Patient
 					return NotFound;
 
 				exist.PatientUuid  = model.PatientUuid;
+				exist.InChargeuUud = model.InChargeuUud;
 				exist.FirstName    = model.FirstName;
 				exist.LastName     = model.LastName;
 				exist.Address      = model.Address;
@@ -95,6 +96,7 @@ namespace DbLayer.Repositories.Patient
 				exist.Comments     = model.Comments;
 				exist.Gender       = model.Gender;
 				exist.IdentityNo   = model.IdentityNo;
+				exist.WardNo       = model.WardNo;
 				exist.TotalCost    = model.TotalCost;
 				exist.IsDischarged = model.IsDischarged;
 				exist.UpdatedById  = model.UpdatedById;
@@ -153,6 +155,8 @@ namespace DbLayer.Repositories.Patient
 		{
 			var result = await found.Include(x => x.AddedBy)
 									.Include(x => x.UpdatedBy)
+									.Include(X => X.Staff)
+									.AsNoTracking()
 									.ToListAsync();
 			if (!result.Any())
 				return new List<Patients>();

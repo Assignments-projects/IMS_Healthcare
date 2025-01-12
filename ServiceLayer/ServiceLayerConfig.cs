@@ -21,6 +21,8 @@ namespace ServiceLayer
 
 			services.AddTransient<IPatientsService, PatientsService>();
 			services.AddTransient<IImageService, ImageService>();
+			services.AddTransient<IDiseaseService, DiseaseService>();
+			services.AddTransient<IPrescriptionService, PrescriptionService>();
 
 			services.AddTransient<IStatementService, StatementService>();
 			services.AddTransient<IStatementItemService, StatementItemService>();

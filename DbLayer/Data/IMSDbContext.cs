@@ -54,21 +54,23 @@ namespace DbLayer.Data
 				   .HasOne(p => p.Staff)
 				   .WithMany(s => s.Patient)
 				   .HasForeignKey(p => p.InChargeuUud)
-				   .HasPrincipalKey(s => s.StaffUuid);
+				   .HasPrincipalKey(s => s.StaffUuid)
+				   .IsRequired(false);
 
 			// Configure the relationship between Disease and Patients
 			builder.Entity<Disease>()
 				   .HasOne(d => d.Patient)
-				   .WithOne(p => p.Disease)
-				   .HasForeignKey<Patients>(p => p.PatientUuid)
-				   .HasPrincipalKey<Disease>(d => d.PatientUuid);
+				   .WithMany(p => p.Disease)
+				   .HasForeignKey(p => p.PatientUuid)
+				   .HasPrincipalKey(d => d.PatientUuid);
 
 			// Configure the relationship between Disease and staff
 			builder.Entity<Disease>()
 				   .HasOne(d => d.Doctor)
 				   .WithMany(s => s.Diseases)
 				   .HasForeignKey(d => d.DoctorId)
-			       .HasPrincipalKey(s => s.StaffUuid);
+			       .HasPrincipalKey(s => s.StaffUuid)
+				   .IsRequired(false);
 
 			// Configure the one-to-one relationship between Patients and User
 			builder.Entity<Patients>()

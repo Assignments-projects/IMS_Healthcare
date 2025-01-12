@@ -1,5 +1,6 @@
 ﻿using DbLayer.Helpers;
 using DbLayer.Models.Patient;
+using System.Web.Mvc;
 
 namespace ServiceLayer.Interfaces.Patient
 {
@@ -45,5 +46,11 @@ namespace ServiceLayer.Interfaces.Patient
 		/// <param name="id"></param>
 		/// <returns></returns>
 		Task<string> DeleteAsync(int id);
+
+		/// <summary>
+		/// Patient Select list item
+		/// </summary>
+		/// <returns></returns>
+		Task<List<SelectListItem>> PatientSelectList();
 	}
 }

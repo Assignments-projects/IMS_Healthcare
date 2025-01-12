@@ -1,0 +1,89 @@
+﻿@using Web.Helper
+
+@{
+	ViewBag.Title = "Diseases";
+}
+
+<div class="container-fluid p-0">
+
+	<div class="mb-3">
+		<h1 class="h3 d-inline align-middle">Diseases</h1>
+	</div>
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card main-frame-card">
+				<div class="card-header d-flex justify-content-between align-content-between align-items-center flex-wrap">
+					<div>
+						<h5 class="card-title">Diseases DataTables</h5>
+						<h6 class="card-subtitle text-muted">
+							Here you can manage diseases.
+						</h6>
+					</div>
+					<div>
+						<button class="btn btn-primary" id="@ButtonId.DiseaseAddNew">Add Disease</button>
+					</div>
+				</div>
+				<div class="card-body">
+					<div id="@ContainerId.DiseaseList">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section scripts {
+	<script>
+		(function () {
+
+			/**
+			 * Load disease list table
+			 * Take the Url action to load partial and load the container
+			 */
+			var LoadDiseases = function ()
+			{
+				Controls.RelaodContainer('@Url.Action("DiseaseList", "Disease")', '@ContainerId.DiseaseList');
+			}
+
+			/**
+			 * Open add disease pop-up when click edit button
+			 * Take the Url action to load partial and Open the bootstrap modal
+			 */
+			var AddNewDisease =  function()
+			{
+				var url = '@Url.Action("AddEdit", "Disease")';
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Add New Disease");
+			}
+
+			/**
+			 * Open disease pop-up when click edit button
+			 * Take the Url action to load partial and Open the bootstrap modal
+			 */
+			var EditDisease = function()
+			{
+				var id  = $(this).attr("data-id");
+				var url = `@Url.Action("AddEdit", "Disease")?id=${id}`;
+
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Update Disease Details");
+			}
+
+			/**
+			 * Submit the form via ajax and close the modal
+			 */
+			var SubmitModalForm = function()
+			{
+				var form = $(this).closest('.modal').find('.modal-body form');
+
+				Controls.RelaodContainerOnModalPost("@UniqueIdentifier.MainModelId", form, '@ContainerId.DiseaseList', LoadDiseases);
+			}
+
+			// Handle events
+			$(document).ready(LoadDiseases);
+			$(document).on('click', '#@ButtonId.DiseaseAddNew', AddNewDisease);
+			$(document).on('click', '.@ButtonClass.DiseaseEdit', EditDisease);
+			$(document).on('click', '.@ButtonClass.MainModalSubmit', SubmitModalForm);
+
+		})();
+	</script>
+}

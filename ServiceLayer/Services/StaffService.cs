@@ -2,7 +2,9 @@
 using DbLayer.Helpers;
 using DbLayer.Interfaces;
 using DbLayer.Models;
+using DbLayer.Models.Patient;
 using ServiceLayer.Interfaces;
+using System.Web.Mvc;
 
 namespace ServiceLayer.Services
 {
@@ -86,6 +88,29 @@ namespace ServiceLayer.Services
 		public async Task<string> DeleteAsync(int id)
 		{
 			return await _staff.DeleteAsync(id);
+		}
+
+		/// <summary>
+		/// Staff Select list item
+		/// </summary>
+		/// <returns></returns>
+		public async Task<List<SelectListItem>> StaffSelectList()
+		{
+			var result = await _staff.ListAsync();
+
+			if (!result.Any())
+				return new List<SelectListItem>();
+
+			var list = result.Select(x => new SelectListItem
+			{
+				Value = x.StaffUuid,
+				Text = $"{x.FirstName} {x.LastName}"
+			}).ToList();
+
+			if (!list.Any())
+				return new List<SelectListItem>();
+
+			return list;
 		}
 
 		/// <summary>

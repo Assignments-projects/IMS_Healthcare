@@ -1,1 +1,109 @@
-﻿
+﻿@using Web.Helper
+@using Web.Models.Staff
+
+@model StaffMainDetails
+
+@{
+	ViewBag.Title = "Staff Details";
+}
+
+<div class="container-fluid p-0">
+
+	<div class="mb-3">
+		<h1 class="h3 d-inline align-middle">User Details</h1>
+	</div>
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header d-flex justify-content-between align-content-between align-items-center flex-wrap">
+					<div>
+						<h5 class="card-title">Staff Details with Registration Info</h5>
+						<h6 class="card-subtitle text-muted">
+							Here you can manage your staff details.
+						</h6>
+					</div>
+					<div>
+						<a asp-action="Index" class="btn btn-default">Back</a>
+					</div>
+				</div>			
+			</div>
+		</div>
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<div id="@ContainerId.UsersDetails">
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<div id="@ContainerId.StaffDetails">
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section scripts {
+	<script>
+		(function () {
+
+			/**
+			 * Load staff details
+			 * Take the Url action to load partial and load the container
+			 */
+			var LoadStaffsDetails = function ()
+			{
+				Controls.RelaodContainer('@Url.Action("StaffDetails", "Staff", new { id = Model.StaffUuid })', '@ContainerId.StaffDetails');
+				Controls.RelaodContainer('@Url.Action("UserDetails", "User", new { id = Model.StaffUuid })', '@ContainerId.UsersDetails');
+			}
+
+			/**
+			 * Open edit user pop-up when click edit button
+			 * Take the Url action to load partial and Open the bootstrap modal
+			 */
+			var EditRegistration =  function()
+			{
+				var id  = $(this).attr("data-id");
+				var url = `@Url.Action("AddEdit", "User")?id=${id}`;
+
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Update Registration");
+			}
+
+			/**
+			 * Open staff pop-up when click edit button
+			 * Take the Url action to load partial and Open the bootstrap modal
+			 */
+			var EditStaff = function()
+			{
+				var id  = $(this).attr("data-id");
+				var url = `@Url.Action("AddEdit", "Staff")?id=${id}`;
+
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Update Staff Details");
+			}
+
+			/**
+			 * Submit the form via ajax and close the main modal
+			 */
+			var SubmitModalForm = function()
+			{
+				var form = $(this).closest('.modal').find('.modal-body form');
+
+				Controls.RelaodContainerOnModalPost("@UniqueIdentifier.MainModelId", form, '@ContainerId.StaffDetails');
+			}
+
+
+			// Handle events
+			$(document).ready(LoadStaffsDetails);
+			$(document).on('click', '#@ButtonId.StaffEdit', EditStaff);
+			$(document).on('click', '#@ButtonId.UserEdit', EditRegistration);
+			$(document).on('click', '.@ButtonClass.MainModalSubmit', SubmitModalForm);
+		})();
+	</script>
+}

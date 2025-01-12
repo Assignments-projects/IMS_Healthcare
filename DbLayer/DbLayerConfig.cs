@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace DbLayer
 {
@@ -21,7 +22,11 @@ namespace DbLayer
         {
 			var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-			services.AddDbContext<IMSDbContext>(option => option.UseSqlServer(connectionString));
+			services.AddDbContext<IMSDbContext>(option => 
+			{
+				option.UseSqlServer(connectionString);
+				option.UseLazyLoadingProxies(false);
+			}, ServiceLifetime.Scoped);
 
 			services.AddIdentity<AppUser, IdentityRole>()
 					.AddEntityFrameworkStores<IMSDbContext>()

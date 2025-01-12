@@ -4,7 +4,7 @@
 @model UserVM
 
 <style>
-	.tbl-user-details td {
+	.tbl-user-details-mini td {
 		padding: 5px;
 		font-size: 10px;
 	}
@@ -16,7 +16,7 @@
 	</div>
 	<div class="">
 		<div class="row">
-			<div class="col-12 col-md-2 d-flex">
+			<div class="col-12 col-md-2 d-flex justify-content-center">
 				<div class="mb-3 position-relative">
 					@if (string.IsNullOrEmpty(Model.ProfilePicPath))
 					{
@@ -31,7 +31,7 @@
 			<div class="col-12 col-md-9">
 				<div class="row">
 					<div class="col-12 col-lg-6">
-						<table class="w-100 tbl-user-details">
+						<table class="w-100 tbl-user-details-mini">
 							<tr>
 								<td>First name</td>
 								<td>:</td>
@@ -55,7 +55,7 @@
 						</table>
 					</div>
 					<div class="col-12 col-lg-6">
-						<table class="w-100 tbl-user-details">
+						<table class="w-100 tbl-user-details-mini">
 							<tr>
 								<td>Address</td>
 								<td>:</td>

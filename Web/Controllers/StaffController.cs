@@ -2,13 +2,10 @@
 using AutoMapper;
 using DbLayer.Helpers;
 using DbLayer.Models;
-using DbLayer.Models.Settings;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Interfaces;
 using Web.Helper;
-using Web.Models.Settings;
 using Web.Models.Staff;
-using Web.Models.User;
 
 namespace Web.Controllers
 {
@@ -56,6 +53,18 @@ namespace Web.Controllers
 			var model = _mapper.Map<List<StaffVM>>(staffs);
 
 			return PartialView("Containers/_StaffList", model);
+		}
+
+		/// <summary>
+		/// Load details of staff by id
+		/// </summary>
+		/// <returns></returns>
+		public async Task<PartialViewResult> StaffDetails(string id)
+		{
+			var staff = await _staff.DetailsAsync(id);
+			var model = _mapper.Map<StaffVM>(staff);
+
+			return PartialView("Containers/_StaffDetails", model);
 		}
 
 		/// <summary>

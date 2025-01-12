@@ -12,6 +12,13 @@ namespace ServiceLayer.Interfaces.Patient
 		Task<List<Disease>> ListAsync();
 
 		/// <summary>
+		/// Load disease list for patient
+		/// </summary>
+		/// <param name="patientUuid"></param>
+		/// <returns></returns>
+		Task<List<Disease>> ListAsync(string patientUuid);
+
+		/// <summary>
 		/// Get disease details by id
 		/// </summary>
 		/// <param name="id"></param>

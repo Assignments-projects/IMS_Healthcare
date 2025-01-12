@@ -1,5 +1,6 @@
 ﻿using DbLayer.Helpers;
 using DbLayer.Models;
+using System.Web.Mvc;
 
 namespace ServiceLayer.Interfaces
 {
@@ -45,5 +46,11 @@ namespace ServiceLayer.Interfaces
 		/// <param name="id"></param>
 		/// <returns></returns>
 		Task<string> DeleteAsync(int id);
+
+		/// <summary>
+		/// Staff Select list item
+		/// </summary>
+		/// <returns></returns>
+		Task<List<SelectListItem>> StaffSelectList();
 	}
 }

@@ -31,6 +31,16 @@ namespace DbLayer.Repositories.Patient
 		}
 
 		/// <summary>
+		/// Load disease list for patient
+		/// </summary>
+		/// <param name="patientUuid"></param>
+		/// <returns></returns>
+		public async Task<List<Disease>> ListAsync(string patientUuid)
+		{
+			return await MakeDiseases(_context.Diseases.Where(x => x.PatientUuid == patientUuid));
+		}
+
+		/// <summary>
 		/// Get disease details by id
 		/// </summary>
 		/// <param name="id"></param>
@@ -141,6 +151,10 @@ namespace DbLayer.Repositories.Patient
 		{
 			var result = await found.Include(x => x.AddedBy)
 									.Include(x => x.UpdatedBy)
+									.Include(x => x.Patient)
+									.Include(x => x.DiseaseType)
+									.Include(x => x.Doctor)
+									.AsNoTracking()
 									.ToListAsync();
 			if (!result.Any())
 				return new List<Disease>();

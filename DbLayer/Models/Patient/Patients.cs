@@ -71,6 +71,11 @@ namespace DbLayer.Models.Patient
 		public string? IdentityNo    { get; set; }
 
 		/// <summary>
+		/// Ward Number if admittied
+		/// </summary>
+		public string? WardNo { get; set; }
+
+		/// <summary>
 		/// Any comments about the patient
 		/// </summary>
 		public string? Comments      { get; set; }
@@ -120,6 +125,6 @@ namespace DbLayer.Models.Patient
 
 		//----------------------------------
 
-		public virtual Disease Disease { get; set; }
+		public virtual ICollection<Disease> Disease { get; set; }
 	}
 }

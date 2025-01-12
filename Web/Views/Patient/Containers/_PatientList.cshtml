@@ -1,0 +1,47 @@
+﻿@using Web.Models.Patient
+@using Web.Helper
+
+@model List<PatientVM>
+
+<table id="@TableId.PatientsList" class="table table-striped w-100">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>First name</th>
+			<th>Last name</th>
+			<th>Designation</th>
+			<th>Phone no</th>
+			<th>Added by</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		@if (Model.Any())
+		{
+			@foreach (var type in Model)
+			{
+				<tr>
+					<td>@type.PateintId</td>
+					<td>@type.FirstName.PropString()</td>
+					<td>@type.LastName.PropString()</td>
+					<td>@type.PhoneNo.PropString()</td>
+					<td>@type.WardNo.PropString()</td>
+					<td>
+						<p class="m-0">@type.AddedByName.PropString()</p>
+						<p class="m-0 text-secondary"><small>@type.AddedDate.PropString()</small></p>
+					</td>
+					<td>
+						<a data-id="@type.PatientUuid" class="p-1 @ButtonClass.PatientEdit text-secondary"><i class="align-middle" data-feather="edit-2"></i></a>
+						<a asp-action="Details" asp-route-id="@type.PatientUuid"><i class="align-middle" data-feather="eye"></i></a>
+					</td>
+				</tr>
+			}
+		}
+	</tbody>
+</table>
+
+<script>
+	(function () {
+		Controls.InitiateDataTable('@TableId.PatientsList');
+	})();
+</script>

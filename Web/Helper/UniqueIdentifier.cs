@@ -6,6 +6,8 @@
 	public static class UniqueIdentifier
 	{
 		public const string MainModelId = "jq-main-popup-modal-id";
+		public const string SecondaryModelId = "jq-secondary-popup-modal-id";
+
 	}
 
 	/// <summary>
@@ -28,13 +30,16 @@
 	{
 		public const string RolesList         = "jq-roles-list-container-id";
 		public const string UsersList         = "jq-users-list-container-id";
-		public const string UsersDetails      = "jq-users-details-container-id";
-
+		public const string UsersDetailsMini      = "jq-users-details-mini-container-id";
+		public const string UsersDetails = "jq-users-details-container-id";
 
 		public const string StaffList         = "jq-staff-list-container-id";
+		public const string StaffDetails = "jq-staff-details-container-id";
 
 		public const string PatientList       = "jq-patients-list-container-id";
+		public const string PatientDetails = "jq-patient-details-container-id";
 		public const string DiseaseList       = "jq-diseases-list-container-id";
+		public const string DiseaseDetails = "jq-disease-details-container-id";
 		public const string ImageList         = "jq-images-list-container-id";
 		public const string PrescriptionList  = "jq-prescription-list-container-id";
 
@@ -59,11 +64,16 @@
 		public const string AssignRole          = "jq-assign-new-role-button-id";
 
 		public const string StaffAddNew         = "jq-add-new-staff-button-id";
+		public const string StaffEdit           = "jq-edit-staff-button-id";
 
 		public const string PatientAddNew       = "jq-add-new-patient-button-id";
+		public const string PatientEdit = "jq-edit-patient-button-id";
 		public const string ImageAddNew         = "jq-add-new-image-button-id";
 		public const string DiseaseAddNew       = "jq-add-new-disease-button-id";
 		public const string PrescriptionAddNew  = "jq-add-new-prescription-button-id";
+
+		public const string DiseaseEdit = "jq-edit-disease-button-id";
+
 
 		public const string StatementAddNew     = "jq-add-new-statement-button-id";
 		public const string StatementItemAddNew = "jq-add-new-statement-item-button-id";
@@ -79,6 +89,7 @@
 	public static class ButtonClass
 	{
 		public const string MainModalSubmit      = "jq-main-modal-submit-button-class";
+		public const string SecondaryModalSubmit = "jq-secondary-modal-submit-button-class";
 
 		public const string RoleEdit             = "jq-edit-role-button-class";
 		public const string RoleDelete           = "jq-delete-role-button-class";

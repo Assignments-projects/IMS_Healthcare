@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace ServiceLayer.Interfaces.Settings
 {
@@ -43,5 +44,11 @@ namespace ServiceLayer.Interfaces.Settings
 		/// <param name="id"></param>
 		/// <returns></returns>
 		Task<string> DeleteAsync(int id);
+
+		/// <summary>
+		/// Image Select list item
+		/// </summary>
+		/// <returns></returns>
+		Task<List<SelectListItem>> ImageTypeSelectList();
 	}
 }

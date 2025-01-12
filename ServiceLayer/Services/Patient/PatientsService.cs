@@ -1,23 +1,22 @@
-﻿using DbLayer.Helpers;
+﻿using AuthLayer.Interfaces;
+using DbLayer.Helpers;
 using DbLayer.Interfaces.Patient;
 using DbLayer.Models;
 using DbLayer.Models.Patient;
 using ServiceLayer.Interfaces.Patient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace ServiceLayer.Services.Patient
 {
 	public class PatientsService : BaseService, IPatientsService
 	{
 		private readonly IPatientsRepository _patient;
+		private readonly IAccountService _account;
 
-		public PatientsService(IPatientsRepository patient)
+		public PatientsService(IPatientsRepository patient, IAccountService account)
 		{
 			_patient = patient;
+			_account = account;
 		}
 
 		/// <summary>
@@ -56,6 +55,11 @@ namespace ServiceLayer.Services.Patient
 		/// <returns></returns>
 		public async Task<string> AddAsync(Patients model, ICurrentUser user)
 		{
+			var result = BindRegistrationDetails(model);
+
+			if (result == null)
+				return "Registration details missing";
+
 			AddAudit(model, user);
 			return await _patient.AddAsync(model);
 		}
@@ -67,6 +71,11 @@ namespace ServiceLayer.Services.Patient
 		/// <returns></returns>
 		public async Task<string> UpdateAsync(Patients model, ICurrentUser user)
 		{
+			var result = BindRegistrationDetails(model);
+
+			if (result == null)
+				return "Registration details missing";
+
 			UpdateAudit(model, user);
 			return await _patient.UpdateAsync(model);
 		}
@@ -79,6 +88,49 @@ namespace ServiceLayer.Services.Patient
 		public async Task<string> DeleteAsync(int id)
 		{
 			return await _patient.DeleteAsync(id);
+		}
+
+		/// <summary>
+		/// Patient Select list item
+		/// </summary>
+		/// <returns></returns>
+		public async Task<List<SelectListItem>> PatientSelectList()
+		{
+			var result = await _patient.ListAsync();
+
+			if(!result.Any())
+				return new List<SelectListItem>();
+
+			var list = result.Select(x => new SelectListItem
+			{
+				Value = x.PatientUuid,
+				Text = $"{x.FirstName} {x.LastName}"
+			}).ToList();
+
+			if (!list.Any())
+				return new List<SelectListItem>();
+
+			return list;
+		}
+
+		/// <summary>
+		/// Bind registration details
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
+		private async Task<Patients> BindRegistrationDetails(Patients model)
+		{
+			var result = await _account.DetailsAsync(model.PatientUuid);
+
+			if (result == null)
+				return new Patients();
+
+			model.FirstName = result.FirstName;
+			model.LastName = result.LastName;
+			model.Address = result.Address;
+			model.PhoneNo = result.PhoneNo;
+
+			return model;
 		}
 	}
 }

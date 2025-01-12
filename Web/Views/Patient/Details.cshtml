@@ -1,0 +1,151 @@
+﻿@using Web.Helper
+@using Web.Models.Patient
+
+@model PatientMainVM
+
+@{
+	ViewBag.Title = "Patient Details";
+}
+
+<div class="container-fluid p-0">
+
+	<div class="mb-3">
+		<h1 class="h3 d-inline align-middle">User Details</h1>
+	</div>
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header d-flex justify-content-between align-content-between align-items-center flex-wrap">
+					<div>
+						<h5 class="card-title">Patient Details with Registration Info</h5>
+						<h6 class="card-subtitle text-muted">
+							Here you can manage your patient details.
+						</h6>
+					</div>
+					<div>
+						<a asp-action="Index" class="btn btn-default">Back</a>
+					</div>
+				</div>			
+			</div>
+		</div>
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<div id="@ContainerId.UsersDetails">
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="tab tab-vertical tab-light text-secondary">
+						<ul class="nav nav-tabs" role="tablist">
+							<li class="nav-item">
+								<a class="nav-link active"
+								   href="#@Model.PatientInfoTabId"
+								   data-reload-id="@Model.PatientInfoTabId"
+								   data-url="@Url.Action("PatientDetails", "Patient", new { id = Model.PatientUuid })"
+								   data-bs-toggle="tab"
+								   role="tab">
+									<i class="align-middle" data-feather="heart"></i>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link"
+								   href="#@Model.DiseaseTabId"
+								   data-reload-id="@Model.DiseaseTabId"
+								   data-url="@Url.Action("DiseasetList", "Patient", new { id = Model.PatientUuid })"
+								   data-bs-toggle="tab"
+								   role="tab">
+									<i class="align-middle" data-feather="alert-triangle"></i>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link"
+								   href="#@Model.StatementaId"
+								   data-reload-id="@Model.StatementaId"
+								   data-url="@Url.Action("UserRoleList", "User", new { id = Model.PatientUuid })"
+								   data-bs-toggle="tab"
+								   role="tab">
+									<i class="align-middle" data-feather="file-text"></i>
+								</a>
+							</li>
+						</ul>
+						<div class="tab-content text-secondary">
+							<div class="tab-pane active" id="@Model.PatientInfoTabId" role="tabpanel">
+							</div>
+							<div class="tab-pane" id="@Model.DiseaseTabId" role="tabpanel">
+							</div>
+							<div class="tab-pane" id="@Model.StatementaId" role="tabpanel">
+							</div>
+						</div>
+					</div>
+					<div id="@ContainerId.PatientDetails">
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section scripts {
+		<script>
+			(function () {
+
+				/**
+				 * Load patient details
+				 * Take the Url action to load partial and load the container
+				 */
+				var LoadPatientsDetails = function ()
+				{
+					LoadTabActive();
+					Controls.RelaodContainer('@Url.Action("UserDetails", "User", new { id = Model.PatientUuid })', '@ContainerId.UsersDetails');
+				}
+
+				/**
+				 * Open edit user pop-up when click edit button
+				 * Take the Url action to load partial and Open the bootstrap modal
+				 */
+				var EditRegistration =  function()
+				{
+					var id  = $(this).attr("data-id");
+					var url = `@Url.Action("AddEdit", "User")?id=${id}`;
+
+					Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Update Registration");
+				}
+
+				/**
+				 * Open patient pop-up when click edit button
+				 * Take the Url action to load partial and Open the bootstrap modal
+				 */
+				var EditPatient = function()
+				{
+					var id  = $(this).attr("data-id");
+					var url = `@Url.Action("AddEdit", "Patient")?id=${id}`;
+
+					Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Update Patient Details");
+				}
+
+				/**
+				 * Submit the form via ajax and close the main modal
+				 */
+				var SubmitModalForm = function()
+				{
+					var form = $(this).closest('.modal').find('.modal-body form');
+
+					Controls.RelaodContainerOnModalPost("@UniqueIdentifier.MainModelId", form, '@ContainerId.PatientDetails');
+				}
+
+
+				// Handle events
+				$(document).ready(LoadPatientsDetails);
+				$(document).on('click', '#@ButtonId.PatientEdit', EditPatient);
+				$(document).on('click', '#@ButtonId.UserEdit', EditRegistration);
+				$(document).on('click', '.@ButtonClass.MainModalSubmit', SubmitModalForm);
+			})();
+		</script>
+}

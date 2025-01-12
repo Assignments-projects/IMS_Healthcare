@@ -24,6 +24,16 @@ namespace ServiceLayer.Services.Patient
 		}
 
 		/// <summary>
+		/// Load disease list for patient
+		/// </summary>
+		/// <param name="patientUuid"></param>
+		/// <returns></returns>
+		public async Task<List<Disease>> ListAsync(string patientUuid)
+		{
+			return await _disease.ListAsync(patientUuid);
+		}
+
+		/// <summary>
 		/// Get disease details by id
 		/// </summary>
 		/// <param name="id"></param>

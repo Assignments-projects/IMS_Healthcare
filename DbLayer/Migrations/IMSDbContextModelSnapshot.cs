@@ -283,14 +283,12 @@ namespace DbLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("DoctorId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<string>("PatientUuid")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UpdatedById")
@@ -308,6 +306,8 @@ namespace DbLayer.Migrations
                     b.HasIndex("DiseaseTypeId");
 
                     b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientUuid");
 
                     b.HasIndex("UpdatedById")
                         .IsUnique()
@@ -446,6 +446,9 @@ namespace DbLayer.Migrations
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("WardNo")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PateintId");
 
@@ -1053,9 +1056,12 @@ namespace DbLayer.Migrations
                     b.HasOne("DbLayer.Models.Staff", "Doctor")
                         .WithMany("Diseases")
                         .HasForeignKey("DoctorId")
-                        .HasPrincipalKey("StaffUuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasPrincipalKey("StaffUuid");
+
+                    b.HasOne("DbLayer.Models.Patient.Patients", "Patient")
+                        .WithMany("Disease")
+                        .HasForeignKey("PatientUuid")
+                        .HasPrincipalKey("PatientUuid");
 
                     b.HasOne("DbLayer.Models.User", "UpdatedBy")
                         .WithOne()
@@ -1067,6 +1073,8 @@ namespace DbLayer.Migrations
                     b.Navigation("DiseaseType");
 
                     b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
 
                     b.Navigation("UpdatedBy");
                 });
@@ -1124,13 +1132,6 @@ namespace DbLayer.Migrations
                         .HasForeignKey("InChargeuUud")
                         .HasPrincipalKey("StaffUuid");
 
-                    b.HasOne("DbLayer.Models.Patient.Disease", "Disease")
-                        .WithOne("Patient")
-                        .HasForeignKey("DbLayer.Models.Patient.Patients", "PatientUuid")
-                        .HasPrincipalKey("DbLayer.Models.Patient.Disease", "PatientUuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("DbLayer.Models.User", "User")
                         .WithOne()
                         .HasForeignKey("DbLayer.Models.Patient.Patients", "PatientUuid")
@@ -1144,8 +1145,6 @@ namespace DbLayer.Migrations
                         .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
 
                     b.Navigation("AddedBy");
-
-                    b.Navigation("Disease");
 
                     b.Navigation("Staff");
 
@@ -1339,10 +1338,12 @@ namespace DbLayer.Migrations
 
             modelBuilder.Entity("DbLayer.Models.Patient.Disease", b =>
                 {
-                    b.Navigation("Patient")
-                        .IsRequired();
-
                     b.Navigation("Prescriptions");
+                });
+
+            modelBuilder.Entity("DbLayer.Models.Patient.Patients", b =>
+                {
+                    b.Navigation("Disease");
                 });
 
             modelBuilder.Entity("DbLayer.Models.Settings.DiseaseType", b =>

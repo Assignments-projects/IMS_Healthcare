@@ -32,12 +32,12 @@ namespace DbLayer.Repositories
 		}
 
 		/// <summary>
-		/// Get users with roles details
+		/// Get approves users with roles details 
 		/// </summary>
 		/// <returns></returns>
 		public async Task<List<ViewUsersVsRoles>> UserRolesListAsync()
 		{
-			var result = await _context.ViewUsersVsRoles.ToListAsync();
+			var result = await _context.ViewUsersVsRoles.Where(x => x.IsApproved).ToListAsync();
 
 			if (!result.Any())
 				return new List<ViewUsersVsRoles>();

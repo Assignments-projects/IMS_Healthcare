@@ -1,1 +1,89 @@
-﻿
+﻿@using Web.Helper
+
+@{
+	ViewBag.Title = "Patients";
+}
+
+<div class="container-fluid p-0">
+
+	<div class="mb-3">
+		<h1 class="h3 d-inline align-middle">Patients</h1>
+	</div>
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card main-frame-card">
+				<div class="card-header d-flex justify-content-between align-content-between align-items-center flex-wrap">
+					<div>
+						<h5 class="card-title">Patients DataTables</h5>
+						<h6 class="card-subtitle text-muted">
+							Here you can manage patients.
+						</h6>
+					</div>
+					<div>
+						<button class="btn btn-primary" id="@ButtonId.PatientAddNew">Add Patient</button>
+					</div>
+				</div>
+				<div class="card-body">
+					<div id="@ContainerId.PatientList">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section scripts {
+	<script>
+		(function () {
+
+			/**
+			 * Load patient list table
+			 * Take the Url action to load partial and load the container
+			 */
+			var LoadPatients = function ()
+			{
+				Controls.RelaodContainer('@Url.Action("PatientList", "Patient")', '@ContainerId.PatientList');
+			}
+
+			/**
+			 * Open add patient pop-up when click edit button
+			 * Take the Url action to load partial and Open the bootstrap modal
+			 */
+			var AddNewPatient =  function()
+			{
+				var url = '@Url.Action("AddEdit", "Patient")';
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Add New Patient");
+			}
+
+			/**
+			 * Open patient pop-up when click edit button
+			 * Take the Url action to load partial and Open the bootstrap modal
+			 */
+			var EditPatient = function()
+			{
+				var id  = $(this).attr("data-id");
+				var url = `@Url.Action("AddEdit", "Patient")?id=${id}`;
+
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Update Patient Details");
+			}
+
+			/**
+			 * Submit the form via ajax and close the modal
+			 */
+			var SubmitModalForm = function()
+			{
+				var form = $(this).closest('.modal').find('.modal-body form');
+
+				Controls.RelaodContainerOnModalPost("@UniqueIdentifier.MainModelId", form, '@ContainerId.PatientList', LoadPatients);
+			}
+
+			// Handle events
+			$(document).ready(LoadPatients);
+			$(document).on('click', '#@ButtonId.PatientAddNew', AddNewPatient);
+			$(document).on('click', '.@ButtonClass.PatientEdit', EditPatient);
+			$(document).on('click', '.@ButtonClass.MainModalSubmit', SubmitModalForm);
+
+		})();
+	</script>
+}

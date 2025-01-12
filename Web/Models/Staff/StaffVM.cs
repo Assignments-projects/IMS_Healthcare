@@ -32,6 +32,11 @@ namespace Web.Models.Staff
 		public string? LastName { get; set; }
 
 		/// <summary>
+		/// Full name of the Staff
+		/// </summary>
+		public string? FullName { get { return $"{FirstName ?? ""} {LastName ?? ""}"; } }
+
+		/// <summary>
 		/// Job of the staff
 		/// </summary>
 		[Required]

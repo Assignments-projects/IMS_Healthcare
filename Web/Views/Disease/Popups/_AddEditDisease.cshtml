@@ -1,0 +1,66 @@
+﻿@using Web.Models.Disease
+@using Web.Helper
+
+@model DiseaseDetailsVM
+
+<form asp-controller="Disease" asp-action="AddEdit" method="post">
+	<input type="hidden" asp-for="Details.DiseaseId" />
+
+	<div class="row mb-3">
+		<div asp-validation-summary="ModelOnly"></div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-12">
+			<label asp-for="Details.PatientUuid">Select Patient</label>
+			<select asp-for="Details.PatientUuid" id="PatientUuid" name="Details.PatientUuid" class="form-select">
+				<option value="" selected>Nothing selected</option>
+				@foreach (var role in Model.PatientList)
+				{
+					<option value="@role.Value">@role.Text</option>
+				}
+			</select>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-12">
+			<label asp-for="Details.DiseaseTypeId">Select Type</label>
+			<select asp-for="Details.DiseaseTypeId" id="DiseaseTypeId" name="Details.DiseaseTypeId" class="form-select">
+				<option value="" selected>Nothing selected</option>
+				@foreach (var role in Model.DiseaseTypeList)
+				{
+					<option value="@role.Value">@role.Text</option>
+				}
+			</select>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-12">
+			<label asp-for="Details.DoctorId">Select Doctor</label>
+			<select asp-for="Details.DoctorId" id="DoctorId" name="Details.DoctorId" class="form-select">
+				<option value="" selected>Nothing selected</option>
+				@foreach (var role in Model.StaffList)
+				{
+					<option value="@role.Value">@role.Text</option>
+				}
+			</select>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-12">
+			<div>
+				<label asp-for="Details.DiseaseSpec">Disease</label>
+				<textarea asp-for="Details.DiseaseSpec" class="form-control" rows="3" autocomplete="description" aria-required="true" placeholder="Enter your comment"></textarea>
+				<span asp-validation-for="Details.DiseaseSpec" class="text-danger"></span>
+			</div>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-12">
+			<div>
+				<label asp-for="Details.Comments">Comments</label>
+				<textarea asp-for="Details.Comments" class="form-control" rows="3" autocomplete="comment" aria-required="true" placeholder="Enter your comment"></textarea>
+				<span asp-validation-for="Details.Comments" class="text-danger"></span>
+			</div>
+		</div>
+	</div>
+</form>

@@ -1,0 +1,102 @@
+﻿@using Web.Models.Disease
+@using Web.Helper
+
+@model DiseaseVM
+
+<style>
+	.tbl-user-details td {
+		padding: 10px;
+		font-size: 16px;
+	}
+
+	.tbl-os-details td{
+		padding: 5px;
+		font-size: 11px;
+	}
+</style>
+
+<div>
+	<div class="mb-4 d-flex align-items-center justify-content-between flex-wrap">
+		<h2 class="tab-title text-black">Disease Informations</h2>
+		<button class="btn btn-primary" data-id="@Model.DiseaseId" id="@ButtonId.DiseaseEdit">Edit</button>
+	</div>
+	<div class="">
+		<div class="row">			
+			<div class="col-12 col-md-8">
+				<div class="row">
+					<div class="col-12 col-lg-6">
+						<table class="w-100 tbl-user-details">
+							<tr>
+								<td>Patient</td>
+								<td>:</td>
+								<td>@Model.Patient?.FullName.PropString()</td>
+							</tr>
+							<tr>
+								<td>Disease Type</td>
+								<td>:</td>
+								<td>@Model.DiseaseType?.TypeName.PropString()</td>
+							</tr>
+							<tr>
+								<td>Doctor</td>
+								<td>:</td>
+								<td>@Model.Doctor?.FullName.PropString()</td>
+							</tr>
+						</table>
+					</div>
+					<div class="col-12 col-lg-6">
+						<table class="w-100 tbl-user-details">
+							<tr>
+								<td>Disease</td>
+								<td>:</td>
+								<td>@Model.DiseaseSpec.PropString()</td>
+							</tr>
+							<tr>
+								<td>Patient Ward Number</td>
+								<td>:</td>
+								<td>@Model.Patient?.WardNo.PropString()</td>
+							</tr>
+							<tr>
+								<td>Comment</td>
+								<td>:</td>
+								<td>@Model.Comments.PropString()</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="col-12 col-md-4">
+				<div class="card p-3">
+					<h2 class="tab-title text-black">Os Details</h2>
+					<div class="row mt-2">
+						<div class="col-12 col-md-6">
+							<div>
+								<p class="m-0 mb-1 fw-bold">Added by</p>
+								<p><small>@Model.AddedByName.PropString()</small></p>
+							</div>
+						</div>
+						<div class="col-12 col-md-6">
+							<div>
+								<p class="m-0 mb-1 fw-bold">Updated by</p>
+								<p><small>@Model.AddedByName.PropString()</small></p>
+							</div>
+						</div>
+					</div>
+					<div class="row mt-2">
+						<div class="col-12 col-md-6">
+							<div>
+								<p class="m-0 mb-1 fw-bold">Added date</p>
+								<p><small>@Model.AddedDate.PropString()</small></p>
+							</div>
+						</div>
+						<div class="col-12 col-md-6">					
+							<div>
+								<p class="m-0 mb-1 fw-bold">Updated date</p>
+								<p><small>@Model.UpdatedDate.PropString()</small></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

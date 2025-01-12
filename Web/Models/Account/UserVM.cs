@@ -15,21 +15,21 @@ namespace Web.Models.Account
 		/// </summary>
 		[Required]
 		[EmailAddress]
-		public required string Email { get; set; }
+		public string Email { get; set; } = string.Empty;
 
 		/// <summary>
 		/// First name of the user
 		/// </summary>
 		[Required]
 		[Display(Name = "First Name")]
-		public required string FirstName { get; set; }
+		public string FirstName { get; set; } = string.Empty;
 
 		/// <summary>
 		/// Last name of the user
 		/// </summary>
 		[Required]
 		[Display(Name = "Last Name")]
-		public required string LastName { get; set; }
+		public string LastName { get; set; } = string.Empty;
 
 		/// <summary>
 		/// Username to login to the system once registered successfully

@@ -1,0 +1,49 @@
+﻿@using Web.Models.Disease
+@using Web.Helper
+
+@model List<DiseaseVM>
+
+<div>
+	<div class="mb-4 d-flex align-items-center justify-content-between flex-wrap">
+		<h2 class="tab-title text-black">Diseases</h2>
+	</div>
+	<div class="">
+		<table id="@TableId.DiseasesList" class="table table-striped w-100">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Type</th>
+					<th>Disease</th>
+					<th>Added by</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				@if (Model.Any())
+				{
+					@foreach (var type in Model)
+					{
+						<tr>
+							<td>@type.DiseaseId</td>
+							<td>@type.DiseaseType?.TypeName.PropString()</td>
+							<td>@type.DiseaseSpec.PropString()</td>
+							<td>
+								<p class="m-0">@type.AddedByName.PropString()</p>
+								<p class="m-0 text-secondary"><small>@type.AddedDate.PropString()</small></p>
+							</td>
+							<td>
+								<a asp-controller="Disease" asp-action="Details" asp-route-id="@type.DiseaseId"><i class="align-middle" data-feather="eye"></i></a>
+							</td>
+						</tr>
+					}
+				}
+			</tbody>
+		</table>
+
+		<script>
+			(function () {
+				Controls.InitiateDataTable('@TableId.DiseasesList');
+			})();
+		</script>
+	</div>
+</div>
