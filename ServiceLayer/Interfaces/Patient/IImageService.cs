@@ -17,6 +17,12 @@ namespace ServiceLayer.Interfaces.Patient
 		Task<List<Image>> ListAsync();
 
 		/// <summary>
+		/// Load image list belongs to the disease id
+		/// </summary>
+		/// <returns></returns>
+		Task<List<Image>> ListAsync(int id);
+
+		/// <summary>
 		/// Get image details by id
 		/// </summary>
 		/// <param name="id"></param>

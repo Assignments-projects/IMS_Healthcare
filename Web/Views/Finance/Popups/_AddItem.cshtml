@@ -1,0 +1,52 @@
+﻿@using Web.Models.Finance
+@using Web.Helper
+
+@model StatementDetailsVM
+
+
+<form asp-controller="Statement" asp-action="AddItem" method="post">
+	<input type="hidden" asp-for="ItemDetails.StatementItemId" />
+	<input type="hidden" asp-for="ItemDetails.StatementId" />
+	<input type="hidden" asp-for="FromDisease" />
+
+	<div class="row mb-3">
+		<div asp-validation-summary="ModelOnly"></div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-12">
+			@if(Model.FromDisease)
+			{
+				<label asp-for="ItemDetails.DiseaseId">Disease</label>
+				<input asp-for="ItemDetails.Disease.DiseaseSpec" class="form-control" aria-required="true" disabled />
+			}
+			else
+			{
+				<label asp-for="ItemDetails.DiseaseId">Select the patient</label>
+				<select asp-for="ItemDetails.DiseaseId" id="PatientUuid" name="ItemDetails.DiseaseId" class="form-select">
+					<option value="" selected>Nothing selected</option>
+					@foreach (var role in Model.DiseaseList)
+					{
+						<option value="@role.Value">@role.Text</option>
+					}
+				</select>
+			}
+		</div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-12">
+			<label asp-for="ItemDetails.Description">Description</label>
+			<textarea asp-for="ItemDetails.Description" class="form-control" rows="3" autocomplete="description" aria-required="true" placeholder="Enter the description"></textarea>
+			<span asp-validation-for="ItemDetails.Description" class="text-danger"></span>
+		</div>
+	</div>
+
+	<div class="row mb-3">
+		<div class="col-12">
+			<div>
+				<label asp-for="ItemDetails.TotalCost">Total Cost</label>
+				<input asp-for="ItemDetails.TotalCost" class="form-control" autocomplete="username" aria-required="true" placeholder="Enter total cost of item" />
+				<span asp-validation-for="ItemDetails.TotalCost" class="text-danger"></span>
+			</div>
+		</div>
+	</div>
+</form>

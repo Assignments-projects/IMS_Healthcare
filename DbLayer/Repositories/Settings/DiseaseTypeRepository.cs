@@ -133,6 +133,11 @@ namespace DbLayer.Repositories.Settings
 		{
 			var result = await found.Include(x => x.AddedBy)
 									.Include(x => x.UpdatedBy)
+									.Include(x => x.Diseases)
+										.ThenInclude(x => x.Images)
+											.ThenInclude(x => x.ImageType)
+									.Include(x => x.Diseases)
+										.ThenInclude(x => x.Patient)
 									.ToListAsync();
 			if (!result.Any())
 				return new List<DiseaseType>();

@@ -55,6 +55,10 @@
     border-bottom: 1px solid #f1f1f1 !important;
 }
 
+.border-light {
+    border-top: 1px solid #f1f1f1 !important;
+}
+
 /*----- Over written theme css starts ------*/
 .tab-light .nav-tabs .nav-link.active {
     color: #343a40 !important;

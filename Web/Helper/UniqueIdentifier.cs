@@ -20,6 +20,7 @@
 		public const string UserSpecificProfilePic = "jq-user-specific-profile-pic-image-class";
 
 		public const string SelectUser = "jq-select-user-from-select-item-class";
+		public const string ClssifySelect = "jq-classify-select-form-id";
 
 	}
 

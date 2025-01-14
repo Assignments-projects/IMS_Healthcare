@@ -204,7 +204,7 @@ namespace DbLayer.Migrations
                         .IsUnique()
                         .HasFilter("[UpdatedById] IS NOT NULL");
 
-                    b.ToTable("Statements");
+                    b.ToTable("Statements", (string)null);
                 });
 
             modelBuilder.Entity("DbLayer.Models.Finance.StatementItem", b =>
@@ -256,7 +256,7 @@ namespace DbLayer.Migrations
                         .IsUnique()
                         .HasFilter("[UpdatedById] IS NOT NULL");
 
-                    b.ToTable("StatementItems");
+                    b.ToTable("StatementItems", (string)null);
                 });
 
             modelBuilder.Entity("DbLayer.Models.Patient.Disease", b =>
@@ -313,7 +313,7 @@ namespace DbLayer.Migrations
                         .IsUnique()
                         .HasFilter("[UpdatedById] IS NOT NULL");
 
-                    b.ToTable("Diseases");
+                    b.ToTable("Diseases", (string)null);
                 });
 
             modelBuilder.Entity("DbLayer.Models.Patient.Image", b =>
@@ -382,7 +382,7 @@ namespace DbLayer.Migrations
                         .IsUnique()
                         .HasFilter("[UpdatedById] IS NOT NULL");
 
-                    b.ToTable("Images");
+                    b.ToTable("Images", (string)null);
                 });
 
             modelBuilder.Entity("DbLayer.Models.Patient.Patients", b =>
@@ -462,7 +462,7 @@ namespace DbLayer.Migrations
                         .IsUnique()
                         .HasFilter("[UpdatedById] IS NOT NULL");
 
-                    b.ToTable("Patients");
+                    b.ToTable("Patients", (string)null);
                 });
 
             modelBuilder.Entity("DbLayer.Models.Patient.Prescription", b =>
@@ -515,7 +515,7 @@ namespace DbLayer.Migrations
                         .IsUnique()
                         .HasFilter("[UpdatedById] IS NOT NULL");
 
-                    b.ToTable("Prescriptions");
+                    b.ToTable("Prescriptions", (string)null);
                 });
 
             modelBuilder.Entity("DbLayer.Models.Settings.DiseaseType", b =>
@@ -561,7 +561,7 @@ namespace DbLayer.Migrations
                         .IsUnique()
                         .HasFilter("[UpdatedById] IS NOT NULL");
 
-                    b.ToTable("DiseaseTypes");
+                    b.ToTable("DiseaseTypes", (string)null);
                 });
 
             modelBuilder.Entity("DbLayer.Models.Settings.ImageType", b =>
@@ -607,7 +607,7 @@ namespace DbLayer.Migrations
                         .IsUnique()
                         .HasFilter("[UpdatedById] IS NOT NULL");
 
-                    b.ToTable("ImageTypes");
+                    b.ToTable("ImageTypes", (string)null);
                 });
 
             modelBuilder.Entity("DbLayer.Models.Settings.OsSection", b =>
@@ -650,7 +650,7 @@ namespace DbLayer.Migrations
                         .IsUnique()
                         .HasFilter("[UpdatedById] IS NOT NULL");
 
-                    b.ToTable("OsSections");
+                    b.ToTable("OsSections", (string)null);
                 });
 
             modelBuilder.Entity("DbLayer.Models.Settings.OsStatus", b =>
@@ -698,7 +698,7 @@ namespace DbLayer.Migrations
                         .IsUnique()
                         .HasFilter("[UpdatedById] IS NOT NULL");
 
-                    b.ToTable("OsStatuss");
+                    b.ToTable("OsStatuss", (string)null);
                 });
 
             modelBuilder.Entity("DbLayer.Models.Staff", b =>
@@ -774,7 +774,7 @@ namespace DbLayer.Migrations
                         .IsUnique()
                         .HasFilter("[UpdatedById] IS NOT NULL");
 
-                    b.ToTable("Staffs");
+                    b.ToTable("Staffs", (string)null);
                 });
 
             modelBuilder.Entity("DbLayer.Models.User", b =>
@@ -841,7 +841,7 @@ namespace DbLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

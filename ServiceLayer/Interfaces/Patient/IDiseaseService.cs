@@ -51,6 +51,12 @@ namespace ServiceLayer.Interfaces.Patient
 		/// Disease Select list item
 		/// </summary>
 		/// <returns></returns>
+		Task<List<SelectListItem>> DiseaseSelectListForPatient(string patientUuid);
+
+		/// <summary>
+		/// Disease Select list item
+		/// </summary>
+		/// <returns></returns>
 		Task<List<SelectListItem>> DiseaseSelectList();
 	}
 }

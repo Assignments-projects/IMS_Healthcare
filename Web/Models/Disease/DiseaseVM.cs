@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Web.Models.Image;
 using Web.Models.Patient;
 using Web.Models.Settings;
 using Web.Models.Staff;
@@ -74,5 +75,9 @@ namespace Web.Models.Disease
 		public DiseaseTypeVM? DiseaseType { get; set; }
 
 		public StaffVM? Doctor { get; set; }
+
+		//----------------------------------
+
+		public ICollection<ImageVM>? Images { get; set; }
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Web.Models.Disease;
 
 namespace Web.Models.Settings
 {
@@ -44,5 +45,10 @@ namespace Web.Models.Settings
 		public DateTime? UpdatedDate { get; set; }
 
 		public bool IsActive { get; set; }
+
+		//---------------------------------
+
+		public ICollection<DiseaseVM>? Diseases { get; set; }
+
 	}
 }

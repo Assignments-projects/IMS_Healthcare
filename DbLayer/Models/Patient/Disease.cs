@@ -91,5 +91,8 @@ namespace DbLayer.Models.Patient
 		//-----------------------------------
 
 		public virtual ICollection<Prescription> Prescriptions { get; set; }
+
+		public virtual ICollection<Image> Images { get; set; }
+
 	}
 }

@@ -139,6 +139,16 @@ namespace DbLayer.Repositories.Settings
 		{
 			var result = await found.Include(x => x.AddedBy)
 									.Include(x => x.UpdatedBy)
+									.Include(x => x.Images)
+										.ThenInclude(x => x.Disease)
+											.ThenInclude(x => x.DiseaseType)
+									.Include(x => x.Images)
+										.ThenInclude(x => x.Disease)
+											.ThenInclude(x => x.Doctor)
+									.Include(x => x.Images)
+										.ThenInclude(x => x.Disease)
+											.ThenInclude(x => x.Patient)
+									.AsNoTracking()
 									.ToListAsync();
 			if (!result.Any())
 				return new List<ImageType>();

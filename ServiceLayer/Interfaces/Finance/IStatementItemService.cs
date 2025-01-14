@@ -17,6 +17,12 @@ namespace ServiceLayer.Interfaces.Finance
 		Task<List<StatementItem>> ListAsync();
 
 		/// <summary>
+		/// Load statement item list belong to statement id
+		/// </summary>
+		/// <returns></returns>
+		Task<List<StatementItem>> ListAsync(int id);
+
+		/// <summary>
 		/// Get statement item details by id
 		/// </summary>
 		/// <param name="id"></param>

@@ -1,5 +1,6 @@
 ﻿@using Web.Models.Role
 @using Web.Helper
+@using DbLayer.Helpers
 
 @model List<RoleVM>
 
@@ -20,8 +21,15 @@
 					<td>@role.Name</td>
 					<td>@role.NormalizedName</td>
 					<td>
-						<a data-id="@role.Id" class="p-1 @ButtonClass.RoleEdit"><i class="align-middle" data-feather="edit-2"></i></a>
-						<a data-id="@role.Id" class="p-1 @ButtonClass.RoleDelete text-danger"><i class="align-middle" data-feather="trash"></i></a>
+						@if (role.Name == nameof(UserRole.Admin) || role.Name == nameof(UserRole.Patient))
+						{
+							<p class="m-0 text-danger"><i>Permenant</i></p>
+						}
+						else
+						{
+							<a data-id="@role.Id" class="p-1 @ButtonClass.RoleEdit"><i class="align-middle" data-feather="edit-2"></i></a>
+							<a data-id="@role.Id" class="p-1 @ButtonClass.RoleDelete text-danger"><i class="align-middle" data-feather="trash"></i></a>
+						}
 					</td>
 				</tr>
 			}

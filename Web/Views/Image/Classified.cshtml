@@ -1,0 +1,85 @@
+﻿@using Web.Helper
+@using DbLayer.Helpers
+@using Web.Models.Image
+
+@{
+	ViewBag.Title = "Image Classified";
+}
+
+<div class="container-fluid p-0">
+
+	<div class="mb-3">
+		<h1 class="h3 d-inline align-middle">Image Classifed</h1>
+	</div>
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header d-flex justify-content-between align-content-between align-items-center flex-wrap">
+					<div>
+						<h5 class="card-title">Image with type and disease type</h5>
+						<h6 class="card-subtitle text-muted">
+							Here you can classify your images with image type and disease type.
+						</h6>
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="d-flex justify-content-end mb-2">
+						<div class="d-flex align-items-center gap-2 flex-wrap">
+							<label>Classify by:</label>
+							<select class="form-select" id="@UniqueClass.ClssifySelect">
+								<option value="@ImageWith.ImageType">Image Type</option>
+								<option value="@ImageWith.DiseaseType">Disease Type</option>
+							</select>
+						</div>
+					</div>
+					<div id="@ContainerId.ImageList"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section scripts {
+
+	@*-- Render script of image --*@
+	@await Html.PartialAsync("Image/_Scripts")
+
+	<script>
+		(function () {
+
+			/**
+			 * Load disease details
+			 * Take the Url action to load partial and load the container
+			 */
+			var LoadImageList = function ()
+			{
+				var value = $("#@UniqueClass.ClssifySelect").val();
+
+				Controls.RelaodContainer('@Url.Action("ImageVsList", "Image")', '@ContainerId.ImageList', { type: value });
+			}
+
+			var LoadImageOnSelect = function()
+			{
+				var value = $(this).val();
+
+				Controls.RelaodContainer('@Url.Action("ImageVsList", "Image")', '@ContainerId.ImageList', { type: value });
+			}
+
+			/**
+			 * Submit the form via ajax and close the main modal
+			 */
+			var SubmitModalForm = function()
+			{
+				var form = $(this).closest('.modal').find('.modal-body form');
+
+				Controls.RelaodContainerOnModalPost("@UniqueIdentifier.MainModelId", form, '@ContainerId.ImageList', LoadImageList);
+			}
+
+			// Handle events
+			$(document).ready(LoadImageList);
+			$(document).on('change', '#@UniqueClass.ClssifySelect', LoadImageOnSelect);
+			$(document).on('click', '.@ButtonClass.MainModalSubmit', SubmitModalForm);
+		})();
+	</script>
+}

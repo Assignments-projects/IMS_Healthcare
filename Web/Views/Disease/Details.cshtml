@@ -10,7 +10,7 @@
 <div class="container-fluid p-0">
 
 	<div class="mb-3">
-		<h1 class="h3 d-inline align-middle">User Details</h1>
+		<h1 class="h3 d-inline align-middle">Disease Details</h1>
 	</div>
 
 	<div class="row">
@@ -18,16 +18,46 @@
 			<div class="card">
 				<div class="card-header d-flex justify-content-between align-content-between align-items-center flex-wrap">
 					<div>
-						<h5 class="card-title">Disease Details with Registration Info</h5>
+						<h5 class="card-title">Disease Details with images</h5>
 						<h6 class="card-subtitle text-muted">
-							Here you can manage your disease details.
+							Here you can manage disease details.
 						</h6>
 					</div>
 					<div>
-						<a asp-action="Index" class="btn btn-default">Back</a>
+						<a onclick="history.back()" class="btn btn-default">Back</a>
 					</div>
 				</div>
-				<div class="card-body" id="@ContainerId.DiseaseDetails">
+				<div class="card-body">
+					<div class="tab tab-vertical tab-light text-secondary">
+						<ul class="nav nav-tabs" role="tablist">
+							<li class="nav-item">
+								<a class="nav-link active"
+								   href="#@Model.DiseaseInfoTabId"
+								   data-reload-id="@Model.DiseaseInfoTabId"
+								   data-url="@Url.Action("DiseaseDetails", "Disease", new { id = Model.DiseaseId })"
+								   data-bs-toggle="tab"
+								   role="tab">
+									<i class="align-middle" data-feather="alert-triangle"></i>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link"
+								   href="#@Model.ImageTabId"
+								   data-reload-id="@Model.ImageTabId"
+								   data-url="@Url.Action("DiseaseImageList", "Image", new { id = Model.DiseaseId })"
+								   data-bs-toggle="tab"
+								   role="tab">
+									<i class="align-middle" data-feather="file"></i>
+								</a>
+							</li>
+						</ul>
+						<div class="tab-content text-secondary">
+							<div class="tab-pane active" id="@Model.DiseaseInfoTabId" role="tabpanel">
+							</div>
+							<div class="tab-pane" id="@Model.ImageTabId" role="tabpanel">
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -35,17 +65,12 @@
 </div>
 
 @section scripts {
+
+	@*-- Render script of image --*@
+	@await Html.PartialAsync("Image/_Scripts")
+
 	<script>
 		(function () {
-
-			/**
-			 * Load disease details
-			 * Take the Url action to load partial and load the container
-			 */
-			var LoadDiseasesDetails = function ()
-			{
-				Controls.RelaodContainer('@Url.Action("DiseaseDetails", "Disease", new { id = Model.DiseaseId })', '@ContainerId.DiseaseDetails');
-			}
 
 			/**
 			 * Open disease pop-up when click edit button
@@ -66,12 +91,11 @@
 			{
 				var form = $(this).closest('.modal').find('.modal-body form');
 
-				Controls.RelaodContainerOnModalPost("@UniqueIdentifier.MainModelId", form, '@ContainerId.DiseaseDetails', LoadDiseasesDetails);
+				Controls.RelaodContainerOnModalPost("@UniqueIdentifier.MainModelId", form, '@ContainerId.DiseaseDetails', LoadTabActive);
 			}
 
 
 			// Handle events
-			$(document).ready(LoadDiseasesDetails);
 			$(document).on('click', '#@ButtonId.DiseaseEdit', EditDisease);
 			$(document).on('click', '.@ButtonClass.MainModalSubmit', SubmitModalForm);
 		})();

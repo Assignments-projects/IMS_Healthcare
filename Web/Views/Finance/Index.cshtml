@@ -1,1 +1,89 @@
-﻿
+﻿@using Web.Helper
+
+@{
+	ViewBag.Title = "Statements";
+}
+
+<div class="container-fluid p-0">
+
+	<div class="mb-3">
+		<h1 class="h3 d-inline align-middle">Statements</h1>
+	</div>
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card main-frame-card">
+				<div class="card-header d-flex justify-content-between align-content-between align-items-center flex-wrap">
+					<div>
+						<h5 class="card-title">Statements DataTables</h5>
+						<h6 class="card-subtitle text-muted">
+							Here you can manage statements.
+						</h6>
+					</div>
+					<div>
+						<button class="btn btn-primary" id="@ButtonId.StatementAddNew">Add Statement</button>
+					</div>
+				</div>
+				<div class="card-body">
+					<div id="@ContainerId.StatementList">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section scripts {
+	<script>
+		(function () {
+
+			/**
+			 * Load statement list table
+			 * Take the Url action to load partial and load the container
+			 */
+			var LoadStatements = function ()
+			{
+				Controls.RelaodContainer('@Url.Action("StatementList", "Statement")', '@ContainerId.StatementList');
+			}
+
+			/**
+			 * Open add statement pop-up when click edit button
+			 * Take the Url action to load partial and Open the bootstrap modal
+			 */
+			var AddNewStatement =  function()
+			{
+				var url = '@Url.Action("AddEdit", "Statement")';
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Add New Statement");
+			}
+
+			/**
+			 * Open statement pop-up when click edit button
+			 * Take the Url action to load partial and Open the bootstrap modal
+			 */
+			var EditStatement = function()
+			{
+				var id  = $(this).attr("data-id");
+				var url = `@Url.Action("AddEdit", "Statement")?id=${id}`;
+
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Update Statement Details");
+			}
+
+			/**
+			 * Submit the form via ajax and close the modal
+			 */
+			var SubmitModalForm = function()
+			{
+				var form = $(this).closest('.modal').find('.modal-body form');
+
+				Controls.RelaodContainerOnModalPost("@UniqueIdentifier.MainModelId", form, '@ContainerId.StatementList', LoadStatements);
+			}
+
+			// Handle events
+			$(document).ready(LoadStatements);
+			$(document).on('click', '#@ButtonId.StatementAddNew', AddNewStatement);
+			$(document).on('click', '.@ButtonClass.StatementEdit', EditStatement);
+			$(document).on('click', '.@ButtonClass.MainModalSubmit', SubmitModalForm);
+
+		})();
+	</script>
+}

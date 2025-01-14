@@ -1,0 +1,51 @@
+﻿@using Web.Models.Finance
+@using Web.Helper
+
+@model List<StatementItemVM>
+
+<div>
+	<div class="mb-4 d-flex align-items-center justify-content-between flex-wrap">
+		<h2 class="tab-title text-black">Statement Items</h2>
+	</div>
+	<div class="">
+		<table id="@TableId.StatementItemsList" class="table table-striped w-100">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Disease</th>
+					<th>Description</th>
+					<th>Total</th>
+					<th>Added by</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				@if (Model.Any())
+				{
+					@foreach (var type in Model)
+					{
+						<tr>
+							<td>@type.StatementItemId</td>
+							<td>@type.Disease?.DiseaseSpec.PropString()</td>
+							<td>@type.Description.PropString()</td>
+							<td>@type.TotalCost.PropString()</td>
+							<td>
+								<p class="m-0">@type.AddedByName.PropString()</p>
+								<p class="m-0 text-secondary"><small>@type.AddedDate.PropString()</small></p>
+							</td>
+							<td>
+								<a asp-controller="Finance" asp-action="DeleteItem" asp-route-id="@type.StatementItemId"><i class="align-middle text-danger" data-feather="trash"></i></a>
+							</td>
+						</tr>
+					}
+				}
+			</tbody>
+		</table>
+
+		<script>
+			(function () {
+				Controls.InitiateDataTable('@TableId.StatementItemsList');
+			})();
+		</script>
+	</div>
+</div>

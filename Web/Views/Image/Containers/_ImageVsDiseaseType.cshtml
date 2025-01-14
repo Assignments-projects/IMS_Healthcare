@@ -1,0 +1,78 @@
+﻿@using Web.Models.Settings
+@using Web.Helper
+
+@model List<DiseaseTypeVM>
+
+@{
+	var role = UserHelper.GetCurrentRole();
+}
+
+<div class="row">
+	<div class="col-12">
+		<div class="row">
+			@if (Model.Any())
+			{
+				foreach (var type in Model)
+				{
+					<div class="col-12">
+						<div class="card bg-light border-light mb-2">
+							<div class="card-header">
+								<h2 class="card-title">@type.TypeName</h2>
+							</div>
+							<div class="card-body" style="max-height:400px;overflow-y:auto">
+								<div class="row">
+									@if (type.Diseases != null && type.Diseases.Any())
+									{
+										foreach(var disease in type.Diseases)
+										{
+											if(disease.Images != null && disease.Images.Any())
+											{
+												foreach (var image in disease.Images)
+												{
+													<div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+														<div class="card h-100 mb-2">
+															<img src="@image.ImageUrl" class="card-img-top" alt="@image.ImageType?.TypeName image" style="max-height: 100px">
+															<div class="card-body pb-0 border-card-body">
+																<h5 class="card-title">@image.ImageType?.TypeName - @disease.Patient?.FullName</h5>
+																<p class="card-text">Disease - @disease.DiseaseType?.TypeName (@image.DiseaseId)</p>
+																<p class="card-text"><small class="text-muted">Added at @image.AddedDate</small></p>
+															</div>
+															<div class="p-2 d-flex align-items-center gap-2">
+																<a data-id="@image.ImageId" class="btn btn-sm flex-fill btn-default @ButtonClass.ImageView">View</a>
+																
+																@if (role.IsAdmin || role.IsStaff)
+																{
+																	<a data-id="@image.ImageId" class="btn btn-sm btn-default @ButtonClass.ImageDelete"><i class="align-middle text-danger" data-feather="trash"></i></a>
+																}
+															</div>
+														</div>
+													</div>
+												}
+											}
+										}
+									}
+									else
+									{
+										<div class="col-12">
+											<div class="alert alert-danger w-100" role="alert">
+												<div class="alert-message">No images found for this disease type.</div>
+											</div>
+										</div>
+									}
+								</div>
+							</div>
+						</div>
+					</div>
+				}
+			}
+			else
+			{
+				<div class="col-12">
+					<div class="alert alert-danger w-100" role="alert">
+						<div class="alert-message">No disease types found.</div>
+					</div>
+				</div>
+			}
+		</div>
+	</div>
+</div>

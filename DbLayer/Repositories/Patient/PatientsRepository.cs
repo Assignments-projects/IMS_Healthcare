@@ -147,6 +147,41 @@ namespace DbLayer.Repositories.Patient
 		}
 
 		/// <summary>
+		/// Calculate patients total from statement by given id 
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public async Task<string> CalculatePatientsTotal(string id)
+		{
+			try
+			{
+				var total = await _context.Statements.Where(x => x.PatientUuid == id)
+												 .SumAsync(x => x.TotalCost);
+
+				var exist = await _context.Patients.Where(x => x.PatientUuid == id)
+													 .FirstOrDefaultAsync();
+
+				if (exist == null)
+					return NotFound;
+
+				exist.TotalCost = total;
+
+				await _context.SaveChangesAsync();
+
+			}
+			catch (SqlException sqlEx)
+			{
+				return sqlEx.Message;
+			}
+			catch (Exception ex)
+			{
+				return ex.Message;
+			}
+
+			return null;
+		}
+
+		/// <summary>
 		/// Make List of patients with aditional datas
 		/// </summary>
 		/// <param name="found"></param>

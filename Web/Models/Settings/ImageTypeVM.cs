@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Web.Models.Image;
 
 namespace Web.Models.Settings
 {
@@ -43,5 +44,10 @@ namespace Web.Models.Settings
 		public DateTime? UpdatedDate { get; set; }
 
 		public bool IsActive         { get; set; } = true;
+
+		// -----------------------------
+
+		public ICollection<ImageVM>? Images { get; set; }
+
 	}
 }

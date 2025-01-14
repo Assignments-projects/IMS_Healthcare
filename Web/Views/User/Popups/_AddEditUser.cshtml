@@ -3,6 +3,10 @@
 
 @model UserVM
 
+@{
+	var role = UserHelper.GetCurrentRole();
+}
+
 <form asp-controller="User" asp-action="AddEdit" method="post">
     <input type="hidden" asp-for="Id" />
 
@@ -55,12 +59,19 @@
 		<textarea asp-for="Address" class="form-control" rows="3" autocomplete="email" aria-required="true" placeholder="Enter your address"></textarea>
 		<span asp-validation-for="Address" class="text-danger"></span>
 	</div>
-	<div class="mb-3">
-		<label class="form-check">
-			<input class="form-check-input" asp-for="IsApproved" />
-			<span class="form-check-label">
-				Approve
-			</span>
-		</label>
-	</div>
+	@if(role.IsAdmin)
+	{
+		<div class="mb-3">
+			<label class="form-check">
+				<input class="form-check-input" asp-for="IsApproved" />
+				<span class="form-check-label">
+					Approve
+				</span>
+			</label>
+		</div>
+	}
+	else
+	{
+		<input type="hidden" asp-for="IsApproved" />
+	}
 </form>

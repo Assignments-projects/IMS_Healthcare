@@ -1,0 +1,33 @@
+﻿@using Web.Models.Image
+@using Web.Helper
+
+<script>
+    (function(){
+		/**
+		* Open image pop-up when click view button
+		* Take the Url action to load partial and Open the bootstrap modal
+		*/
+		var ViewImage = function()
+		{
+			var id  = $(this).attr("data-id");
+			var url = `@Url.Action("ImageDetails", "Image")?id=${id}`;
+
+			Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Image Details", "Download");
+		}
+
+		/**
+		* Open image pop-up when click delete button
+		* Take the Url action to load partial and Open the bootstrap modal
+		*/
+		var DeleteImage = function()
+		{
+			var id  = $(this).attr("data-id");
+			var url = `@Url.Action("Delete", "Image")?id=${id}`;
+
+			Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Delete Image", "Delete", "btn-danger");
+		}
+
+		$(document).on('click', '.@ButtonClass.ImageView', ViewImage);
+		$(document).on('click', '.@ButtonClass.ImageDelete', DeleteImage);
+    })();
+</script>

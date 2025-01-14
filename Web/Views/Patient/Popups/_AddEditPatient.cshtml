@@ -72,27 +72,16 @@
 		</div>
 	</div>
 	<div class="row mb-3">
-		<div class="col-12 col-sm-6">
-			<div>
-				<label asp-for="Details.TotalCost">Total Cost</label>
-				<input asp-for="Details.TotalCost" class="form-control" autocomplete="username" aria-required="true" placeholder="Enter total cost of patient" />
-				<span asp-validation-for="Details.TotalCost" class="text-danger"></span>
-			</div>
-		</div>
-		<div class="col-12 col-sm-6">
-			<div>
-				<div class="form-check form-switch">
-					<input asp-for="Details.IsDischarged" class="form-check-input" id="Details.IsDischarged">
-					<label asp-for="Details.IsDischarged" class="form-check-label" for="Details.IsDischarged">Discharged</label>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row mb-3">
 		<div class="col-12">
 			<label asp-for="Details.Comments">Comments</label>
 			<textarea asp-for="Details.Comments" class="form-control" rows="3" autocomplete="email" aria-required="true" placeholder="Enter your comment"></textarea>
 			<span asp-validation-for="Details.Comments" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-12">
+			<input asp-for="Details.IsDischarged" class="form-check-input" id="Details.IsDischarged">
+			<label asp-for="Details.IsDischarged" class="form-check-label" for="Details.IsDischarged">Discharged</label>
 		</div>
 	</div>
 </form>

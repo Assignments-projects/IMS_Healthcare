@@ -3,6 +3,7 @@ using DbLayer.Helpers;
 using DbLayer.Interfaces.Finance;
 using DbLayer.Models.Finance;
 using DbLayer.Models.Patient;
+using DbLayer.Models.Settings;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -134,6 +135,52 @@ namespace DbLayer.Repositories.Finance
 		}
 
 		/// <summary>
+		/// Calculate statement total from statement item by given id
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="onSave"></param>
+		/// <returns></returns>
+		public async Task<string> CalculateStatementsTotal(int id, Action onSave = null)
+		{
+			try
+			{
+				var total = await _context.StatementItems.Where(x => x.StatementId == id)
+												 .SumAsync(x => x.TotalCost);
+
+				var exist = await _context.Statements.Where(x => x.StatementId == id)
+													 .FirstOrDefaultAsync();
+
+				if (exist == null)
+					return NotFound;
+
+				exist.TotalCost = total;
+
+				await _context.SaveChangesAsync();
+
+				onSave?.Invoke();
+			}
+			catch (SqlException sqlEx)
+			{
+				return sqlEx.Message;
+			}
+			catch (Exception ex)
+			{
+				return ex.Message;
+			}
+
+			return null;
+		}
+
+		/// <summary>
+		/// Load statement status list
+		/// </summary>
+		/// <returns></returns>
+		public async Task<List<OsStatus>> ListStatusAsync()
+		{
+			return await _context.OsStatuss.ToListAsync();
+		}
+
+		/// <summary>
 		/// Make List of statement with aditional datas
 		/// </summary>
 		/// <param name="found"></param>
@@ -142,6 +189,9 @@ namespace DbLayer.Repositories.Finance
 		{
 			var result = await found.Include(x => x.AddedBy)
 									.Include(x => x.UpdatedBy)
+									.Include(x => x.Patient)
+									.Include(x => x.Status)
+									.Include(x => x.Items)
 									.ToListAsync();
 			if (!result.Any())
 				return new List<Statement>();

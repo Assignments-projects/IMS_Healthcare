@@ -1,4 +1,5 @@
 ﻿using DbLayer.Models.Finance;
+using DbLayer.Models.Settings;
 
 namespace DbLayer.Interfaces.Finance
 {
@@ -37,5 +38,19 @@ namespace DbLayer.Interfaces.Finance
 		/// <param name="id"></param>
 		/// <returns></returns>
 		Task<string> DeleteAsync(int id);
+
+		/// <summary>
+		/// Calculate statement total from statement item by given id
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="onSave"></param>
+		/// <returns></returns>
+		Task<string> CalculateStatementsTotal(int id, Action onSave = null);
+
+		/// <summary>
+		/// Load statement status list
+		/// </summary>
+		/// <returns></returns>
+		Task<List<OsStatus>> ListStatusAsync();
 	}
 }

@@ -44,5 +44,12 @@ namespace DbLayer.Interfaces.Patient
 		/// <param name="id"></param>
 		/// <returns></returns>
 		Task<string> DeleteAsync(int id);
+
+		/// <summary>
+		/// Calculate patients total from statement by given id 
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		Task<string> CalculatePatientsTotal(string id);
 	}
 }

@@ -62,5 +62,10 @@ namespace DbLayer.Models.Settings
 
 		public virtual User UpdatedBy { get; set; }
 
+		//------------------------------------
+
+		public virtual ICollection<Image> Images { get; set; }
+
+
 	}
 }

@@ -2,6 +2,7 @@
 
 @{
 	var currentUser = UserHelper.GetCurrentUser();
+	var role        = UserHelper.GetCurrentRole();
 }
 
 <nav id="sidebar" class="sidebar js-sidebar">
@@ -74,51 +75,75 @@
 			<li class="sidebar-header">
 				Pages
 			</li>
-			<li class="sidebar-item">
-				<a data-bs-target="#patients" data-bs-toggle="collapse" class="sidebar-link collapsed">
-					<i class="align-middle" data-feather="heart"></i> <span class="align-middle">Patients</span>
-				</a>
-				<ul id="patients" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-					<li class="sidebar-item"><a class="sidebar-link" asp-controller="Patient" asp-action="Index">Home</a></li>
-					<li class="sidebar-item"><a class="sidebar-link" asp-controller="Disease" asp-action="Index">Diseases</a></li>
-				</ul>
-			</li>
-			<li class="sidebar-item">
-				<a class="sidebar-link" asp-controller="Image" asp-action="Index">
-					<i class="align-middle" data-feather="image"></i> <span class="align-middle">Images</span>
-				</a>
-			</li>
+			
+			@if(role.IsAdmin || role.IsStaff)
+			{
+				<li class="sidebar-item">
+					<a data-bs-target="#patients" data-bs-toggle="collapse" class="sidebar-link collapsed">
+						<i class="align-middle" data-feather="heart"></i> <span class="align-middle">Patients</span>
+					</a>
+					<ul id="patients" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+						<li class="sidebar-item"><a class="sidebar-link" asp-controller="Patient" asp-action="Index">Home</a></li>
+						<li class="sidebar-item"><a class="sidebar-link" asp-controller="Disease" asp-action="Index">Diseases</a></li>
+					</ul>
+				</li>
+				<li class="sidebar-item">
+					<a data-bs-target="#images" data-bs-toggle="collapse" class="sidebar-link collapsed">
+						<i class="align-middle" data-feather="image"></i> <span class="align-middle">Images</span>
+					</a>
+					<ul id="images" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+						<li class="sidebar-item"><a class="sidebar-link" asp-controller="Image" asp-action="Index">Home</a></li>
+						<li class="sidebar-item"><a class="sidebar-link" asp-controller="Image" asp-action="Classified">Classified</a></li>
+					</ul>
+				</li>
+			}
+			@if(role.IsPatient)
+			{
+				<li class="sidebar-item">
+					<a class="sidebar-link" asp-controller="Patient" asp-action="Details" asp-route-id="@currentUser.UserId">
+						<i class="align-middle" data-feather="heart"></i> <span class="align-middle">Diagnosis</span>
+					</a>
+				</li>
+			}
+
 			<li class="sidebar-item">
 				<a class="sidebar-link" asp-controller="Finance" asp-action="Index">
-					<i class="align-middle" data-feather="dollar-sign"></i> <span class="align-middle">Financials</span>
+					<i class="align-middle" data-feather="dollar-sign"></i> <span class="align-middle">Finance</span>
 				</a>
 			</li>
 
+
+
 			@*----- Addvanced Menu items -----*@
-			<li class="sidebar-header">
-				Advanced
-			</li>			
-			<li class="sidebar-item">
-				<a data-bs-target="#system" data-bs-toggle="collapse" class="sidebar-link collapsed">
-					<i class="align-middle" data-feather="database"></i>
-					<span class="align-middle">System</span>
-				</a>
-				<ul id="system" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-					<li class="sidebar-item"><a class="sidebar-link" asp-controller="Role" asp-action="Index">Roles</a></li>
-					<li class="sidebar-item"><a class="sidebar-link" asp-controller="User" asp-action="Index">Users</a></li>
-					<li class="sidebar-item"><a class="sidebar-link" asp-controller="Staff" asp-action="Index">Staffs</a></li>
-				</ul>
-			</li>
-			<li class="sidebar-item">
-				<a data-bs-target="#settings" data-bs-toggle="collapse" class="sidebar-link collapsed">
-					<i class="align-middle" data-feather="settings"></i>
-					<span class="align-middle">Settings</span>
-				</a>
-				<ul id="settings" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-					<li class="sidebar-item"><a class="sidebar-link" asp-controller="Settings" asp-action="ImageType">Image Types</a></li>
-					<li class="sidebar-item"><a class="sidebar-link" asp-controller="Settings" asp-action="DiseaseType">Diseases Types</a></li>
-				</ul>
-			</li>
+			
+			@if(role.IsAdmin)
+			{
+				<li class="sidebar-header">
+					Advanced
+				</li>
+				<li class="sidebar-item">
+					<a data-bs-target="#system" data-bs-toggle="collapse" class="sidebar-link collapsed">
+						<i class="align-middle" data-feather="database"></i>
+						<span class="align-middle">System</span>
+					</a>
+					<ul id="system" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+						<li class="sidebar-item"><a class="sidebar-link" asp-controller="Role" asp-action="Index">Roles</a></li>
+						<li class="sidebar-item"><a class="sidebar-link" asp-controller="User" asp-action="Index">Users</a></li>
+						<li class="sidebar-item"><a class="sidebar-link" asp-controller="Staff" asp-action="Index">Staffs</a></li>
+					</ul>
+				</li>
+				<li class="sidebar-item">
+					<a data-bs-target="#settings" data-bs-toggle="collapse" class="sidebar-link collapsed">
+						<i class="align-middle" data-feather="settings"></i>
+						<span class="align-middle">Settings</span>
+					</a>
+					<ul id="settings" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+						<li class="sidebar-item"><a class="sidebar-link" asp-controller="Settings" asp-action="ImageType">Image Types</a></li>
+						<li class="sidebar-item"><a class="sidebar-link" asp-controller="Settings" asp-action="DiseaseType">Diseases Types</a></li>
+					</ul>
+				</li>
+			}
+
 		</ul>
 	</div>
 </nav>		

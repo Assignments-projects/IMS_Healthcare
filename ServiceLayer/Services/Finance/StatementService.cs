@@ -9,16 +9,19 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace ServiceLayer.Services.Finance
 {
 	public class StatementService : BaseService, IStatementService
 	{
 		private readonly IStatementRepository _statement;
+		private readonly IPatientsRepository _patient;
 
-		public StatementService(IStatementRepository statement)
+		public StatementService(IStatementRepository statement, IPatientsRepository patients)
 		{
 			_statement = statement;
+			_patient   = patients;
 		}
 
 		/// <summary>
@@ -71,5 +74,50 @@ namespace ServiceLayer.Services.Finance
 		{
 			return await _statement.DeleteAsync(id);
 		}
+
+		/// <summary>
+		/// Calculate statement total from statement item by given id
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public async Task<string> CalculateStatementsTotal(int id)
+		{
+			var statement = await _statement.DetailsAsync(id);
+
+			if (statement == null)
+				return NotFound;
+
+			return await _statement.CalculateStatementsTotal(id, 
+										async () => await _patient.CalculatePatientsTotal(statement.PatientUuid));
+		}
+
+		/// <summary>
+		/// status Select list item
+		/// </summary>
+		/// <returns></returns>
+		public async Task<List<SelectListItem>> StatusSelectList()
+		{
+			var result = await _statement.ListStatusAsync();
+
+			if (!result.Any())
+				return new List<SelectListItem>();
+
+			var list = result.Select(x => new SelectListItem
+			{
+				Value = x.StatusId.ToString(),
+				Text = x.Status
+			}).ToList();
+
+			if (!list.Any())
+				return new List<SelectListItem>();
+
+			return list;
+		}
+
+		/// <summary>
+		/// Not found message
+		/// </summary>
+		private string NotFound => "The statement not found.";
+
 	}
 }

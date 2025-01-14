@@ -58,10 +58,13 @@ namespace DbLayer.Models.Settings
 
 		//--------------------------------- 
 
-		public virtual ICollection<Disease> Diseases { get; set; }
-
 		public virtual User AddedBy { get; set; }
 
 		public virtual User UpdatedBy { get; set; }
+
+		//----------------------------------
+
+		public virtual ICollection<Disease> Diseases { get; set; }
+
 	}
 }

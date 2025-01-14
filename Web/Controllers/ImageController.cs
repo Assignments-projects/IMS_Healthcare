@@ -51,15 +51,99 @@ namespace Web.Controllers
 		}
 
 		/// <summary>
+		/// Image classified page
+		/// </summary>
+		/// <returns></returns>
+		public IActionResult Classified()
+		{
+			return View();
+		}
+
+		/// <summary>
 		/// Load list of images
 		/// </summary>
 		/// <returns></returns>
 		public async Task<PartialViewResult> ImageList()
 		{
 			var images = await _image.ListAsync();
+			var model = _mapper.Map<List<ImageVM>>(images);
+
+			return PartialView("Containers/_ImageList", MakeImage(model));
+		}
+
+		/// <summary>
+		/// Load list of images belongs to disease id
+		/// </summary>
+		/// <returns></returns>
+		public async Task<PartialViewResult> DiseaseImageList(int id)
+		{
+			var images = await _image.ListAsync(id);
 			var model  = _mapper.Map<List<ImageVM>>(images);
 
 			return PartialView("Containers/_ImageList", MakeImage(model));
+		}
+
+		/// <summary>
+		/// Load list of images classified belong tot he type passed
+		/// </summary>
+		/// <param name="type"></param>
+		/// <returns></returns>
+		public async Task<PartialViewResult> ImageVsList(string type)
+		{
+			if(type == nameof(ImageWith.DiseaseType))
+			{
+				// Get disease types available
+				var model = _mapper.Map<List<DiseaseTypeVM>>(await _diseaseType.ListAsync());
+
+				if (!model.Any())
+					return await EmptyDiseaseType();
+
+				foreach (var t in model)
+				{
+					if (t.Diseases == null && !t.Diseases.Any())
+						return await EmptyDiseaseType();
+
+					foreach (var d in t.Diseases)
+					{
+						if (d.Images == null && !d.Images.Any())
+							return await EmptyDiseaseType();
+
+						d.Images = MakeImage(d.Images);
+					}
+				}
+
+				return PartialView("Containers/_ImageVsDiseaseType", model);
+
+			}
+
+			// Get image types available
+			var imgModel = _mapper.Map<List<ImageTypeVM>>(await _imageType.ListAsync());
+
+			if (!imgModel.Any())
+				return await EmptyImageType();
+
+			foreach (var t in imgModel)
+			{
+				if(t.Images == null && !t.Images.Any())
+					return await EmptyImageType();
+
+				t.Images = MakeImage(t.Images);
+			}
+
+			return PartialView("Containers/_ImageVsType", imgModel);
+
+
+			// Empty return for image type
+			async Task<PartialViewResult> EmptyImageType()
+			{
+				return PartialView("Containers/_ImageVsType", new List<ImageTypeVM>());
+			}
+
+			// Empty return for disease type
+			async Task<PartialViewResult> EmptyDiseaseType()
+			{
+				return PartialView("Containers/_ImageVsDiseaseType", new List<DiseaseTypeVM>());
+			}
 		}
 
 		/// <summary>
@@ -238,6 +322,23 @@ namespace Web.Controllers
 				return new List<ImageVM>();
 
 			foreach(var image in model)
+			{
+				image.ImageUrl = Url.Action("GetImage", new { id = image.ImageId });
+			}
+			return model;
+		}
+
+		/// <summary>
+		/// Add the image url for the list
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
+		private ICollection<ImageVM> MakeImage(ICollection<ImageVM> model)
+		{
+			if (!model.Any())
+				return new List<ImageVM>();
+
+			foreach (var image in model)
 			{
 				image.ImageUrl = Url.Action("GetImage", new { id = image.ImageId });
 			}

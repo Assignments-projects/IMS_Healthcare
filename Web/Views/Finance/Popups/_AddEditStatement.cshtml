@@ -1,0 +1,60 @@
+﻿@using Web.Models.Finance
+@using Web.Helper
+
+@model StatementDetailsVM
+
+
+<form asp-controller="Statement" asp-action="AddEdit" method="post">
+	<input type="hidden" asp-for="Details.StatementId" />
+
+	<div class="row mb-3">
+		<div asp-validation-summary="ModelOnly"></div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-12">
+			@if(Model.FromPatient || Model.IsStatusChange)
+			{
+				<label asp-for="Details.PatientUuid">Patient</label>
+				<input asp-for="Details.Patient.FullName" class="form-control" aria-required="true" disabled/>
+			}
+			else
+			{
+				<label asp-for="Details.PatientUuid">Select the patient</label>
+				<select asp-for="Details.PatientUuid" id="PatientUuid" name="Details.PatientUuid" class="form-select">
+					<option value="" selected>Nothing selected</option>
+					@foreach (var role in Model.PatientList)
+					{
+						<option value="@role.Value">@role.Text</option>
+					}
+				</select>
+			}
+		</div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-12">
+			<label asp-for="Details.Description">Description</label>
+			@if (Model.IsStatusChange)
+			{
+				<textarea asp-for="Details.Description" class="form-control" rows="3" aria-required="true" disabled></textarea>
+			}
+			else
+			{
+				<textarea asp-for="Details.Description" class="form-control" rows="3" autocomplete="description" aria-required="true" placeholder="Enter your description"></textarea>
+				<span asp-validation-for="Details.Description" class="text-danger"></span>
+			}	
+		</div>
+	</div>
+
+	<div class="row mb-3">
+		<div class="col-12">
+			<label asp-for="Details.StatusId">Select Status</label>
+			<select asp-for="Details.StatusId" id="StatusId" name="Details.StatusId" class="form-select">
+				<option value="" selected>Nothing selected</option>
+				@foreach (var role in Model.StatusList)
+				{
+					<option value="@role.Value">@role.Text</option>
+				}
+			</select>
+		</div>
+	</div>
+</form>

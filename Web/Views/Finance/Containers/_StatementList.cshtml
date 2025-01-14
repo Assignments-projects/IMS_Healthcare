@@ -1,0 +1,45 @@
+﻿@using Web.Models.Finance
+@using Web.Helper
+
+@model List<StatementVM>
+
+<table id="@TableId.StatementsList" class="table table-striped w-100">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Patient</th>
+			<th>Description</th>
+			<th>Status</th>
+			<th>Added by</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		@if (Model.Any())
+		{
+			@foreach (var type in Model)
+			{
+				<tr>
+					<td>@type.StatementId</td>
+					<td>@type.Patient?.FullName.PropString()</td>
+					<td>@type.Description.PropString()</td>
+					<td>@type.OsStatus?.Status.PropString()</td>
+					<td>
+						<p class="m-0">@type.AddedByName.PropString()</p>
+						<p class="m-0 text-secondary"><small>@type.AddedDate.PropString()</small></p>
+					</td>
+					<td>
+						<a data-id="@type.StatementId" class="p-1 @ButtonClass.StatementEdit text-secondary"><i class="align-middle" data-feather="edit-2"></i></a>
+						<a asp-action="Details" asp-route-id="@type.StatementId"><i class="align-middle" data-feather="eye"></i></a>
+					</td>
+				</tr>
+			}
+		}
+	</tbody>
+</table>
+
+<script>
+	(function () {
+		Controls.InitiateDataTable('@TableId.StatementsList');
+	})();
+</script>

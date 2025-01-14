@@ -3,8 +3,16 @@
 
 @model List<ImageVM>
 
+@{
+	var role = UserHelper.GetCurrentRole();
+}
 
 <div class="row">
+	<div class="col-12">
+		<div class="mb-4 d-flex align-items-center justify-content-between flex-wrap">
+			<h2 class="tab-title text-black">Images list</h2>
+		</div>
+	</div>
 	<div class="col-12">
 		<div class="row">
 			@if(Model.Any())
@@ -14,14 +22,18 @@
 					<div class="col-12 col-sm-6 col-lg-4 col-xl-3">
 						<div class="card h-100 mb-3">
 							<img src="@image.ImageUrl" class="card-img-top" alt="@image.ImageType?.TypeName image" style="max-height: 100px">
-							<div class="card-body border-card-body">
+							<div class="card-body pb-0 border-card-body">
 								<h5 class="card-title">@image.ImageType?.TypeName - @image.Disease?.Patient?.FullName</h5>
 								<p class="card-text">Disease - @image.Disease?.DiseaseType?.TypeName (@image.DiseaseId)</p>
 								<p class="card-text"><small class="text-muted">Added at @image.AddedDate</small></p>
 							</div>
 							<div class="p-2 d-flex align-items-center gap-2">
 								<a data-id="@image.ImageId" class="btn btn-sm flex-fill btn-default @ButtonClass.ImageView">View</a>
-								<a data-id="@image.ImageId" class="btn btn-sm btn-default @ButtonClass.ImageDelete"><i class="align-middle text-danger" data-feather="trash"></i></a>
+								
+								@if(role.IsAdmin || role.IsStaff)
+								{
+									<a data-id="@image.ImageId" class="btn btn-sm btn-default @ButtonClass.ImageDelete"><i class="align-middle text-danger" data-feather="trash"></i></a>
+								}
 							</div>
 						</div>
 					</div>

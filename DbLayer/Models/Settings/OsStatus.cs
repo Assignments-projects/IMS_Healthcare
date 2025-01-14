@@ -10,7 +10,6 @@ namespace DbLayer.Models.Settings
 		/// Primary key
 		/// </summary>
 		[Key]
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int StatusId { get; set; }
 
 		//----- Foriegn keys ----------

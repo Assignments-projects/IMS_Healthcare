@@ -14,9 +14,13 @@
 			PatientUuid = id;
 		}
 
-		public int DiseaseId { get; set; }
+		public int DiseaseId           { get; set; }
 
-		public string PatientUuid { get; set; }
+		public string PatientUuid      { get; set; }
+
+		public string DiseaseInfoTabId { get { return "jq-disease-information-tab-id"; } }
+
+		public string ImageTabId       { get { return "jq-disease-image-tab-id"; } }
 
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using AuthLayer.Helpers;
+using DbLayer.Helpers;
 using System.Security.Claims;
 using Web.Models;
 
@@ -38,5 +39,28 @@ namespace Web.Helper
 				IsApproved	   = result,
 			};
         }
+
+		/// <summary>
+		/// Get role of current user
+		/// </summary>
+		/// <returns></returns>
+		/// <exception cref="ArgumentNullException"></exception>
+		public static CurrentUserRole GetCurrentRole()
+		{
+			if (_httpContextAcc.HttpContext?.User == null)
+				throw new ArgumentNullException();
+
+			var roles = _httpContextAcc.HttpContext.User.FindAll(ClaimTypes.Role).Select(roleClaim => roleClaim.Value).ToList();
+
+			if (roles == null || !roles.Any())
+				return new CurrentUserRole();
+
+			return new CurrentUserRole
+			{
+				IsAdmin    = roles.Any(x => x == nameof(UserRole.Admin)),
+				IsStaff    = roles.All(x => x != nameof(UserRole.Admin)) && roles.Any(x => x != nameof(UserRole.Patient)),
+				IsPatient  = roles.All(x => x == nameof(UserRole.Patient))
+			};
+		}
     }
 }

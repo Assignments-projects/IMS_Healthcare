@@ -25,4 +25,13 @@ namespace Web.Models
 
 		public List<string> Roles { get; set; }
     }
+
+    public class CurrentUserRole
+    {
+        public bool IsAdmin { get; set; } = false;
+
+        public bool IsStaff { get; set; } = false;
+
+        public bool IsPatient { get; set; } = false;
+    }
 }

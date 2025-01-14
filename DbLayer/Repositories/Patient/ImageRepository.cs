@@ -25,6 +25,15 @@ namespace DbLayer.Repositories.Patient
 		}
 
 		/// <summary>
+		/// Load image list belongs to the disease id
+		/// </summary>
+		/// <returns></returns>
+		public async Task<List<Image>> ListAsync(int id)
+		{
+			return await MakeImages(_context.Images.Where(x => x.DiseaseId == id));
+		}
+
+		/// <summary>
 		/// Get image details by id
 		/// </summary>
 		/// <param name="id"></param>

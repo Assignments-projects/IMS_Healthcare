@@ -24,6 +24,15 @@ namespace ServiceLayer.Services.Patient
 		}
 
 		/// <summary>
+		/// Load image list belongs to the disease id
+		/// </summary>
+		/// <returns></returns>
+		public async Task<List<Image>> ListAsync(int id)
+		{
+			return await _image.ListAsync(id);
+		}
+
+		/// <summary>
 		/// Get image details by id
 		/// </summary>
 		/// <param name="id"></param>
