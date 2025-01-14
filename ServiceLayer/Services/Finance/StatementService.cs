@@ -2,6 +2,7 @@
 using DbLayer.Interfaces.Finance;
 using DbLayer.Interfaces.Patient;
 using DbLayer.Models.Finance;
+using Microsoft.EntityFrameworkCore;
 using ServiceLayer.Interfaces.Finance;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,16 @@ namespace ServiceLayer.Services.Finance
 		}
 
 		/// <summary>
+		/// Load statement list for patient uuid
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public async Task<List<Statement>> ListAsync(string id)
+		{
+			return await _statement.ListAsync(id);
+		}
+
+		/// <summary>
 		/// Get statement details by id
 		/// </summary>
 		/// <param name="id"></param>
@@ -50,6 +61,11 @@ namespace ServiceLayer.Services.Finance
 		/// <returns></returns>
 		public async Task<string> AddAsync(Statement model, ICurrentUser user)
 		{
+			var exist = await _statement.ListAsync(model.PatientUuid);
+
+			if (exist.Any())
+				return "The statement already created for the patient you selected.";
+
 			AddAudit(model, user);
 			return await _statement.AddAsync(model);
 		}
@@ -87,8 +103,7 @@ namespace ServiceLayer.Services.Finance
 			if (statement == null)
 				return NotFound;
 
-			return await _statement.CalculateStatementsTotal(id, 
-										async () => await _patient.CalculatePatientsTotal(statement.PatientUuid));
+			return await _statement.CalculateStatementsTotal(id);
 		}
 
 		/// <summary>

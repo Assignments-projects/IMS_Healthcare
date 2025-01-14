@@ -45,6 +45,7 @@
 		public const string PrescriptionList  = "jq-prescription-list-container-id";
 
 		public const string StatementList     = "jq-statement-list-container-id";
+		public const string StatementDetails = "jq-statement-details-container-id";
 		public const string StatementItemList = "jq-statement-item-list-container-id";
 
 		public const string ImageTypeList     = "jq-image-type-list-container-id";
@@ -75,9 +76,11 @@
 
 		public const string DiseaseEdit = "jq-edit-disease-button-id";
 
-
+		public const string StatementEdit = "jq-edit-statement-button-id";
+		public const string StatementStatusEdit = "jq-edit-statement-status-button-id";
 		public const string StatementAddNew     = "jq-add-new-statement-button-id";
 		public const string StatementItemAddNew = "jq-add-new-statement-item-button-id";
+		public const string StatementReloadTotal = "jq-relaoad-total-statement-status-button-id";
 
 		public const string ImageTypeAddNew     = "jq-add-new-image-type-button-id";
 		public const string DiseaseTypeAddNew   = "jq-add-new-disease-type-button-id";

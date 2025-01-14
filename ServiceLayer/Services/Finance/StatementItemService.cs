@@ -1,5 +1,6 @@
 ﻿using DbLayer.Helpers;
 using DbLayer.Interfaces.Finance;
+using DbLayer.Interfaces.Patient;
 using DbLayer.Models.Finance;
 using ServiceLayer.Interfaces.Finance;
 using System;
@@ -14,11 +15,16 @@ namespace ServiceLayer.Services.Finance
 	{
 		private readonly IStatementItemRepository _item;
 		private readonly IStatementService _statement;
+		private readonly IPatientsRepository _patient;
 
-		public StatementItemService(IStatementItemRepository item, IStatementService statement)
+		public StatementItemService(
+			IStatementItemRepository item, 
+			IStatementService statement,
+			IPatientsRepository patients)
 		{
 			_item = item;
 			_statement = statement;
+			_patient = patients;
 		}
 
 		/// <summary>
@@ -40,6 +46,15 @@ namespace ServiceLayer.Services.Finance
 		}
 
 		/// <summary>
+		/// Load statement item list belong to disease id
+		/// </summary>
+		/// <returns></returns>
+		public async Task<List<StatementItem>> ListForDiseaseAsync(int id)
+		{
+			return await _item.ListForDiseaseAsync(id);
+		}
+
+		/// <summary>
 		/// Get statement item details by id
 		/// </summary>
 		/// <param name="id"></param>
@@ -57,8 +72,13 @@ namespace ServiceLayer.Services.Finance
 		public async Task<string> AddAsync(StatementItem model, ICurrentUser user)
 		{
 			AddAudit(model, user);
-			return await _item.AddAsync(model, 
-									async () => _statement.CalculateStatementsTotal((int)model.StatementId));
+
+			var result = await _item.AddAsync(model);
+
+			if (string.IsNullOrEmpty(result))
+				return await CaclculateTotals((int)model.StatementId);
+
+			return result;
 		}
 
 		/// <summary>
@@ -69,8 +89,13 @@ namespace ServiceLayer.Services.Finance
 		public async Task<string> UpdateAsync(StatementItem model, ICurrentUser user)
 		{
 			UpdateAudit(model, user);
-			return await _item.UpdateAsync(model,
-									async () => _statement.CalculateStatementsTotal((int)model.StatementId));
+
+			var result = await _item.UpdateAsync(model);
+
+			if (string.IsNullOrEmpty(result))
+				return await CaclculateTotals((int)model.StatementId);
+
+			return result;
 		}
 
 		/// <summary>
@@ -78,10 +103,33 @@ namespace ServiceLayer.Services.Finance
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public async Task<string> DeleteAsync(int id)
+		public async Task<string> DeleteAsync(int id, int statementId)
 		{
-			return await _item.DeleteAsync(id,
-									async () => _statement.CalculateStatementsTotal(id));
+			var result =  await _item.DeleteAsync(id);
+
+			if(string.IsNullOrEmpty(result))
+				return await CaclculateTotals(statementId);
+
+			return result;
+		}
+
+		/// <summary>
+		/// Calculate patient and statement total
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public async Task<string> CaclculateTotals(int id)
+		{
+			var result = await _statement.CalculateStatementsTotal(id);
+
+			if (string.IsNullOrEmpty(result))
+			{
+				var statement = await _statement.DetailsAsync(id);
+
+				return await _patient.CalculatePatientsTotal(statement.PatientUuid);
+			}
+				
+			return result;
 		}
 	}
 }

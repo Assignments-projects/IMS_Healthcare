@@ -3,10 +3,11 @@
 
 @model List<StatementItemVM>
 
+@{
+	var role = UserHelper.GetCurrentRole();
+}
+
 <div>
-	<div class="mb-4 d-flex align-items-center justify-content-between flex-wrap">
-		<h2 class="tab-title text-black">Statement Items</h2>
-	</div>
 	<div class="">
 		<table id="@TableId.StatementItemsList" class="table table-striped w-100">
 			<thead>
@@ -34,18 +35,21 @@
 								<p class="m-0 text-secondary"><small>@type.AddedDate.PropString()</small></p>
 							</td>
 							<td>
-								<a asp-controller="Finance" asp-action="DeleteItem" asp-route-id="@type.StatementItemId"><i class="align-middle text-danger" data-feather="trash"></i></a>
+								@if(role.IsAdmin || role.IsStaff)
+								{
+									<a class=" @ButtonClass.StatementItemDelete" data-id="@type.StatementItemId"><i class="align-middle text-danger" data-feather="trash"></i></a>
+								}
 							</td>
 						</tr>
 					}
 				}
 			</tbody>
 		</table>
-
-		<script>
-			(function () {
-				Controls.InitiateDataTable('@TableId.StatementItemsList');
-			})();
-		</script>
 	</div>
 </div>
+
+<script>
+	(function () {
+		Controls.InitiateDataTable('@TableId.StatementItemsList');
+	})();
+</script>

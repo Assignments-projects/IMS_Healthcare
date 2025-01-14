@@ -1,11 +1,13 @@
-﻿@using Web.Models.Patient
+﻿@using Web.Models.Finance
 @using Web.Helper
+@using DbLayer.Helpers
 
-@model PatientVM
+@model StatementVM
 
 @{
 	var role = UserHelper.GetCurrentRole();
 }
+
 
 <style>
 	.tbl-user-details td {
@@ -21,68 +23,44 @@
 
 <div>
 	<div class="mb-4 d-flex align-items-center justify-content-between flex-wrap">
-		<h2 class="tab-title text-black">Patient Informations</h2>
-		@if(role.IsAdmin || role.IsStaff)
+		<h2 class="tab-title text-black">Statement Informations</h2>
+		@if (role.IsAdmin || role.IsStaff)
 		{
-			<button class="btn btn-primary" data-id="@Model.PatientUuid" id="@ButtonId.PatientEdit">Edit</button>
+			<button class="btn btn-primary" data-id="@Model.StatementId" data-patient-uuid="@Model.PatientUuid" id="@ButtonId.StatementEdit">Edit</button>
 		}
 	</div>
 	<div class="">
 		<div class="row">			
-			<div class="col-12 col-md-8">
+			<div class="col-12 col-md-6">
 				<div class="row">
 					<div class="col-12 col-lg-6">
 						<table class="w-100 tbl-user-details">
 							<tr>
-								<td>Date of birth</td>
+								<td>Id</td>
 								<td>:</td>
-								<td>@Model.DateOfBirth.PropString()</td>
+								<td>@Model.StatementId.PropString()</td>
 							</tr>
 							<tr>
-								<td>Gender</td>
+								<td>Description</td>
 								<td>:</td>
-								<td>@Model.Gender.PropString()</td>
+								<td>@Model.Description.PropString()</td>
 							</tr>
 							<tr>
-								<td>Identity number</td>
-								<td>:</td>
-								<td>@Model.IdentityNo.PropString()</td>
-							</tr>
-							<tr>
-								<td>Ward No</td>
-								<td>:</td>
-								<td>@Model.WardNo.PropString()</td>
-							</tr>
-						</table>
-					</div>
-					<div class="col-12 col-lg-6">
-						<table class="w-100 tbl-user-details">
-							<tr>
-								<td>In-Charge</td>
-								<td>:</td>
-								<td>@(Model.Staff?.FirstName.PropString() ?? "-") @Model.Staff?.LastName</td>
-							</tr>
-							<tr>
-								<td>Total Cost</td>
+								<td>Total</td>
 								<td>:</td>
 								<td>@Model.TotalCost.PropString()</td>
 							</tr>
 							<tr>
-								<td>Comment</td>
-								<td>:</td>
-								<td>@Model.Comments.PropString()</td>
-							</tr>
-							<tr>
-								<td>Status</td>
+								<td>Identity number</td>
 								<td>:</td>
 								<td>
-									@if (Model.IsDischarged)
+									@if (Model.OsStatus?.Status == nameof(StatementOS.Paid))
 									{
-										<span class="badge rounded-pill bg-success">Discharged</span>
+										<span class="badge rounded-pill bg-success">@Model.OsStatus?.Status</span>
 									}
 									else
 									{
-										<span class="badge rounded-pill bg-danger">In Ward</span>
+										<span class="badge rounded-pill bg-secondary">@Model.OsStatus?.Status.PropString()</span>
 									}
 								</td>
 							</tr>
@@ -90,7 +68,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-12 col-md-4">
+			<div class="col-12 col-md-6">
 				<div class="card p-3">
 					<h2 class="tab-title text-black">Os Details</h2>
 					<div class="row mt-2">

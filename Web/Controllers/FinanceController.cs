@@ -12,6 +12,7 @@ using ServiceLayer.Interfaces.Finance;
 using DbLayer.Models.Settings;
 using Web.Models.Image;
 using Web.Models.Patient;
+using Rotativa.AspNetCore;
 
 namespace Web.Controllers
 {
@@ -49,9 +50,24 @@ namespace Web.Controllers
 		/// Statement details page by Id
 		/// </summary>
 		/// <returns></returns>
-		public IActionResult Details(int id)
+		public async Task<IActionResult> Details(int id)
 		{
-			return View(new StatementMainVM(id));
+			var model = new StatementMainVM
+			{
+				Details		= _mapper.Map<StatementVM>(await _statement.DetailsAsync(id)),
+				StatementId = id,
+			};
+
+			return View(model);
+		}
+
+		/// <summary>
+		/// Statement report pdf
+		/// </summary>
+		/// <returns></returns>
+		public async Task<IActionResult> StatementReport()
+		{
+			return new ViewAsPdf("StatementReport");
 		}
 
 		/// <summary>
@@ -61,6 +77,19 @@ namespace Web.Controllers
 		public async Task<PartialViewResult> StatementList()
 		{
 			var statements = await _statement.ListAsync();
+			var model      = _mapper.Map<List<StatementVM>>(statements);
+
+			return PartialView("Containers/_StatementList", model);
+		}
+
+
+		/// <summary>
+		/// Load list of statements for patient
+		/// </summary>
+		/// <returns></returns>
+		public async Task<PartialViewResult> PatientStatementList(string id)
+		{
+			var statements = await _statement.ListAsync(id);
 			var model = _mapper.Map<List<StatementVM>>(statements);
 
 			return PartialView("Containers/_StatementList", model);
@@ -74,6 +103,18 @@ namespace Web.Controllers
 		{
 			var diseases = await _item.ListAsync(id);
 			var model = _mapper.Map<List<StatementItemVM>>(diseases);
+
+			return PartialView("Containers/_ItemList", model);
+		}
+
+		/// <summary>
+		/// Load list of statements for disease
+		/// </summary>
+		/// <returns></returns>
+		public async Task<PartialViewResult> DiseaseItemList(int id)
+		{
+			var diseases = await _item.ListForDiseaseAsync(id);
+			var model    = _mapper.Map<List<StatementItemVM>>(diseases);
 
 			return PartialView("Containers/_ItemList", model);
 		}
@@ -142,7 +183,7 @@ namespace Web.Controllers
 			var result    = string.Empty;
 
 			if (model.Details.StatusId.IsNullOrZero())
-				model.Details.StatusId = (int)StatementOS.Paid;
+				statement.StatusId = (int)StatementOS.Pending;
 
 			if (isAdd)
 				result = await _statement.AddAsync(statement, UserHelper.GetCurrentUser());
@@ -160,16 +201,16 @@ namespace Web.Controllers
 		/// </summary>
 		/// <returns></returns>
 		[HttpGet]
-		public async Task<IActionResult> AddItem(string patientUuid, int id = 0)
+		public async Task<IActionResult> AddItem(int id)
 		{
-			var model = new StatementDetailsVM()
+			var statement = _mapper.Map<StatementVM>(await _statement.DetailsAsync(id));
+
+			var model = new ItemDetailsVM()
 			{
-				DiseaseList = await _disease.DiseaseSelectListForPatient(patientUuid),
-				FromDisease = id.IsZeroOrLess()
+				DiseaseList = await _disease.DiseaseSelectListForPatient(statement.PatientUuid)
 			};
 
-			if (!id.IsZeroOrLess())
-				model.ItemDetails.StatementId = id;
+			model.ItemDetails.StatementId = (int)statement.StatementId;
 
 			return PartialView("Popups/_AddItem", model);
 		}
@@ -180,12 +221,12 @@ namespace Web.Controllers
 		/// <param name="model"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public async Task<IActionResult> AddItem(StatementDetailsVM model)
+		public async Task<IActionResult> AddItem(ItemDetailsVM model)
 		{
-			if (!TryValidateModel(model.Details))
+			if (!TryValidateModel(model.ItemDetails))
 				return JsonError("Fields are not valid");
 
-			var statement = _mapper.Map<StatementItem>(model);
+			var statement = _mapper.Map<StatementItem>(model.ItemDetails);
 			var result    = await _item.AddAsync(statement, UserHelper.GetCurrentUser());
 
 			if (!string.IsNullOrEmpty(result))
@@ -215,12 +256,28 @@ namespace Web.Controllers
 		[HttpPost]
 		public async Task<JsonResult> DeleteItem(StatementItemVM model)
 		{
-			var result = await _item.DeleteAsync((int)model.StatementItemId);
+			var result = await _item.DeleteAsync((int)model.StatementItemId, model.StatementId);
 
 			if (!string.IsNullOrEmpty(result))
 				return JsonError(result);
 
 			return JsonSuccess("Statement item deleted successfully.");
 		}
+
+
+		/// <summary>
+		/// Load delete modal belongs to given image id
+		/// </summary>
+		/// <returns></returns>
+		public async Task<JsonResult> RefreshTotal(int id)
+		{
+			var result = await _item.CaclculateTotals(id);
+
+			if(!string.IsNullOrEmpty(result))
+				return JsonError(result);
+
+			return JsonSuccess("Total calculated successfully");
+		}
+
 	}
 }

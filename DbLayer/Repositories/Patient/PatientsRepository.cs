@@ -155,19 +155,10 @@ namespace DbLayer.Repositories.Patient
 		{
 			try
 			{
-				var total = await _context.Statements.Where(x => x.PatientUuid == id)
-												 .SumAsync(x => x.TotalCost);
+				await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[SP_UPDATE_PATIENT_TOTAL] @PatientUuid",
+															new SqlParameter("PatientUuid", id));
 
-				var exist = await _context.Patients.Where(x => x.PatientUuid == id)
-													 .FirstOrDefaultAsync();
-
-				if (exist == null)
-					return NotFound;
-
-				exist.TotalCost = total;
-
-				await _context.SaveChangesAsync();
-
+				return null;
 			}
 			catch (SqlException sqlEx)
 			{
@@ -177,8 +168,6 @@ namespace DbLayer.Repositories.Patient
 			{
 				return ex.Message;
 			}
-
-			return null;
 		}
 
 		/// <summary>

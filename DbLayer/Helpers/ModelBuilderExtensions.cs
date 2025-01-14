@@ -10,16 +10,16 @@ namespace DbLayer.Helpers
 		{
 			builder.Entity<TEntity>()
 				.HasOne(i => i.AddedBy)
-				.WithOne()
-				.HasForeignKey<TEntity>(i => i.AddedById)
-				.HasPrincipalKey<User>(u => u.UserUuid);
+				.WithMany()
+				.HasForeignKey(i => i.AddedById)
+				.HasPrincipalKey(u => u.UserUuid);
 
 			// Similarly, configure UpdatedBy if needed
 			builder.Entity<TEntity>()
 				.HasOne(i => i.UpdatedBy) // Same relationship, but for UpdatedById
-				.WithOne()
-				.HasForeignKey<TEntity>(i => i.UpdatedById)
-				.HasPrincipalKey<User>(u => u.UserUuid);
+				.WithMany()
+				.HasForeignKey(i => i.UpdatedById)
+				.HasPrincipalKey(u => u.UserUuid);
 		}
 	}
 }

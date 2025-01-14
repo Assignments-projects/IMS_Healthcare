@@ -21,7 +21,7 @@
 
 	public enum StatementOS
 	{
-		Pending = 1,
-		Paid    = 2,
+		Pending = 10,
+		Paid    = 11,
 	}
 }

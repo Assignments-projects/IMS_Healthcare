@@ -12,6 +12,13 @@ namespace DbLayer.Interfaces.Finance
 		Task<List<Statement>> ListAsync();
 
 		/// <summary>
+		/// Load statement list for patient uuid
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		Task<List<Statement>> ListAsync(string id);
+
+		/// <summary>
 		/// Get statement details by id
 		/// </summary>
 		/// <param name="id"></param>
@@ -43,9 +50,8 @@ namespace DbLayer.Interfaces.Finance
 		/// Calculate statement total from statement item by given id
 		/// </summary>
 		/// <param name="id"></param>
-		/// <param name="onSave"></param>
 		/// <returns></returns>
-		Task<string> CalculateStatementsTotal(int id, Action onSave = null);
+		Task<string> CalculateStatementsTotal(int id);
 
 		/// <summary>
 		/// Load statement status list

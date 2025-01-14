@@ -2,6 +2,8 @@ using ServiceLayer;
 using DbLayer;
 using AuthLayer;
 using Web.Helper;
+using Rotativa.AspNetCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,8 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 
+app.UseRotativa();
+
 // Initialize the static UserHelper with IHttpContextAccessor
 var httpContextAccessor = app.Services.GetRequiredService<IHttpContextAccessor>();
 UserHelper.Initialize(httpContextAccessor);
@@ -32,6 +36,7 @@ app.UseMiddleware<RefreshClaimsMiddleware>();
 
 // Use Authorization middleware
 app.UseMiddleware<AuthorizationMiddleware>();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

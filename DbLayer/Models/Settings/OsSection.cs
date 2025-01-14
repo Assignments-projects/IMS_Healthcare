@@ -4,7 +4,7 @@ using DbLayer.Helper;
 
 namespace DbLayer.Models.Settings
 {
-	public class OsSection : IAuditCurrent
+	public class OsSection
 	{
 		/// <summary>
 		/// Primary key
@@ -24,31 +24,6 @@ namespace DbLayer.Models.Settings
 		public string? Description { get; set; }
 
 
-		//------ Additional props ---------
-
-		[NotMapped]
-		public string? AddedByName { get; set; }
-
-		[NotMapped]
-		public string? UpdatedByName { get; set; }
-
-
-		// ------ System props ----------
-
-		public string? AddedById { get; set; }
-
-		public string? UpdatedById { get; set; }
-
-		public DateTime? AddedDate { get; set; }
-
-		public DateTime? UpdatedDate { get; set; }
-
 		public bool IsActive { get; set; } = true;
-
-		//--------------------------------
-
-		public virtual User AddedBy { get; set; }
-
-		public virtual User UpdatedBy { get; set; }
 	}
 }

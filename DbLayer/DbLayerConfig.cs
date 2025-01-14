@@ -36,13 +36,13 @@ namespace DbLayer
 			services.AddTransient<IUsersRepository, UserRepository>();
 			services.AddTransient<IStaffsRepository, StaffsRepository>();
 
-			services.AddTransient<IPatientsRepository, PatientsRepository>();
+			services.AddScoped<IPatientsRepository, PatientsRepository>();
 			services.AddTransient<IDiseaseRepository, DiseaseRepository>();
 			services.AddTransient<IImageRepository, ImageRepository>();
 			services.AddTransient<IPrescriptionRepository, PrescriptionRepository>();
 
-			services.AddTransient<IStatementRepository, StatementRepository>();
-			services.AddTransient<IStatementItemRepository, StatementItemRepository>();
+			services.AddScoped<IStatementRepository, StatementRepository>();
+			services.AddScoped<IStatementItemRepository, StatementItemRepository>();
 
 			services.AddTransient<IDiseaseTypeRepository, DiseaseTypeRepository>();
 			services.AddTransient<IImageTypeRepository, ImageTypeRepository>();

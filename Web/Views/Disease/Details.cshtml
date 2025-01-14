@@ -50,11 +50,23 @@
 									<i class="align-middle" data-feather="file"></i>
 								</a>
 							</li>
+							<li class="nav-item">
+								<a class="nav-link"
+								   href="#@Model.StatementItemTabId"
+								   data-reload-id="@Model.StatementItemTabId"
+								   data-url="@Url.Action("DiseaseItemList", "Finance", new { id = Model.DiseaseId })"
+								   data-bs-toggle="tab"
+								   role="tab">
+									<i class="align-middle" data-feather="list"></i>
+								</a>
+							</li>
 						</ul>
 						<div class="tab-content text-secondary">
 							<div class="tab-pane active" id="@Model.DiseaseInfoTabId" role="tabpanel">
 							</div>
 							<div class="tab-pane" id="@Model.ImageTabId" role="tabpanel">
+							</div>
+							<div class="tab-pane" id="@Model.StatementItemTabId" role="tabpanel">
 							</div>
 						</div>
 					</div>
@@ -85,6 +97,18 @@
 			}
 
 			/**
+			* Open statement pop-up when click delete item button
+			* Take the Url action to load partial and Open the bootstrap modal
+			*/
+			var DeleteItem = function()
+			{
+				var id  = $(this).attr("data-id");
+				var url = `@Url.Action("DeleteItem", "Finance")?id=${id}`;
+
+				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Add New Item", "Delete". "btn-danger");
+			}
+
+			/**
 			 * Submit the form via ajax and close the main modal
 			 */
 			var SubmitModalForm = function()
@@ -97,6 +121,7 @@
 
 			// Handle events
 			$(document).on('click', '#@ButtonId.DiseaseEdit', EditDisease);
+			$(document).on('click', '.@ButtonClass.StatementItemDelete', DeleteItem);
 			$(document).on('click', '.@ButtonClass.MainModalSubmit', SubmitModalForm);
 		})();
 	</script>

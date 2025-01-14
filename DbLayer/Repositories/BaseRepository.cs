@@ -18,8 +18,8 @@ namespace DbLayer.Repositories
 		{
 			if (obj == null) return;
 
-			obj.AddedByName   = $"{obj.AddedBy.FirstName} {obj.AddedBy.LastName}";
-			obj.UpdatedByName = $"{obj.UpdatedBy.FirstName} {obj.UpdatedBy.LastName}";
+			obj.AddedByName   = $"{obj.AddedBy?.FirstName} {obj.AddedBy?.LastName}";
+			obj.UpdatedByName = $"{obj.UpdatedBy?.FirstName} {obj.UpdatedBy?.LastName}";
 		}
 
 		/// <summary>
@@ -33,8 +33,8 @@ namespace DbLayer.Repositories
 
 			foreach (T obj in objList)
 			{
-				obj.AddedByName   = $"{obj.AddedBy.FirstName} {obj.AddedBy.LastName}";
-				obj.UpdatedByName = $"{obj.UpdatedBy.FirstName} {obj.UpdatedBy.LastName}";
+				obj.AddedByName   = $"{obj.AddedBy?.FirstName} {obj.AddedBy?.LastName}";
+				obj.UpdatedByName = $"{obj.UpdatedBy?.FirstName} {obj.UpdatedBy?.LastName}";
 			}
 		}
 	}

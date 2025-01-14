@@ -4,7 +4,7 @@
 @model StatementDetailsVM
 
 
-<form asp-controller="Statement" asp-action="AddEdit" method="post">
+<form asp-controller="Finance" asp-action="AddEdit" method="post">
 	<input type="hidden" asp-for="Details.StatementId" />
 
 	<div class="row mb-3">
@@ -19,7 +19,7 @@
 			}
 			else
 			{
-				<label asp-for="Details.PatientUuid">Select the patient</label>
+				<label asp-for="Details.PatientUuid" class="@FormHelper.lblRequired">Select the patient</label>
 				<select asp-for="Details.PatientUuid" id="PatientUuid" name="Details.PatientUuid" class="form-select">
 					<option value="" selected>Nothing selected</option>
 					@foreach (var role in Model.PatientList)

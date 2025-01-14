@@ -19,6 +19,13 @@ namespace ServiceLayer.Interfaces.Finance
 		Task<List<Statement>> ListAsync();
 
 		/// <summary>
+		/// Load statement list for patient uuid
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		Task<List<Statement>> ListAsync(string id);
+
+		/// <summary>
 		/// Get statement details by id
 		/// </summary>
 		/// <param name="id"></param>

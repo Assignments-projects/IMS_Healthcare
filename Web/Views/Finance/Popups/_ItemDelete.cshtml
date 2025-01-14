@@ -1,0 +1,12 @@
+﻿@using Web.Models.Finance
+
+@model StatementItemVM
+
+<form asp-controller="Finance" asp-action="DeleteItem" method="post">
+    <input type="hidden" asp-for="StatementItemId" />
+    <input type="hidden" asp-for="StatementId" />
+
+    <div>
+        <h6>Are you sure you want to delete this item ?</h6>
+    </div>
+</form>

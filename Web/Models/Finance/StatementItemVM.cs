@@ -25,7 +25,8 @@ namespace Web.Models.Finance
 		/// <summary>
 		/// statement id - PK from statement
 		/// </summary>
-		public int? StatementId { get; set; }
+		[Required]
+		public int StatementId { get; set; }
 
 
 		//-------------------------------
@@ -33,12 +34,14 @@ namespace Web.Models.Finance
 		/// <summary>
 		/// Any description about the statement
 		/// </summary>
-		public string? Description { get; set; }
+		[Required]
+		public string Description { get; set; }
 
 		/// <summary>
 		/// Cost of the statement item
 		/// </summary>
-		public decimal? TotalCost { get; set; }
+		[Required]
+		public decimal TotalCost { get; set; }
 
 
 		//------ Additional props ---------
@@ -58,7 +61,7 @@ namespace Web.Models.Finance
 
 		public DateTime? UpdatedDate { get; set; }
 
-		public bool IsActive { get; set; }
+		public bool IsActive { get; set; } = false;
 
 
 		//----- Foriegn key objects --------- 

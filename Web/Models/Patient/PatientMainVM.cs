@@ -17,7 +17,7 @@
 
 		public string DiseaseTabId { get { return "jq-patient-disease-tab-id"; } }
 
-		public string StatementaId { get { return "jq-patient-statement-tab-id"; } }
+		public string StatementTabId { get { return "jq-patient-statement-tab-id"; } }
 
 	}
 }

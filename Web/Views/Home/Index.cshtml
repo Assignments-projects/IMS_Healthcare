@@ -6,6 +6,7 @@
 @{
 	ViewBag.Title = "Home";
 	var currentUser = UserHelper.GetCurrentUser();
+	var role = UserHelper.GetCurrentRole();
 }
 
 <div class="container-fluid p-0">
@@ -71,10 +72,12 @@
 							</div>
 							<h1 class="mt-1 mb-3">@Model.TotalUsers</h1>
 							<div class="mb-0">
-								<a asp-controller="User" asp-action="Index">
-									<span class="badge badge-primary-light"> <i class="mdi mdi-arrow-bottom-right"></i> View more </span>
-									<span class="text-muted">users</span>
-								</a>
+								@if (role.IsAdmin)
+								{
+									<a asp-controller="User" asp-action="Index">
+										<span class="badge badge-primary-light"> <i class="mdi mdi-arrow-bottom-right"></i> View more </span>
+									</a>
+								}					
 							</div>
 						</div>
 					</div>
@@ -95,7 +98,12 @@
 							</div>
 							<h1 class="mt-1 mb-3">@Model.TotalStaffs</h1>
 							<div class="mb-0">
-								<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> View more </span>
+								@if (role.IsAdmin)
+								{
+									<a asp-controller="Staff" asp-action="Index">
+										<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> View more </span>
+									</a>
+								}
 							</div>
 						</div>
 					</div>
@@ -116,7 +124,12 @@
 							</div>
 							<h1 class="mt-1 mb-3">@Model.TotalPatients</h1>
 							<div class="mb-0">
-								<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> View more </span>
+								@if (role.IsAdmin || role.IsStaff)
+								{
+									<a asp-controller="Patient" asp-action="Index">
+										<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> View more </span>
+									</a>
+								}
 							</div>
 						</div>
 					</div>
@@ -137,7 +150,12 @@
 							</div>
 							<h1 class="mt-1 mb-3">@Model.TotalDiseases</h1>
 							<div class="mb-0">
-								<span class="badge badge-danger-light"> <i class="mdi mdi-arrow-bottom-right"></i> View more </span>
+								@if (role.IsAdmin || role.IsStaff)
+								{
+									<a asp-controller="Disease" asp-action="Index">
+										<span class="badge badge-danger-light"> <i class="mdi mdi-arrow-bottom-right"></i> View more </span>
+									</a>
+								}
 							</div>
 						</div>
 					</div>

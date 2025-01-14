@@ -53,7 +53,12 @@ namespace Web.Helper
 			var roles = _httpContextAcc.HttpContext.User.FindAll(ClaimTypes.Role).Select(roleClaim => roleClaim.Value).ToList();
 
 			if (roles == null || !roles.Any())
-				return new CurrentUserRole();
+				return new CurrentUserRole
+				{
+					IsAdmin  = false,
+					IsPatient = false,
+					IsStaff = false
+				};
 
 			return new CurrentUserRole
 			{

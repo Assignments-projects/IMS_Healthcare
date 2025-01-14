@@ -1,6 +1,7 @@
 ﻿using DbLayer.Data;
 using DbLayer.Helpers;
 using DbLayer.Interfaces.Finance;
+using DbLayer.Models;
 using DbLayer.Models.Finance;
 using DbLayer.Models.Patient;
 using DbLayer.Models.Settings;
@@ -11,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DbLayer.Repositories.Finance
 {
@@ -30,6 +32,16 @@ namespace DbLayer.Repositories.Finance
 		public async Task<List<Statement>> ListAsync()
 		{
 			return await MakeStatements(_context.Statements);
+		}
+
+		/// <summary>
+		/// Load statement list for patient uuid
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public async Task<List<Statement>> ListAsync(string id)
+		{
+			return await MakeStatements(_context.Statements.Where(x => x.PatientUuid == id));
 		}
 
 		/// <summary>
@@ -53,6 +65,7 @@ namespace DbLayer.Repositories.Finance
 		{
 			try
 			{
+
 				await _context.AddAsync(model);
 				await _context.SaveChangesAsync();
 			}
@@ -140,24 +153,23 @@ namespace DbLayer.Repositories.Finance
 		/// <param name="id"></param>
 		/// <param name="onSave"></param>
 		/// <returns></returns>
-		public async Task<string> CalculateStatementsTotal(int id, Action onSave = null)
+		public async Task<string> CalculateStatementsTotal(int id)
 		{
 			try
 			{
-				var total = await _context.StatementItems.Where(x => x.StatementId == id)
-												 .SumAsync(x => x.TotalCost);
+				// Ensure the connection is open before executing the command
+				var connection = _context.Database.GetDbConnection();
 
-				var exist = await _context.Statements.Where(x => x.StatementId == id)
-													 .FirstOrDefaultAsync();
+				if (connection.State != System.Data.ConnectionState.Open)
+				{
+					await connection.OpenAsync(); 
+				}
 
-				if (exist == null)
-					return NotFound;
+				// Execute the stored procedure
+				await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[SP_UPDATE_STATEMENT_TOTAL] @StatementId",
+														   new SqlParameter("StatementId", id));
 
-				exist.TotalCost = total;
-
-				await _context.SaveChangesAsync();
-
-				onSave?.Invoke();
+				return null;
 			}
 			catch (SqlException sqlEx)
 			{
@@ -167,9 +179,8 @@ namespace DbLayer.Repositories.Finance
 			{
 				return ex.Message;
 			}
-
-			return null;
 		}
+
 
 		/// <summary>
 		/// Load statement status list
@@ -187,18 +198,27 @@ namespace DbLayer.Repositories.Finance
 		/// <returns></returns>
 		private async Task<List<Statement>> MakeStatements(IQueryable<Statement> found)
 		{
-			var result = await found.Include(x => x.AddedBy)
+			try
+			{
+				var result = await found.Include(x => x.AddedBy)
 									.Include(x => x.UpdatedBy)
 									.Include(x => x.Patient)
-									.Include(x => x.Status)
+									.Include(x => x.OsStatus)
 									.Include(x => x.Items)
+									.AsNoTracking()
 									.ToListAsync();
-			if (!result.Any())
-				return new List<Statement>();
+				if (!result.Any())
+					return new List<Statement>();
 
-			AddAuditNames(result);
-			return result;
+				AddAuditNames(result);
+				return result;
+			}
+			catch(Exception ex)
+			{
+				return  new List<Statement>();
+			}
 		}
+
 
 		/// <summary>
 		/// Not found message

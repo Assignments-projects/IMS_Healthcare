@@ -55,9 +55,6 @@ namespace DbLayer.Models.Finance
 		//------ Additional props ---------
 
 		[NotMapped]
-		public string? Status { get; set; }
-
-		[NotMapped]
 		public string? AddedByName { get; set; }
 
 		[NotMapped]

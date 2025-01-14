@@ -1,7 +1,12 @@
 ﻿@using Web.Models.Finance
 @using Web.Helper
+@using DbLayer.Helpers
 
 @model List<StatementVM>
+
+<div class="mb-4 d-flex align-items-center justify-content-between flex-wrap">
+	<h2 class="tab-title text-black">Statements</h2>
+</div>
 
 <table id="@TableId.StatementsList" class="table table-striped w-100">
 	<thead>
@@ -23,7 +28,16 @@
 					<td>@type.StatementId</td>
 					<td>@type.Patient?.FullName.PropString()</td>
 					<td>@type.Description.PropString()</td>
-					<td>@type.OsStatus?.Status.PropString()</td>
+					<td>
+						@if (type.OsStatus?.Status == nameof(StatementOS.Paid))
+						{
+							<span class="badge rounded-pill bg-success">@type.OsStatus?.Status</span>
+						}
+						else
+						{
+							<span class="badge rounded-pill bg-secondary">@type.OsStatus?.Status.PropString()</span>
+						}
+					</td>
 					<td>
 						<p class="m-0">@type.AddedByName.PropString()</p>
 						<p class="m-0 text-secondary"><small>@type.AddedDate.PropString()</small></p>

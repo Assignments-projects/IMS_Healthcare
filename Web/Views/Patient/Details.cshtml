@@ -65,9 +65,9 @@
 							</li>
 							<li class="nav-item">
 								<a class="nav-link"
-								   href="#@Model.StatementaId"
-								   data-reload-id="@Model.StatementaId"
-								   data-url="@Url.Action("UserRoleList", "User", new { id = Model.PatientUuid })"
+								   href="#@Model.StatementTabId"
+								   data-reload-id="@Model.StatementTabId"
+								   data-url="@Url.Action("PatientStatementList", "Finance", new { id = Model.PatientUuid })"
 								   data-bs-toggle="tab"
 								   role="tab">
 									<i class="align-middle" data-feather="file-text"></i>
@@ -79,7 +79,7 @@
 							</div>
 							<div class="tab-pane" id="@Model.DiseaseTabId" role="tabpanel">
 							</div>
-							<div class="tab-pane" id="@Model.StatementaId" role="tabpanel">
+							<div class="tab-pane" id="@Model.StatementTabId" role="tabpanel">
 							</div>
 						</div>
 					</div>
@@ -131,19 +131,33 @@
 				}
 
 				/**
+				 * Open statement pop-up when click edit button
+				 * Take the Url action to load partial and Open the bootstrap modal
+				 */
+				var EditStatement = function()
+				{
+					var id  = $(this).attr("data-id");
+					var url = `@Url.Action("AddEdit", "Finance")?id=${id}`;
+
+					Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Update Statement Details");
+				}
+
+
+				/**
 				 * Submit the form via ajax and close the main modal
 				 */
 				var SubmitModalForm = function()
 				{
 					var form = $(this).closest('.modal').find('.modal-body form');
 
-					Controls.RelaodContainerOnModalPost("@UniqueIdentifier.MainModelId", form, '@ContainerId.PatientDetails');
+					Controls.RelaodContainerOnModalPost("@UniqueIdentifier.MainModelId", form, '@ContainerId.PatientDetails', LoadPatientsDetails);
 				}
 
 
 				// Handle events
 				$(document).ready(LoadPatientsDetails);
 				$(document).on('click', '#@ButtonId.PatientEdit', EditPatient);
+				$(document).on('click', '.@ButtonClass.StatementEdit', EditStatement);
 				$(document).on('click', '#@ButtonId.UserEdit', EditRegistration);
 				$(document).on('click', '.@ButtonClass.MainModalSubmit', SubmitModalForm);
 			})();

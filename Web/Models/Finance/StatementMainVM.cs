@@ -2,13 +2,16 @@
 {
 	public class StatementMainVM
 	{
-		public StatementMainVM() { }
-
-		public StatementMainVM(int id) 
+		public StatementMainVM() 
 		{
-			StatementId = id;
+			Details = new StatementVM();
 		}
 
-		public int StatementId { get; set; }	
+		public int StatementId { get; set; }
+
+		/// <summary>
+		/// Statement details obj
+		/// </summary>
+		public StatementVM Details { get; set; }
 	}
 }

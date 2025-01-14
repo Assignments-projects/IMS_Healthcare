@@ -22,5 +22,8 @@
 
 		public string ImageTabId       { get { return "jq-disease-image-tab-id"; } }
 
+		public string StatementItemTabId { get { return "jq-disease-statement-item-tab-id"; } }
+
+
 	}
 }

@@ -106,13 +106,14 @@
 				</li>
 			}
 
-			<li class="sidebar-item">
-				<a class="sidebar-link" asp-controller="Finance" asp-action="Index">
-					<i class="align-middle" data-feather="dollar-sign"></i> <span class="align-middle">Finance</span>
-				</a>
-			</li>
-
-
+			@if(role.IsAdmin || role.IsStaff)
+			{
+				<li class="sidebar-item">
+					<a class="sidebar-link" asp-controller="Finance" asp-action="Index">
+						<i class="align-middle" data-feather="dollar-sign"></i> <span class="align-middle">Finance</span>
+					</a>
+				</li>
+			}
 
 			@*----- Addvanced Menu items -----*@
 			

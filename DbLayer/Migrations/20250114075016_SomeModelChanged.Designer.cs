@@ -4,6 +4,7 @@ using DbLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbLayer.Migrations
 {
     [DbContext(typeof(IMSDbContext))]
-    partial class IMSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250114075016_SomeModelChanged")]
+    partial class SomeModelChanged
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -192,13 +195,17 @@ namespace DbLayer.Migrations
 
                     b.HasKey("StatementId");
 
-                    b.HasIndex("AddedById");
+                    b.HasIndex("AddedById")
+                        .IsUnique()
+                        .HasFilter("[AddedById] IS NOT NULL");
 
                     b.HasIndex("PatientUuid");
 
                     b.HasIndex("StatusId");
 
-                    b.HasIndex("UpdatedById");
+                    b.HasIndex("UpdatedById")
+                        .IsUnique()
+                        .HasFilter("[UpdatedById] IS NOT NULL");
 
                     b.ToTable("Statements");
                 });
@@ -240,13 +247,17 @@ namespace DbLayer.Migrations
 
                     b.HasKey("StatementItemId");
 
-                    b.HasIndex("AddedById");
+                    b.HasIndex("AddedById")
+                        .IsUnique()
+                        .HasFilter("[AddedById] IS NOT NULL");
 
                     b.HasIndex("DiseaseId");
 
                     b.HasIndex("StatementId");
 
-                    b.HasIndex("UpdatedById");
+                    b.HasIndex("UpdatedById")
+                        .IsUnique()
+                        .HasFilter("[UpdatedById] IS NOT NULL");
 
                     b.ToTable("StatementItems");
                 });
@@ -291,7 +302,9 @@ namespace DbLayer.Migrations
 
                     b.HasKey("DiseaseId");
 
-                    b.HasIndex("AddedById");
+                    b.HasIndex("AddedById")
+                        .IsUnique()
+                        .HasFilter("[AddedById] IS NOT NULL");
 
                     b.HasIndex("DiseaseTypeId");
 
@@ -299,7 +312,9 @@ namespace DbLayer.Migrations
 
                     b.HasIndex("PatientUuid");
 
-                    b.HasIndex("UpdatedById");
+                    b.HasIndex("UpdatedById")
+                        .IsUnique()
+                        .HasFilter("[UpdatedById] IS NOT NULL");
 
                     b.ToTable("Diseases");
                 });
@@ -356,7 +371,9 @@ namespace DbLayer.Migrations
 
                     b.HasKey("ImageId");
 
-                    b.HasIndex("AddedById");
+                    b.HasIndex("AddedById")
+                        .IsUnique()
+                        .HasFilter("[AddedById] IS NOT NULL");
 
                     b.HasIndex("DiseaseId");
 
@@ -364,7 +381,9 @@ namespace DbLayer.Migrations
 
                     b.HasIndex("StaffId");
 
-                    b.HasIndex("UpdatedById");
+                    b.HasIndex("UpdatedById")
+                        .IsUnique()
+                        .HasFilter("[UpdatedById] IS NOT NULL");
 
                     b.ToTable("Images");
                 });
@@ -436,11 +455,15 @@ namespace DbLayer.Migrations
 
                     b.HasKey("PateintId");
 
-                    b.HasIndex("AddedById");
+                    b.HasIndex("AddedById")
+                        .IsUnique()
+                        .HasFilter("[AddedById] IS NOT NULL");
 
                     b.HasIndex("InChargeuUud");
 
-                    b.HasIndex("UpdatedById");
+                    b.HasIndex("UpdatedById")
+                        .IsUnique()
+                        .HasFilter("[UpdatedById] IS NOT NULL");
 
                     b.ToTable("Patients");
                 });
@@ -485,11 +508,15 @@ namespace DbLayer.Migrations
 
                     b.HasKey("PrescriptionId");
 
-                    b.HasIndex("AddedById");
+                    b.HasIndex("AddedById")
+                        .IsUnique()
+                        .HasFilter("[AddedById] IS NOT NULL");
 
                     b.HasIndex("DiseaseId");
 
-                    b.HasIndex("UpdatedById");
+                    b.HasIndex("UpdatedById")
+                        .IsUnique()
+                        .HasFilter("[UpdatedById] IS NOT NULL");
 
                     b.ToTable("Prescriptions");
                 });
@@ -529,9 +556,13 @@ namespace DbLayer.Migrations
 
                     b.HasKey("DiseaseTypeId");
 
-                    b.HasIndex("AddedById");
+                    b.HasIndex("AddedById")
+                        .IsUnique()
+                        .HasFilter("[AddedById] IS NOT NULL");
 
-                    b.HasIndex("UpdatedById");
+                    b.HasIndex("UpdatedById")
+                        .IsUnique()
+                        .HasFilter("[UpdatedById] IS NOT NULL");
 
                     b.ToTable("DiseaseTypes");
                 });
@@ -571,9 +602,13 @@ namespace DbLayer.Migrations
 
                     b.HasKey("ImageTypeId");
 
-                    b.HasIndex("AddedById");
+                    b.HasIndex("AddedById")
+                        .IsUnique()
+                        .HasFilter("[AddedById] IS NOT NULL");
 
-                    b.HasIndex("UpdatedById");
+                    b.HasIndex("UpdatedById")
+                        .IsUnique()
+                        .HasFilter("[UpdatedById] IS NOT NULL");
 
                     b.ToTable("ImageTypes");
                 });
@@ -694,9 +729,13 @@ namespace DbLayer.Migrations
 
                     b.HasKey("StaffId");
 
-                    b.HasIndex("AddedById");
+                    b.HasIndex("AddedById")
+                        .IsUnique()
+                        .HasFilter("[AddedById] IS NOT NULL");
 
-                    b.HasIndex("UpdatedById");
+                    b.HasIndex("UpdatedById")
+                        .IsUnique()
+                        .HasFilter("[UpdatedById] IS NOT NULL");
 
                     b.ToTable("Staffs");
                 });
@@ -904,9 +943,9 @@ namespace DbLayer.Migrations
             modelBuilder.Entity("DbLayer.Models.Finance.Statement", b =>
                 {
                     b.HasOne("DbLayer.Models.User", "AddedBy")
-                        .WithMany()
-                        .HasForeignKey("AddedById")
-                        .HasPrincipalKey("UserUuid");
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Finance.Statement", "AddedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
 
                     b.HasOne("DbLayer.Models.Patient.Patients", "Patient")
                         .WithMany()
@@ -920,9 +959,9 @@ namespace DbLayer.Migrations
                         .IsRequired();
 
                     b.HasOne("DbLayer.Models.User", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById")
-                        .HasPrincipalKey("UserUuid");
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Finance.Statement", "UpdatedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
 
                     b.Navigation("AddedBy");
 
@@ -936,9 +975,9 @@ namespace DbLayer.Migrations
             modelBuilder.Entity("DbLayer.Models.Finance.StatementItem", b =>
                 {
                     b.HasOne("DbLayer.Models.User", "AddedBy")
-                        .WithMany()
-                        .HasForeignKey("AddedById")
-                        .HasPrincipalKey("UserUuid");
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Finance.StatementItem", "AddedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
 
                     b.HasOne("DbLayer.Models.Patient.Disease", "Disease")
                         .WithMany()
@@ -951,9 +990,9 @@ namespace DbLayer.Migrations
                         .HasForeignKey("StatementId");
 
                     b.HasOne("DbLayer.Models.User", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById")
-                        .HasPrincipalKey("UserUuid");
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Finance.StatementItem", "UpdatedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
 
                     b.Navigation("AddedBy");
 
@@ -967,9 +1006,9 @@ namespace DbLayer.Migrations
             modelBuilder.Entity("DbLayer.Models.Patient.Disease", b =>
                 {
                     b.HasOne("DbLayer.Models.User", "AddedBy")
-                        .WithMany()
-                        .HasForeignKey("AddedById")
-                        .HasPrincipalKey("UserUuid");
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Patient.Disease", "AddedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
 
                     b.HasOne("DbLayer.Models.Settings.DiseaseType", "DiseaseType")
                         .WithMany("Diseases")
@@ -988,9 +1027,9 @@ namespace DbLayer.Migrations
                         .HasPrincipalKey("PatientUuid");
 
                     b.HasOne("DbLayer.Models.User", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById")
-                        .HasPrincipalKey("UserUuid");
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Patient.Disease", "UpdatedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
 
                     b.Navigation("AddedBy");
 
@@ -1006,9 +1045,9 @@ namespace DbLayer.Migrations
             modelBuilder.Entity("DbLayer.Models.Patient.Image", b =>
                 {
                     b.HasOne("DbLayer.Models.User", "AddedBy")
-                        .WithMany()
-                        .HasForeignKey("AddedById")
-                        .HasPrincipalKey("UserUuid");
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Patient.Image", "AddedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
 
                     b.HasOne("DbLayer.Models.Patient.Disease", "Disease")
                         .WithMany("Images")
@@ -1027,9 +1066,9 @@ namespace DbLayer.Migrations
                         .HasForeignKey("StaffId");
 
                     b.HasOne("DbLayer.Models.User", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById")
-                        .HasPrincipalKey("UserUuid");
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Patient.Image", "UpdatedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
 
                     b.Navigation("AddedBy");
 
@@ -1043,9 +1082,9 @@ namespace DbLayer.Migrations
             modelBuilder.Entity("DbLayer.Models.Patient.Patients", b =>
                 {
                     b.HasOne("DbLayer.Models.User", "AddedBy")
-                        .WithMany()
-                        .HasForeignKey("AddedById")
-                        .HasPrincipalKey("UserUuid");
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Patient.Patients", "AddedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
 
                     b.HasOne("DbLayer.Models.Staff", "Staff")
                         .WithMany("Patient")
@@ -1060,9 +1099,9 @@ namespace DbLayer.Migrations
                         .IsRequired();
 
                     b.HasOne("DbLayer.Models.User", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById")
-                        .HasPrincipalKey("UserUuid");
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Patient.Patients", "UpdatedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
 
                     b.Navigation("AddedBy");
 
@@ -1076,9 +1115,9 @@ namespace DbLayer.Migrations
             modelBuilder.Entity("DbLayer.Models.Patient.Prescription", b =>
                 {
                     b.HasOne("DbLayer.Models.User", "AddedBy")
-                        .WithMany()
-                        .HasForeignKey("AddedById")
-                        .HasPrincipalKey("UserUuid");
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Patient.Prescription", "AddedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
 
                     b.HasOne("DbLayer.Models.Patient.Disease", "Disease")
                         .WithMany("Prescriptions")
@@ -1087,9 +1126,9 @@ namespace DbLayer.Migrations
                         .IsRequired();
 
                     b.HasOne("DbLayer.Models.User", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById")
-                        .HasPrincipalKey("UserUuid");
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Patient.Prescription", "UpdatedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
 
                     b.Navigation("AddedBy");
 
@@ -1101,14 +1140,14 @@ namespace DbLayer.Migrations
             modelBuilder.Entity("DbLayer.Models.Settings.DiseaseType", b =>
                 {
                     b.HasOne("DbLayer.Models.User", "AddedBy")
-                        .WithMany()
-                        .HasForeignKey("AddedById")
-                        .HasPrincipalKey("UserUuid");
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Settings.DiseaseType", "AddedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
 
                     b.HasOne("DbLayer.Models.User", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById")
-                        .HasPrincipalKey("UserUuid");
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Settings.DiseaseType", "UpdatedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
 
                     b.Navigation("AddedBy");
 
@@ -1118,14 +1157,14 @@ namespace DbLayer.Migrations
             modelBuilder.Entity("DbLayer.Models.Settings.ImageType", b =>
                 {
                     b.HasOne("DbLayer.Models.User", "AddedBy")
-                        .WithMany()
-                        .HasForeignKey("AddedById")
-                        .HasPrincipalKey("UserUuid");
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Settings.ImageType", "AddedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
 
                     b.HasOne("DbLayer.Models.User", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById")
-                        .HasPrincipalKey("UserUuid");
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Settings.ImageType", "UpdatedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
 
                     b.Navigation("AddedBy");
 
@@ -1146,9 +1185,9 @@ namespace DbLayer.Migrations
             modelBuilder.Entity("DbLayer.Models.Staff", b =>
                 {
                     b.HasOne("DbLayer.Models.User", "AddedBy")
-                        .WithMany()
-                        .HasForeignKey("AddedById")
-                        .HasPrincipalKey("UserUuid");
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Staff", "AddedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
 
                     b.HasOne("DbLayer.Models.User", "User")
                         .WithOne()
@@ -1158,9 +1197,9 @@ namespace DbLayer.Migrations
                         .IsRequired();
 
                     b.HasOne("DbLayer.Models.User", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById")
-                        .HasPrincipalKey("UserUuid");
+                        .WithOne()
+                        .HasForeignKey("DbLayer.Models.Staff", "UpdatedById")
+                        .HasPrincipalKey("DbLayer.Models.User", "UserUuid");
 
                     b.Navigation("AddedBy");
 

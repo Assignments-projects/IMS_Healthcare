@@ -2,6 +2,7 @@
 
 @{
 	ViewBag.Title = "Statements";
+	var role = UserHelper.GetCurrentRole();
 }
 
 <div class="container-fluid p-0">
@@ -20,9 +21,12 @@
 							Here you can manage statements.
 						</h6>
 					</div>
-					<div>
-						<button class="btn btn-primary" id="@ButtonId.StatementAddNew">Add Statement</button>
-					</div>
+					@if (role.IsAdmin || role.IsStaff)
+					{
+						<div>
+							<button class="btn btn-primary" id="@ButtonId.StatementAddNew">Add Statement</button>
+						</div>
+					}
 				</div>
 				<div class="card-body">
 					<div id="@ContainerId.StatementList">
@@ -43,7 +47,7 @@
 			 */
 			var LoadStatements = function ()
 			{
-				Controls.RelaodContainer('@Url.Action("StatementList", "Statement")', '@ContainerId.StatementList');
+				Controls.RelaodContainer('@Url.Action("StatementList", "Finance")', '@ContainerId.StatementList');
 			}
 
 			/**
@@ -52,7 +56,7 @@
 			 */
 			var AddNewStatement =  function()
 			{
-				var url = '@Url.Action("AddEdit", "Statement")';
+				var url = '@Url.Action("AddEdit", "Finance")';
 				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Add New Statement");
 			}
 
@@ -63,7 +67,7 @@
 			var EditStatement = function()
 			{
 				var id  = $(this).attr("data-id");
-				var url = `@Url.Action("AddEdit", "Statement")?id=${id}`;
+				var url = `@Url.Action("AddEdit", "Finance")?id=${id}`;
 
 				Controls.OpenPopUpModal(url, "@UniqueIdentifier.MainModelId", "Update Statement Details");
 			}

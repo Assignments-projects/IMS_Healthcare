@@ -29,6 +29,40 @@ var Controls = (function () {
             });
         },
 
+        RelaodVoid: function (url, parameter, afterSuccess) {
+
+            $.ajax({
+                url: url,
+                type: "GET",
+                data: parameter,
+                success: function (response) {
+
+                    if (response.success) {
+
+                        toastr.success(response.message);
+
+                        if (response.url) {
+                            window.location.href = response.url;
+                        }
+
+                        setTimeout(function () {
+
+                            if (afterSuccess)
+                                afterSuccess();
+                            else
+                                location.reload();
+
+                        }, 200)
+                    }
+                    else
+                        toastr.error(response.message);
+                },
+                error: function () {
+                    toastr.error("Something went wrong!");
+                }
+            });
+        },
+
         RelaodContainerOnModalPost: function (popUpId, form, reloadContainerId, afterSuccess) {
 
             var loading = `<div class="d-flex align-items-center justify-content-center gap-2">

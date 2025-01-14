@@ -105,8 +105,6 @@ namespace DbLayer.Data
 			builder.AddAuditRelationship<StatementItem>();
 			builder.AddAuditRelationship<ImageType>();
 			builder.AddAuditRelationship<DiseaseType>();
-			builder.AddAuditRelationship<OsSection>();
-			builder.AddAuditRelationship<OsStatus>();
 
 			base.OnModelCreating(builder);
 		}

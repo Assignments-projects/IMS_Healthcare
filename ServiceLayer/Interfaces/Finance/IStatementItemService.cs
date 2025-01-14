@@ -23,6 +23,12 @@ namespace ServiceLayer.Interfaces.Finance
 		Task<List<StatementItem>> ListAsync(int id);
 
 		/// <summary>
+		/// Load statement item list belong to disease id
+		/// </summary>
+		/// <returns></returns>
+		Task<List<StatementItem>> ListForDiseaseAsync(int id);
+
+		/// <summary>
 		/// Get statement item details by id
 		/// </summary>
 		/// <param name="id"></param>
@@ -48,6 +54,14 @@ namespace ServiceLayer.Interfaces.Finance
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		Task<string> DeleteAsync(int id);
+		Task<string> DeleteAsync(int id, int statementId);
+
+
+		/// <summary>
+		/// Calculate patient and statement total
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		Task<string> CaclculateTotals(int id);
 	}
 }

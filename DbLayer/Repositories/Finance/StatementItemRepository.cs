@@ -40,6 +40,14 @@ namespace DbLayer.Repositories.Finance
 			return await MakeStatementItems(_context.StatementItems.Where(x => x.StatementId == id));
 		}
 
+		/// <summary>
+		/// Load statement item list belong to disease id
+		/// </summary>
+		/// <returns></returns>
+		public async Task<List<StatementItem>> ListForDiseaseAsync(int id)
+		{
+			return await MakeStatementItems(_context.StatementItems.Where(x => x.DiseaseId == id));
+		}
 
 		/// <summary>
 		/// Get statement item details by id
@@ -57,16 +65,13 @@ namespace DbLayer.Repositories.Finance
 		/// Add statement item to the database
 		/// </summary>
 		/// <param name="model"></param>
-		/// <param name="onSave"></param>
 		/// <returns></returns>
-		public async Task<string> AddAsync(StatementItem model, Action onSave = null)
+		public async Task<string> AddAsync(StatementItem model)
 		{
 			try
 			{
 				await _context.AddAsync(model);
 				await _context.SaveChangesAsync();
-
-				onSave?.Invoke();
 			}
 			catch (SqlException sqlEx)
 			{
@@ -84,9 +89,8 @@ namespace DbLayer.Repositories.Finance
 		/// Update statement item record finding by id
 		/// </summary>
 		/// <param name="model"></param>
-		/// <param name="onSave"></param>
 		/// <returns></returns>
-		public async Task<string> UpdateAsync(StatementItem model, Action onSave = null)
+		public async Task<string> UpdateAsync(StatementItem model)
 		{
 			try
 			{
@@ -104,8 +108,6 @@ namespace DbLayer.Repositories.Finance
 				exist.UpdatedDate     = model.UpdatedDate;
 
 				await _context.SaveChangesAsync();
-
-				onSave?.Invoke();
 			}
 			catch (SqlException sqlEx)
 			{
@@ -123,9 +125,8 @@ namespace DbLayer.Repositories.Finance
 		/// Delete statement item record by id
 		/// </summary>
 		/// <param name="id"></param>
-		/// <param name="onSave"></param>
 		/// <returns></returns>
-		public async Task<string> DeleteAsync(int id, Action onSave = null)
+		public async Task<string> DeleteAsync(int id)
 		{
 			try
 			{
@@ -137,8 +138,6 @@ namespace DbLayer.Repositories.Finance
 				_context.StatementItems.Remove(exist);
 
 				await _context.SaveChangesAsync();
-
-				onSave?.Invoke();
 			}
 			catch (SqlException sqlEx)
 			{
