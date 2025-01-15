@@ -67,7 +67,7 @@ namespace Web.Controllers
 		/// <returns></returns>
 		public async Task<IActionResult> StatementReport()
 		{
-			return new ViewAsPdf("StatementReport");
+			return new ViewAsPdf();
 		}
 
 		/// <summary>

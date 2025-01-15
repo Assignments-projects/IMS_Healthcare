@@ -8,11 +8,6 @@ namespace Web.Models.Patient
 {
 	public class PatientVM
 	{
-		/*public PatientVM()
-		{
-			User  = new UserVM();
-			Staff = new StaffVM();
-		}*/
 
 		/// <summary>
 		/// Primary key
