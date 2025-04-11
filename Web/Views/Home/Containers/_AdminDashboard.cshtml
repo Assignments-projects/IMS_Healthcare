@@ -1,0 +1,313 @@
+﻿@using Web.Helper
+@using Web.Models.Home
+
+@model DashboardVM
+
+@{
+	var currentUser = UserHelper.GetCurrentUser();
+}
+<div class="row">
+	<div class="col-xl-6 col-xxl-7 p-2">
+		<div class="card flex-fill h-100 w-100">
+			<div class="card-header">
+				<h5 class="card-title mb-0">Welcome Card</h5>
+			</div>
+			<div class="card-body pt-2 pb-3">
+				<div class="chart chart-sm">
+					<div>
+						<h1 class="font-big"><b>Welcome,</b> @currentUser.FullName</h1>
+						<h4 class="text-muted">Here you can see overview of the app and access via quick links.</h4>
+					</div>
+					<div class="row">
+						<div class="col-xl-6 d-flex align-items-center justify-content-center">
+							<div class="card w-75 m-0">
+								<div class="card-body">
+									<div class="row">
+										<div class="col mt-0">
+											<h5 class="card-title">Total active users</h5>
+										</div>
+										<div class="col-auto">
+											<div class="stat text-primary">
+												<i class="align-middle" data-feather="user-check"></i>
+											</div>
+										</div>
+									</div>
+									<h1 class="mt-1 mb-3">@Model.TotalActiveUsers</h1>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-6 d-flex justify-content-center justify-content-xl-end">
+							<img class="img-fluid col-xl-12 col-xxl-10" src="~/img/general/welcome-card-pic.png" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xl-6 col-xxl-5">
+		<div class="row h-100">
+			<div class="col-sm-6 p-2">
+				<div class="card h-100">
+					<div class="card-body">
+						<div class="row">
+							<div class="col mt-0">
+								<h5 class="card-title">Users</h5>
+							</div>
+
+							<div class="col-auto">
+								<div class="stat text-primary">
+									<i class="align-middle" data-feather="users"></i>
+								</div>
+							</div>
+						</div>
+						<h1 class="mt-1 mb-3">@Model.TotalUsers</h1>
+						<div class="mb-0">
+							<a asp-controller="User" asp-action="Index">
+								<span class="badge badge-primary-light"> <i class="mdi mdi-arrow-bottom-right"></i> View more </span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6 p-2">
+				<div class="card h-100">
+					<div class="card-body">
+						<div class="row">
+							<div class="col mt-0">
+								<h5 class="card-title">Staffs</h5>
+							</div>
+
+							<div class="col-auto">
+								<div class="stat text-primary">
+									<i class="align-middle" data-feather="user-plus"></i>
+								</div>
+							</div>
+						</div>
+						<h1 class="mt-1 mb-3">@Model.TotalStaffs</h1>
+						<div class="mb-0">
+							<a asp-controller="Staff" asp-action="Index">
+								<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> View more </span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6 p-2">
+				<div class="card h-100">
+					<div class="card-body">
+						<div class="row">
+							<div class="col mt-0">
+								<h5 class="card-title">Patients</h5>
+							</div>
+
+							<div class="col-auto">
+								<div class="stat text-primary">
+									<i class="align-middle" data-feather="heart"></i>
+								</div>
+							</div>
+						</div>
+						<h1 class="mt-1 mb-3">@Model.TotalPatients</h1>
+						<div class="mb-0">
+							<a asp-controller="Patient" asp-action="Index">
+								<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> View more </span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6 p-2">
+				<div class="card h-100">
+					<div class="card-body">
+						<div class="row">
+							<div class="col mt-0">
+								<h5 class="card-title">Diseases</h5>
+							</div>
+
+							<div class="col-auto">
+								<div class="stat text-primary">
+									<i class="align-middle" data-feather="alert-triangle"></i>
+								</div>
+							</div>
+						</div>
+						<h1 class="mt-1 mb-3">@Model.TotalDiseases</h1>
+						<div class="mb-0">
+							<a asp-controller="Disease" asp-action="Index">
+								<span class="badge badge-danger-light"> <i class="mdi mdi-arrow-bottom-right"></i> View more </span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+	<div class="col-12 col-md-6 col-xxl-3 p-2 d-flex order-1 order-xxl-3">
+		<div class="card flex-fill h-100 w-100">
+			<div class="card-header">
+				<h5 class="card-title mb-0">Patients</h5>
+			</div>
+			<div class="card-body d-flex">
+				<div class="align-self-center w-100">
+					<div class="py-3">
+						<div class="chart chart-xs">
+							<canvas id="chartjs-dashboard-pie"></canvas>
+						</div>
+					</div>
+
+					<table class="table mb-0">
+						<tbody>
+							<tr>
+								<td><i class="fas fa-circle text-light-primary fa-fw"></i> Active</td>
+								<td class="text-end">@Model.TotalActivePatients</td>
+							</tr>
+							<tr>
+								<td><i class="fas fa-circle text-light-danger fa-fw"></i> Discharged</td>
+								<td class="text-end">@Model.TotalDischargedPatients</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-12 col-md-12 col-xxl-6 p-2 d-flex order-3 order-xxl-2">
+		<div class="card flex-fill h-100 w-100">
+			<div class="card-header">
+				<h5 class="card-title mb-0">Application Users</h5>
+			</div>
+			<div class="card-body d-flex">
+				<div class="align-self-center w-100">
+					<div class="py-3">
+						<div class="chart chart-xs">
+							<canvas id="chartjs-dashboard-bar"></canvas>
+						</div>
+					</div>
+
+					<table class="table mb-0">
+						<tbody>
+							<tr>
+								<td><i class="fas fa-circle text-light-primary fa-fw"></i> Active Users</td>
+								<td class="text-end">@Model.TotalActiveUsers</td>
+							</tr>
+							<tr>
+								<td><i class="fas fa-circle text-light-success fa-fw"></i> Admins</td>
+								<td class="text-end">@Model.TotalAdmins</td>
+							</tr>
+							<tr>
+								<td><i class="fas fa-circle text-light-warning fa-fw"></i> Staffs</td>
+								<td class="text-end">@Model.TotalStaffs</td>
+							</tr>
+							<tr>
+								<td><i class="fas fa-circle text-light-danger fa-fw"></i> Patients</td>
+								<td class="text-end">@Model.TotalPatients</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-12 col-md-6 col-xxl-3 p-2 d-flex order-2 order-xxl-1">
+		<div class="card flex-fill h-100">
+			<div class="card-header">
+				<h5 class="card-title mb-0">Calendar</h5>
+			</div>
+			<div class="card-body d-flex">
+				<div class="align-self-center w-100">
+					<div class="chart">
+						<div id="datetimepicker-dashboard"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@*----- Calender render -----*@
+<script>
+	document.addEventListener("DOMContentLoaded", function() {
+		var date = new Date(Date.now() - 5 * 24 * 60 * 60 * 1000);
+		var defaultDate = date.getUTCFullYear() + "-" + (date.getUTCMonth() + 1) + "-" + date.getUTCDate();
+		document.getElementById("datetimepicker-dashboard").flatpickr({
+			inline: true,
+			prevArrow: "<span class=\"fas fa-chevron-left\" title=\"Previous month\"></span>",
+			nextArrow: "<span class=\"fas fa-chevron-right\" title=\"Next month\"></span>",
+			defaultDate: defaultDate
+		});
+	});
+</script>
+
+
+@*---- Chart render ----*@
+<script>
+	document.addEventListener("DOMContentLoaded", function() {
+		// Doughnut chart
+		new Chart(document.getElementById("chartjs-dashboard-pie"), {
+			type: "doughnut",
+			data: {
+				labels: ["Active", "Discharged"],
+				datasets: [{
+					data: [
+						@Model.TotalActivePatients,
+						@Model.TotalDischargedPatients
+					],
+					backgroundColor: [
+						"#cfe2ff",
+						"#f8d7da"
+					],
+					borderWidth: 5,
+					borderColor: "#fff"
+				}]
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				plugins: {
+					legend: {
+						display: false
+					}
+				},
+				cutoutPercentage: 70
+			}
+		});
+
+		// Bar Chart
+		new Chart(document.getElementById("chartjs-dashboard-bar"), {
+			type: "bar",
+			data: {
+				labels: ["Active Users", "Admins", "Staffs", "Patients"],
+				datasets: [{
+					data: [
+						@Model.TotalActiveUsers,
+						@Model.TotalAdmins,
+						@Model.TotalStaffs,
+						@Model.TotalPatients
+					],
+					backgroundColor: [
+						"#cfe2ff",
+						"#d1e7dd",
+						"#fff3cd",
+						"#f8d7da"
+					],
+					borderWidth: 1,
+					borderColor: "#fff"
+				}]
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				plugins: {
+					legend: {
+						display: false
+					},
+					tooltip: {
+						enabled: true
+					}
+				}
+			}
+		});
+	});
+</script>

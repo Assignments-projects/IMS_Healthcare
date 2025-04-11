@@ -1,4 +1,19 @@
-﻿
+﻿@using Web.Helper
+
+@{
+	var role = UserHelper.GetCurrentRole();
+
+	var bgColor = "#222e3c";
+
+	if (role != null)
+	{
+		if (role.IsStaff)
+			bgColor = "#3c2237";
+		else if (role.IsPatient)
+			bgColor = "#223c2e";
+	}
+}
+
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>@ViewBag.Title</title>
@@ -12,3 +27,21 @@
 <link href="~/lib/flatpickr/flatpickr.css" rel="stylesheet" />
 <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
 <link rel="shortcut icon" href="~/img/medical/pharmacy-second.png">
+
+<style>
+	.sidebar, body[data-theme=dark] .sidebar {
+		background: @bgColor;
+	}
+
+	.sidebar-content, body[data-theme=dark] .sidebar-content {
+		background: @bgColor;
+	}
+
+	.sidebar-link, a.sidebar-link {
+		background: @bgColor;
+	}
+
+		.sidebar-link:hover {
+			background: @bgColor;
+		}
+</style>

@@ -4,7 +4,6 @@ using AuthLayer;
 using Web.Helper;
 using Rotativa.AspNetCore;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

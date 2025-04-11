@@ -10,6 +10,9 @@ using Web.Models.Image;
 using DbLayer.Models.Settings;
 using ServiceLayer.Services.Patient;
 using Web.Models.Settings;
+using System.Text;
+using System.Security.Cryptography;
+using System.IO;
 
 namespace Web.Controllers
 {
@@ -22,6 +25,7 @@ namespace Web.Controllers
 		private readonly IImageTypeService _imageType;
 		private readonly IDiseaseTypeService _diseaseType;
 		private readonly IMapper _mapper;
+		private readonly IConfiguration _config;
 
 		public ImageController(
 			IImageService image,
@@ -30,15 +34,17 @@ namespace Web.Controllers
 			IStaffService staff,
 			IImageTypeService imageType,
 			IDiseaseTypeService diseaseType,
-			IMapper mapper)
+			IMapper mapper,
+			IConfiguration config)
 		{
-			_image       = image;
-			_disease     = disease;
-			_patient     = patient;
-			_staff       = staff;
-			_imageType   = imageType;
+			_image = image;
+			_disease = disease;
+			_patient = patient;
+			_staff = staff;
+			_imageType = imageType;
 			_diseaseType = diseaseType;
 			_mapper = mapper;
+			_config = config;
 		}
 
 		/// <summary>
@@ -259,7 +265,9 @@ namespace Web.Controllers
 			if (result == null)
 				return await NotFound();
 
-			return File(result.FileContent, result.MimeType, result.FileName);
+			var decryptedBytes = DecryptFile(result.FileContent);
+
+			return File(decryptedBytes, result.MimeType, result.FileName);
 		}
 
 		/// <summary>
@@ -274,7 +282,9 @@ namespace Web.Controllers
 			if (result == null)
 				return NoContent();
 
-			return File(result.FileContent, result.MimeType);
+			var decryptedBytes = DecryptFile(result.FileContent);
+
+			return File(decryptedBytes, result.MimeType);
 		}
 
 		/// <summary>
@@ -288,9 +298,11 @@ namespace Web.Controllers
 			{
 				await file.CopyToAsync(stream);
 
+				var encryptedBytes = EncryptFile(stream.ToArray());
+
 				model.FileName    = file.FileName;
 				model.MimeType    = file.ContentType;
-				model.FileContent = stream.ToArray();
+				model.FileContent = encryptedBytes;
 
 				return model;
 			}
@@ -343,6 +355,36 @@ namespace Web.Controllers
 				image.ImageUrl = Url.Action("GetImage", new { id = image.ImageId });
 			}
 			return model;
+		}
+
+		/// <summary>
+		/// Encript file byte array
+		/// </summary>
+		/// <param name="fileBytes"></param>
+		/// <returns></returns>
+		private byte[] EncryptFile(byte[] fileBytes)
+		{
+			using var aes = Aes.Create();
+			aes.Key       = Encoding.UTF8.GetBytes(_config["Crypto:Key"]);
+			aes.IV        = Encoding.UTF8.GetBytes(_config["Crypto:IV"]);
+
+			using var encryptor = aes.CreateEncryptor();
+			return encryptor.TransformFinalBlock(fileBytes, 0, fileBytes.Length);
+		}
+
+		/// <summary>
+		/// Decript file byte array
+		/// </summary>
+		/// <param name="encryptedBytes"></param>
+		/// <returns></returns>
+		private byte[] DecryptFile(byte[] encryptedBytes)
+		{
+			using var aes = Aes.Create();
+			aes.Key       = Encoding.UTF8.GetBytes(_config["Crypto:Key"]);
+			aes.IV        = Encoding.UTF8.GetBytes(_config["Crypto:IV"]);
+
+			using var decryptor = aes.CreateDecryptor();
+			return decryptor.TransformFinalBlock(encryptedBytes, 0, encryptedBytes.Length);
 		}
 	}
 }
