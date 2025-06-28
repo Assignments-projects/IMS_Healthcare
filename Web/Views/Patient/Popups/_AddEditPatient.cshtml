@@ -22,7 +22,7 @@
 		</div>
 		<div class="col-12 col-sm-6">
 			<label asp-for="Details.InChargeuUud">Select In charge</label>
-			<select asp-for="Details.InChargeuUud" id="InChargeuUud" name="Details.InChargeuUud" class="form-select">
+			<select asp-for="Details.InChargeuUud" id="InChargeuUud" name="Details.InChargeuUud" class="form-control selectpickert" data-live-search="true">
 				<option value="" selected>Nothing selected</option>
 				@foreach (var role in Model.StaffList)
 				{

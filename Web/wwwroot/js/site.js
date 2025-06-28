@@ -94,4 +94,15 @@ $(document).ready(function () {
     if (!hasActive) {
         ActivateMenu(savedPath);
     }
+
+
+    // Initialize all select pickers on the page. Can be done several times with no side-effects.
+    $('.selectpicker').selectpicker(
+    {
+        title: 'Nothing Select',
+        liveSearch: true,
+        showSubtext: true,
+        size: 10,
+        noneResultsText: '<h6>No results found</h6>'
+    });
 });

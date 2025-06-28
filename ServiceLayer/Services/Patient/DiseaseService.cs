@@ -119,7 +119,7 @@ namespace ServiceLayer.Services.Patient
 			var list = result.Select(x => new SelectListItem
 			{
 				Value = x.DiseaseId.ToString(),
-				Text = $"{x.DiseaseType?.TypeName} - {x.DiseaseId}"
+				Text = $"{x.DiseaseType?.TypeName} - {x.DiseaseSpec}"
 			}).ToList();
 
 			if (!list.Any())
